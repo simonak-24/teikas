@@ -15,6 +15,6 @@ class LegendSource extends Model
     }
     public function source()
     {
-        return $this->source(Source::class);
+        return $this->belongsTo(Source::class);
     }
 }
