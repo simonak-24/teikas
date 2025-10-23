@@ -127,9 +127,7 @@ class DatabaseSeeder extends Seeder
         }
         fclose($seed_file);
 
-        /*
-            Seeds the database by linking sources and legends. *ŠOBRĪD ŅEM TIKAI 1 KOLONNU AR AVOTIEM, BŪS JĀSALIEK ARĪ PĀRĒJIE!
-        */
+        // Seeds the database by linking sources and legends. *ŠOBRĪD ŅEM TIKAI 1 KOLONNU AR AVOTIEM, BŪS JĀSALIEK ARĪ PĀRĒJIE!
         $seed_file = fopen(base_path("database/data/link_table.csv"),"r");
         $line = fgetcsv($seed_file);
         $line = fgetcsv($seed_file);
