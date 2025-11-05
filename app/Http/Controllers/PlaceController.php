@@ -31,7 +31,7 @@ class PlaceController extends Controller
     public function store(Request $request)
     {
         $request->validate( [
-            'name' => 'required|unique:places,name',
+            'name' => 'required',
             'latitude' => 'numeric|between:-90,90|nullable',
             'longitude' => 'numeric|between:-180,180|nullable',
         ]);
@@ -55,18 +55,20 @@ class PlaceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Place $place)
+    public function edit(string $id)
     {
+        $place = Place::findOrfail($id);
         return view('places.edit', compact('place'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Place $place)
+    public function update(Request $request, string $id)
     {
+        $place = Place::findOrfail($id);
         $request->validate([
-            'name' => 'required|unique:places,name,'.$place->id,
+            'name' => 'required',
             'latitude' => 'numeric|between:-90,90|nullable',
             'longitude' => 'numeric|between:-180,180|nullable',
         ]);
@@ -81,9 +83,9 @@ class PlaceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Place $place)
+    public function destroy(string $id)
     {
-        Place::findOrfail($place->id)->delete();
+        Place::findOrfail($id)->delete();
         return redirect()->route('places.index');
     }
 }

@@ -9,6 +9,7 @@ class Collector extends Model
     protected $fillable = [
         'fullname',
         'gender',
+        'external_identifier',
     ];
 
     // Removes timestamps (default settings).

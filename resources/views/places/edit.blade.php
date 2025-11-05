@@ -9,14 +9,14 @@
     <div id="edit">
     <h2>{{ __('resources.title_edit') }}</h2>
 
-    <p><form method="POST" action="{{ route('places.destroy', urlencode($place->name)) }}">
+    <p><form method="POST" action="{{ route('places.destroy', $place->id) }}">
             @csrf
             @method('DELETE')
             <button id="delete" type="submit">{{ __('resources.button_delete') }}</button>
     </form></p>
     <br>
 
-    <form action="{{ route('places.update', urlencode($place->name)) }}" method="POST">
+    <form action="{{ route('places.update', $place->id) }}" method="POST">
         @csrf
         @method('PUT')
 

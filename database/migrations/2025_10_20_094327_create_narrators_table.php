@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('fullname');
             $table->string('gender')->nullable();
+            $table->string('external_identifier', 7)->nullable();
         });
     }
 

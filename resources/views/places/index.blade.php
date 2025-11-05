@@ -13,11 +13,10 @@
         <button type="submit">{{ __('resources.button_create') }}</button>
     </form>
 
-    <h3><a id="create" href="{{ route('places.create') }}">{{ __('resources.button_create') }}</a></h3>
     <div id="display-list">
         @foreach ($places as $place)
             <div>
-                <h3><a id="edit" href="{{ route('places.edit', urlencode($place->name)) }}">{{ $place->name }}</a></h3>
+                <h3><a id="edit" href="{{ route('places.edit', [$place->id, urlencode($place->name)]) }}">{{ $place->name }}</a></h3>
                 <p>{{ $place->latitude }} {{ $place->longitude }}</p>
             </div>
         @endforeach

@@ -10,6 +10,7 @@ class Place extends Model
         'name',
         'latitude',
         'longitude',
+        'external_identifier',
     ];
 
     // Removes timestamps (default settings).
