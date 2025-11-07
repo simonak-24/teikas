@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sources', function (Blueprint $table) {
             $table->id();
-            $table->string('identifier');
+            $table->string('identifier')->unique();
             $table->string('title');
             $table->string('author')->nullable();
         });

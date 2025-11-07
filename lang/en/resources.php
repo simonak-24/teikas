@@ -29,6 +29,11 @@ return [
     'person_woman' => 'Woman',
     'person_unknown' => 'Unknown',
 
+    'source_all' => 'Sources',
+    'source_identifier' => 'Unique Identifier',
+    'source_title' => 'Title',
+    'source_author' => 'Author(s)',
+
     'place_all' => 'Places',
     'place_name' => 'Place name',
     'place_latitude' => 'Latitude',

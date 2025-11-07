@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CollectorController;
 use App\Http\Controllers\NarratorController;
+use App\Http\Controllers\SourceController;
 use App\Http\Controllers\PlaceController;
 use App\Models\Place;
 use Illuminate\Support\Facades\URL;
@@ -27,6 +28,16 @@ Route::get('/narrator/{id}/', [NarratorController::class, 'show'])->name('narrat
 Route::get('/narrator/{id}/edit', [NarratorController::class, 'edit'])->name('narrators.edit');
 Route::put('/narrator/{id}/update', [NarratorController::class, 'update'])->name('narrators.update');
 Route::delete('/narrator/{id}/delete', [NarratorController::class, 'destroy'])->name('narrators.destroy');
+
+// Source routes.
+Route::get('/sources', [SourceController::class, 'index'])->name('sources.index');
+Route::get('/source/create', [SourceController::class, 'create'])->name('sources.create');
+Route::post('/source/create', [SourceController::class, 'store'])->name('sources.store');
+Route::get('/source/{id}/', [SourceController::class, 'show'])->name('sources.show');
+Route::get('/source/{id}/edit', [SourceController::class, 'edit'])->name('sources.edit');
+Route::put('/source/{id}/update', [SourceController::class, 'update'])->name('sources.update');
+Route::delete('/source/{id}/delete', [SourceController::class, 'destroy'])->name('sources.destroy');
+
 
 // Place routes.
 Route::get('/places', [PlaceController::class, 'index'])->name('places.index');
