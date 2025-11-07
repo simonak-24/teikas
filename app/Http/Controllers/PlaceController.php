@@ -12,7 +12,7 @@ class PlaceController extends Controller
      */
     public function index()
     {
-        $places=Place::all()->sortBy('name');
+        $places = Place::all()->sortBy('name');
         return view('places.index', compact('places'));
     }
 

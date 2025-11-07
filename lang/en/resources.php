@@ -18,7 +18,16 @@ return [
 
     'button_create' => 'Add New',
     'button_save' => 'Save',
+    'button_edit' => 'Edit',
     'button_delete' => 'Delete',
+
+    'collector_all' => 'Collectors',
+    'narrator_all' => 'Narrators',
+    'person_fullname' => 'Full name',
+    'person_gender' => 'Gender',
+    'person_man' => 'Man',
+    'person_woman' => 'Woman',
+    'person_unknown' => 'Unknown',
 
     'place_all' => 'Places',
     'place_name' => 'Place name',
