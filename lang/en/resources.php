@@ -39,5 +39,20 @@ return [
     'place_latitude' => 'Latitude',
     'place_longitude' => 'Longitude',
 
-
+    'legend_all' => 'Folk legends',
+    'legend_identifier' => 'Item ID',
+    'legend_metadata' => 'Original metadata',
+    'legend_title-lv' => 'Title',
+    'legend_title-de' => 'Title (German)',
+    'legend_text-lv' => 'Text',
+    'legend_text-de' => 'Text (German)',
+    'legend_chapter-lv' => 'Chapter',
+    'legend_chapter-de' => 'Chapter (German)',
+    'legend_volume' => 'Volume',
+    'legend_comments' => 'Comments',
+    'legend_collector' => 'Collector',
+    'legend_narrator' => 'Narrator',
+    'legend_place' => 'Place',
+    'legend_sources' => 'Sources / Other publications',
+    'legend_select' => 'Select',
 ];

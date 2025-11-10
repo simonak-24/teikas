@@ -5,6 +5,7 @@ use App\Http\Controllers\CollectorController;
 use App\Http\Controllers\NarratorController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\PlaceController;
+use App\Http\Controllers\LegendController;
 use App\Models\Place;
 use Illuminate\Support\Facades\URL;
 
@@ -38,7 +39,6 @@ Route::get('/source/{id}/edit', [SourceController::class, 'edit'])->name('source
 Route::put('/source/{id}/update', [SourceController::class, 'update'])->name('sources.update');
 Route::delete('/source/{id}/delete', [SourceController::class, 'destroy'])->name('sources.destroy');
 
-
 // Place routes.
 Route::get('/places', [PlaceController::class, 'index'])->name('places.index');
 Route::get('/places/create', [PlaceController::class, 'create'])->name('places.create');
@@ -46,6 +46,15 @@ Route::post('/places/create', [PlaceController::class, 'store'])->name('places.s
 Route::get('/places/{id}/{name}', [PlaceController::class, 'edit'])->name('places.edit');
 Route::put('/places/{id}', [PlaceController::class, 'update'])->name('places.update');
 Route::delete('/places/delete/{id}', [PlaceController::class, 'destroy'])->name('places.destroy');
+
+// Legend routes.
+Route::get('/legends', [LegendController::class, 'index'])->name('legends.index');
+Route::get('/legend/create', [LegendController::class, 'create'])->name('legends.create');
+Route::post('/legend/create', [LegendController::class, 'store'])->name('legends.store');
+Route::get('/legend/{identifier}/', [LegendController::class, 'show'])->name('legends.show');
+Route::get('/legend/{identifier}/edit', [LegendController::class, 'edit'])->name('legends.edit');
+Route::put('/legend/{identifier}/update', [LegendController::class, 'update'])->name('legends.update');
+Route::delete('/legend/{identifier}/delete', [LegendController::class, 'destroy'])->name('legends.destroy');
 
 URL::forceScheme('https');
 

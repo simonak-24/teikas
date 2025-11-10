@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('legends', function (Blueprint $table) {
             $table->id();
-            $table->string('identifier', 9);
+            $table->string('identifier', 9)->unique();
             $table->string('metadata');
             $table->string('title_lv');
             $table->string('title_de');
