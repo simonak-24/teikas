@@ -38,6 +38,7 @@ return [
     'place_name' => 'Place name',
     'place_latitude' => 'Latitude',
     'place_longitude' => 'Longitude',
+    'place_external-map' => 'Open in Map',
 
     'legend_all' => 'Folk legends',
     'legend_identifier' => 'Item ID',
