@@ -15,17 +15,17 @@
 
         <div>
             <label for="name">{{ __('resources.place_name') }}: </label>
-            <input type="text" id="name" name="name" value="{{ $place->name }}">
+            <input type="text" id="name" name="name" value="{{ old('name', $place->name) }}">
         </div>
 
         <div>
             <label for="latitude">{{ __('resources.place_latitude') }}: </label>
-            <input type="number" step="0.000001" id="latitude" name="latitude" value="{{ $place->latitude }}">
+            <input type="number" step="0.000001" id="latitude" name="latitude" value="{{ old('latitude', $place->latitude) }}">
         </div>
 
         <div>
             <label for="longitude">{{ __('resources.place_longitude') }}: </label>
-            <input type="number" step="0.000001" id="longitude" name="longitude" value="{{ $place->longitude }}">
+            <input type="number" step="0.000001" id="longitude" name="longitude" value="{{ old('longitude', $place->longitude) }}">
         </div>
 
         <br>

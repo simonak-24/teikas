@@ -15,15 +15,15 @@
 
         <div>
             <label for="name">{{ __('resources.person_fullname') }}: </label>
-            <input type="text" id="fullname" name="fullname" value="{{ $narrator->fullname }}">
+            <input type="text" id="fullname" name="fullname" value="{{ old('fullname', $narrator->fullname) }}">
         </div>
 
         <div>
             <label for="gender">{{ __('resources.person_gender') }}: </label>
             <select id="gender" name="gender">
-                <option value="M">{{ __('resources.person_man') }}</option>
-                <option value="F">{{ __('resources.person_woman') }}</option>
-                <option value="?" selected>{{ __('resources.person_unknown') }}</option>
+                <option value="M" {{ old('gender', $narrator->gender) == "M" ? 'selected' : '' }}>{{ __('resources.person_man') }}</option>
+                <option value="F" {{ old('gender', $narrator->gender) == "F" ? 'selected' : '' }}>{{ __('resources.person_woman') }}</option>
+                <option value="?" {{ old('gender', $narrator->gender) == "?" ? 'selected' : ''  }}>{{ __('resources.person_unknown') }}</option>
             </select>
         </div>
 

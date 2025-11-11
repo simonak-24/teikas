@@ -16,8 +16,7 @@
     <div id="display-list">
         @foreach ($places as $place)
             <div>
-                <h3><a id="edit" href="{{ route('places.edit', [$place->id, urlencode($place->name)]) }}">{{ $place->name }}</a></h3>
-                <p>{{ $place->latitude }} {{ $place->longitude }}</p>
+                <h3><a id="show" href="{{ route('places.show', $place->id) }}">{{ $place->name }}</a></h3>
             </div>
         @endforeach
     </div>

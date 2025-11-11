@@ -6,11 +6,12 @@ use App\Http\Controllers\NarratorController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\LegendController;
-use App\Models\Place;
 use Illuminate\Support\Facades\URL;
 
-// Redirects to the main page of the website.
-// Route::redirect('/', '/places');
+// Redirects to the main page of the website (at the moment, meant for testing).
+Route::get('/', function () {
+    return view('test');
+});
 
 // Collector routes.
 Route::get('/collectors', [CollectorController::class, 'index'])->name('collectors.index');
@@ -41,11 +42,12 @@ Route::delete('/source/{id}/delete', [SourceController::class, 'destroy'])->name
 
 // Place routes.
 Route::get('/places', [PlaceController::class, 'index'])->name('places.index');
-Route::get('/places/create', [PlaceController::class, 'create'])->name('places.create');
-Route::post('/places/create', [PlaceController::class, 'store'])->name('places.store');
-Route::get('/places/{id}/{name}', [PlaceController::class, 'edit'])->name('places.edit');
-Route::put('/places/{id}', [PlaceController::class, 'update'])->name('places.update');
-Route::delete('/places/delete/{id}', [PlaceController::class, 'destroy'])->name('places.destroy');
+Route::get('/place/create', [PlaceController::class, 'create'])->name('places.create');
+Route::post('/place/create', [PlaceController::class, 'store'])->name('places.store');
+Route::get('/place/{id}/', [PlaceController::class, 'show'])->name('places.show');
+Route::get('/place/{id}/edit', [PlaceController::class, 'edit'])->name('places.edit');
+Route::put('/place/{id}/update', [PlaceController::class, 'update'])->name('places.update');
+Route::delete('/place/{id}/delete', [PlaceController::class, 'destroy'])->name('places.destroy');
 
 // Legend routes.
 Route::get('/legends', [LegendController::class, 'index'])->name('legends.index');

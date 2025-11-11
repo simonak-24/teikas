@@ -22,15 +22,15 @@
 
         <div>
             <label for="name">{{ __('resources.person_fullname') }}: </label>
-            <input type="text" id="fullname" name="fullname" value="{{ $collector->fullname }}">
+            <input type="text" id="fullname" name="fullname" value="{{ old('fullname', $collector->fullname) }}">
         </div>
 
         <div>
             <label for="gender">{{ __('resources.person_gender') }}: </label>
             <select id="gender" name="gender">
-                <option value="M" {{ $collector->gender == "M" ? 'selected' : '' }}>{{ __('resources.person_man') }}</option>
-                <option value="F" {{ $collector->gender == "F" ? 'selected' : '' }}>{{ __('resources.person_woman') }}</option>
-                <option value="?" {{ $collector->gender == "?" ? 'selected' : '' }}>{{ __('resources.person_unknown') }}</option>
+                <option value="M" {{ old('gender', $collector->gender) == "M" ? 'selected' : '' }}>{{ __('resources.person_man') }}</option>
+                <option value="F" {{ old('gender', $collector->gender)== "F" ? 'selected' : '' }}>{{ __('resources.person_woman') }}</option>
+                <option value="?" {{ old('gender', $collector->gender) == "?" ? 'selected' : '' }}>{{ __('resources.person_unknown') }}</option>
             </select>
         </div>
 

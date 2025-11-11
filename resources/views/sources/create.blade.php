@@ -15,17 +15,17 @@
 
         <div>
             <label for="name">{{ __('resources.source_identifier') }}: </label>
-            <input type="text" id="identifier" name="identifier" value="{{ $source->identifier }}">
+            <input type="text" id="identifier" name="identifier" value="{{ old('identifier', $source->identifier) }}">
         </div>
 
         <div>
             <label for="name">{{ __('resources.source_title') }}: </label>
-            <input type="text" id="title" name="title" value="{{ $source->title }}">
+            <input type="text" id="title" name="title" value="{{ old('title', $source->title) }}">
         </div>
 
         <div>
             <label for="name">{{ __('resources.source_author') }}: </label>
-            <input type="text" id="author" name="author" value="{{ $source->author }}">
+            <input type="text" id="author" name="author" value="{{ old('author', $source->author) }}">
         </div>
 
         <br>

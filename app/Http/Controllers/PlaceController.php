@@ -41,7 +41,7 @@ class PlaceController extends Controller
         $place->latitude = $request->latitude;
         $place->longitude = $request->longitude;
         $place->save();
-        return redirect()->route('places.index');
+        return redirect()->route('places.show', $place->id);
     }
 
     /**
@@ -49,7 +49,8 @@ class PlaceController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $place = Place::findOrfail($id);
+        return view('places.show', compact('place'));
     }
 
     /**
@@ -77,7 +78,7 @@ class PlaceController extends Controller
         $place->latitude = $request->latitude;
         $place->longitude = $request->longitude;
         $place->save();
-        return redirect()->route('places.index');
+        return redirect()->route('places.show', $place->id);
     }
 
     /**
