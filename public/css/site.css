@@ -1,0 +1,228 @@
+:root {
+    --main-color-dark: #444444;
+    --main-color-medium: #aaaaaa;
+    --main-color-light: #eeeeee;
+    --text-color-dark: #444444;
+    --text-color-light: #666666;
+}
+
+/* Sitewide rules. */
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--main-color-light);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+header {
+    height: 5vh;
+    padding-top: 3vh;
+    background-color: var(--main-color-dark);
+}
+
+nav {
+    font-size: 20px;
+    padding: 10px;
+}
+
+h1 {
+    margin: 0;
+    padding-top: 5px;
+    padding-bottom: 15px;
+}
+
+table {
+    width: 100%;
+    background-color: var(--main-color-light);
+
+    border: solid 1px var(--main-color-dark);
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 4px;
+
+    border: solid 1px var(--main-color-dark);
+    border-collapse: collapse;
+}
+
+th {
+    background-color: var(--main-color-medium);
+}
+
+td > a {
+    color: var(--text-color-dark);
+}
+td > a:hover {
+    color: var(--text-color-light);
+    text-decoration: underline;
+}
+
+textarea {
+    resize: none; 
+}
+
+input, textarea {
+    width: 99%;
+}
+select {
+    width: 100%;
+}
+
+input, textarea, select {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+#nav-bar > *, #resource-links > * , .pagination-cell > * {
+    color: white;
+}
+
+#site-container {
+    width: 80vw;
+    margin: auto;
+}
+
+#resource-links {
+    float: right;
+}
+
+#content {
+    margin: 0px;
+    padding: 10px 30px 10px 30px;
+    font-size: 16px;
+    background-color: white;
+}
+
+#heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.return-link {
+    font-weight: bolder;
+}
+
+.center-cell {
+    text-align: center;
+}
+
+.resource-button {
+    width: 5em;
+    height: 2em;
+
+    border: solid;
+    border-width: 1px;
+    border-color : var(--main-color-medium);
+    border-radius: 0.5vw;
+}
+
+/* Index page rules. */
+#legend-index-identifier {
+    width: 8%;
+}
+#legend-index-volume {
+    width: 6%;
+}
+#legend-index-chapter {
+    width: 20%;
+}
+#legend-index-title {
+    width: 26%;
+}
+#legend-index-collector {
+    width: 14%;
+}
+#legend-index-narrator {
+    width: 14%;
+}
+#legend-index-place {
+    width: 12%;
+}
+
+#legend-text-lv, #legend-text-de {
+    text-align: justify;
+}
+#legend-text-lv {
+    width: 45%;
+}
+#legend-text-de {
+    width: 55%;
+}
+
+#person-index-fullname {
+    width: 76%;
+}
+#person-index-gender, #person-index-count, #person-index-link {
+    width: 8%;
+}
+
+#place-index-name {
+    width: 75%;
+}
+#place-index-latitude, #place-index-longitude {
+    width: 10%;
+}
+#place-index-link {
+    width: 5%;
+}
+
+#source-index-identifier {
+    width: 10%;
+}
+#source-index-title {
+    width: 65%;
+}
+#source-index-author {
+    width: 25%;
+}
+
+#pagination-links, #pagination-forward, #pagination-back {
+    display: flex;
+    justify-content: space-between;
+}
+
+#pagination-links {
+    padding: 2px;
+}
+
+.pagination-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 2em;
+    width: 2em;
+    font-size: 18px;
+
+    border: solid 4px white;
+    border-collapse: collapse;
+    background-color: var(--main-color-medium);
+}
+
+.pagination-button > a, .return-link {
+    color: var(--text-color-dark);
+}
+.pagination-button > a:hover, .return-link:hover {
+    color: var(--text-color-light);
+}
+
+/* Resource display page rules. */
+#display-item-column {
+    width: 25%;
+}
+#display-item-value {
+    width: 75%;
+}
+
+#map {
+    height: 40vh;
+}

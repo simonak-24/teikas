@@ -1,47 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('resources.title_webpage') }}</title>
-</head>
-<body>
-    <div id="edit">
-    <h2>{{ __('resources.title_edit') }}</h2>
+@extends('site')
 
-    <p><form method="POST" action="{{ route('sources.destroy', $source->id) }}">
+@section('title', __('resources.title_edit'))
+
+@section('content')
+    <div id="heading">
+        <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('resources.title_edit') }}</h2>
+
+        <form method="POST" action="{{ route('sources.destroy', $source->id) }}">
             @csrf
             @method('DELETE')
-            <button id="delete" type="submit">{{ __('resources.button_delete') }}</button>
-    </form></p>
-    <br>
+            <button class="resource-button" type="submit">{{ __('resources.button_delete') }}</button>
+        </form>
+    </div>
 
     <form action="{{ route('sources.update', $source->id) }}" method="POST">
         @csrf
         @method('PUT')
+        <table>
+        <tr>
+            <td><b><label for="name">{{ __('resources.source_identifier') }}: </label></b></td>
+            <td><input type="text" id="identifier" name="identifier" value="{{ old('identifier', $source->identifier) }}"></td>
+        </tr>
 
-        <div>
-            <label for="name">{{ __('resources.source_identifier') }}: </label>
-            <input type="text" id="identifier" name="identifier" value="{{ old('identifier', $source->identifier) }}">
-        </div>
+        <tr>
+            <td><b><label for="name">{{ __('resources.source_title') }}: </label></b></td>
+            <td><input type="text" id="title" name="title" value="{{ old('title', $source->title) }}"></td>
+        </tr>
 
-        <div>
-            <label for="name">{{ __('resources.source_title') }}: </label>
-            <input type="text" id="title" name="title" value="{{ old('title', $source->title) }}">
-        </div>
-
-        <div>
-            <label for="name">{{ __('resources.source_author') }}: </label>
-            <input type="text" id="author" name="author" value="{{ old('author', $source->author) }}">
-        </div>
-
+        <tr>
+            <td><b><label for="name">{{ __('resources.source_author') }}: </label></b></td>
+            <td><input type="text" id="author" name="author" value="{{ old('author', $source->author) }}"></td>
+        </tr>
+        </table>
         <br>
-        <button type="submit">{{ __('resources.button_save') }}</button>
-        @error('identifier')
-            <div class="error">{{ $message }}</div>
-        @enderror
+        <button class="resource-button" type="submit">{{ __('resources.button_save') }}</button>
     </form>
     <br>
+    <div id="validation-errors">
+        @if($errors->any())
+            {{ implode('', $errors->all('<div>:message</div>')) }}
+        @endif
     </div>
-</body>
-</html>
+@endsection

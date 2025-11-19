@@ -1,24 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('site')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('resources.title_webpage') }}</title>
-</head>
+@section('title', __('resources.place_all'))
 
-<body>
-    <h1>{{ __('resources.place_all') }}</h1>
-    <form action="{{ route('places.create') }}">
-        <button type="submit">{{ __('resources.button_create') }}</button>
-    </form>
+@section('content')
+    <div id="heading">
+        <h1>{{ __('resources.place_all') }}</h1>
+        
+        <form action="{{ route('places.create') }}">
+            <button class="resource-button" type="submit">{{ __('resources.button_create') }}</button>
+        </form>
+    </div>
 
     <div id="display-list">
-        @foreach ($places as $place)
-            <div>
-                <h3><a id="show" href="{{ route('places.show', $place->id) }}">{{ $place->name }}</a></h3>
+        <table>
+            <colgroup>
+                <col span="1" id="place-index-name" />
+                <col span="1" id="place-index-latitude"/>
+                <col span="1" id="place-index-longitude"/>
+                <col span="1" id="place-index-link"/>
+            </colgroup>
+            <tr>
+                <th>{{ __('resources.place_name') }}</th>
+                <th>{{ __('resources.place_latitude') }}</th>
+                <th>{{ __('resources.place_longitude') }}</th>
+                <th>{{ __('resources.external-link-garamantas') }}</th>
+            </tr>
+            @foreach ($places as $place)
+                <tr>
+                    <td><a href="{{ route('places.show', $place->id) }}">{{ $place->name }}</a></td>
+                    @if($place->latitude != 0)
+                    <td class="center-cell">{{ $place->latitude }}</td>
+                    @else
+                    <td  class="center-cell">null</td>
+                    @endif
+                    @if($place->latitude != 0)
+                    <td class="center-cell">{{ $place->longitude }}</td>
+                    @else
+                    <td  class="center-cell">null</td>
+                    @endif
+                    <td class="center-cell"><a href="">{{ __('resources.external-link-open') }}</a></td>
+                    </tr>
+            @endforeach
+        </table>
+        <div id="pagination-links">
+            <div id="pagination-forward">
+                <div class="pagination-button"><a href="{{ $places->url(1) }}"> << </a></div>
+                <div class="pagination-button"><a href="{{ $places->previousPageUrl() }}"> < </a></div>
             </div>
-        @endforeach
+            <div id="pagination-back">
+                <div class="pagination-button"><a href="{{ $places->nextPageUrl() }}"> > </a></div>
+                <div class="pagination-button"><a href="{{ $places->url($places->lastPage()) }}"> >> </a></div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+@endsection

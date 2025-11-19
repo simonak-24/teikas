@@ -17,7 +17,7 @@ class LegendController extends Controller
      */
     public function index()
     {
-        $legends = Legend::all()->sortBy('identifier');
+        $legends = Legend::orderBy('identifier')->paginate(20);
         return view('legends.index', compact('legends'));
     }
 
@@ -69,12 +69,12 @@ class LegendController extends Controller
         $legend->volume = $request->volume;
         $legend->comments = $request->comments;
 
-        $legend->collector_id = $request->collector_id;
-        $legend->narrator_id = $request->narrator_id;
-        $legend->place_id = $request->place_id;
+        $legend->collector_id = $request->collector;
+        $legend->narrator_id = $request->narrator;
+        $legend->place_id = $request->place;
         $legend->save();
 
-        if (is_array($request->sources)) {
+        if (isset($request->sources)) {
             foreach($request->sources as $source){
                 $link = new LegendSource();
                 $link->legend_id = $legend->id;
@@ -91,7 +91,19 @@ class LegendController extends Controller
     public function show(string $id)
     {
         $legend = Legend::where('identifier', $id)->first();
-        return view('legends.show', compact('legend'));
+
+        $legend_ids = Legend::all()->sortBy('identifier')->pluck('identifier');
+        $i = 0;
+        foreach($legend_ids as $legend_id) {
+            if ($legend->identifier == $legend_id) {
+                $page = intval($i / 20) + 1;
+                break;
+            } else {
+                $i = $i + 1;
+            }
+        }
+
+        return view('legends.show', compact('legend', 'page'));
     }
 
     /**
@@ -127,7 +139,7 @@ class LegendController extends Controller
         $legend = Legend::where('identifier', $id)->first();
 
         $request->validate( [
-            'identifier' => 'regex:/^[0-9]+$/|required|unique:legends,identifier,'.$id,
+            'identifier' => 'regex:/^[0-9]+$/|required|unique:legends,identifier,'.$legend->id,
             'volume' => 'regex:/^[0-9]+$/', // kkā būs jāpamato!!
             'comments' => 'nullable',
         ]);
@@ -153,11 +165,13 @@ class LegendController extends Controller
             $source = LegendSource::find($old_source->id)->delete();
         }
 
-        foreach($request->sources as $source){
-            $link = new LegendSource();
-            $link->legend_id = $legend->id;
-            $link->source_id = $source;
-            $link->save();
+        if (isset($request->sources)) {
+            foreach($request->sources as $source){
+                $link = new LegendSource();
+                $link->legend_id = $legend->id;
+                $link->source_id = $source;
+                $link->save();
+            }
         }
 
         return redirect()->route('legends.show', $legend->identifier);

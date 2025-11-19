@@ -12,7 +12,7 @@ class PlaceController extends Controller
      */
     public function index()
     {
-        $places = Place::all()->sortBy('name');
+        $places = Place::all()->toQuery()->orderBy('name')->paginate(20);
         return view('places.index', compact('places'));
     }
 
@@ -50,7 +50,19 @@ class PlaceController extends Controller
     public function show(string $id)
     {
         $place = Place::findOrfail($id);
-        return view('places.show', compact('place'));
+
+        $place_ids = Place::all()->toQuery()->orderBy('name')->pluck('id');
+        $i = 0;
+        foreach($place_ids as $place_id) {
+            if ($id == $place_id) {
+                $page = intval($i / 20) + 1;
+                break;
+            } else {
+                $i = $i + 1;
+            }
+        }
+
+        return view('places.show', compact('place', 'page'));
     }
 
     /**

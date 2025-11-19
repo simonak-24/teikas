@@ -1,24 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('site')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('resources.title_webpage') }}</title>
-</head>
+@section('title', __('resources.collector_all'))
 
-<body>
-    <h1>{{ __('resources.collector_all') }}</h1>
-    <form action="{{ route('collectors.create') }}">
-        <button type="submit">{{ __('resources.button_create') }}</button>
-    </form>
+@section('content')
+    <div id="heading">
+        <h1>{{ __('resources.collector_all') }}</h1>
+
+        <form action="{{ route('collectors.create') }}">
+            <button class="resource-button" type="submit">{{ __('resources.button_create') }}</button>
+        </form>
+    </div>
 
     <div id="display-list">
-        @foreach ($collectors as $collector)
-            <div>
-                <h3><a id="show" href="{{ route('collectors.show', $collector->id) }}">{{ $collector->fullname }}</a></h3>
+        <table>
+            <colgroup>
+                <col span="1" id="person-index-fullname" />
+                <col span="1" id="person-index-gender"/>
+                <col span="1" id="person-index-count"/>
+                <col span="1" id="person-index-link"/>
+            </colgroup>
+            <tr>
+                <th>{{ __('resources.person_fullname') }}</th>
+                <th>{{ __('resources.person_gender') }}</th>
+                <th>{{ __('resources.collector_count') }}</th>
+                <th>{{ __('resources.external-link-garamantas') }}</th>
+            </tr>
+            @foreach ($collectors as $collector)
+            <tr>
+                @if ($collector->name != 'Nezināms')    <!-- Vēlāk jānoņem, lai nepastāvētu Nezināms. -->
+                    <td><a href="{{ route('collectors.show', $collector->id) }}">{{ $collector->fullname }}</a></td>
+                    <td class="center-cell">{{ $collector->gender }}</td>
+                    <td class="center-cell">{{ count($collector->legends) }}</td>
+                    <td class="center-cell"><a href="">{{ __('resources.external-link-open') }}</a></td>
+                @endif
+            </tr>
+            @endforeach
+        </table>
+        <div id="pagination-links">
+            <div id="pagination-forward">
+                <div class="pagination-button"><a href="{{ $collectors->url(1) }}"> << </a></div>
+                <div class="pagination-button"><a href="{{ $collectors->previousPageUrl() }}"> < </a></div>
             </div>
-        @endforeach
+            <div id="pagination-back">
+                <div class="pagination-button"><a href="{{ $collectors->nextPageUrl() }}"> > </a></div>
+                <div class="pagination-button"><a href="{{ $collectors->url($collectors->lastPage()) }}"> >> </a></div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+@endsection

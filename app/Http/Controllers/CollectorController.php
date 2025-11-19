@@ -12,7 +12,7 @@ class CollectorController extends Controller
      */
     public function index()
     {
-        $collectors = Collector::all()->sortBy('fullname');
+        $collectors = Collector::all()->toQuery()->orderBy('fullname')->paginate(20);
         return view('collectors.index', compact('collectors'));
     }
 
@@ -50,7 +50,19 @@ class CollectorController extends Controller
     public function show(string $id)
     {
         $collector = Collector::findOrfail($id);
-        return view('collectors.show', compact('collector'));
+
+        $collector_ids = Collector::all()->toQuery()->orderBy('fullname')->pluck('id');
+        $i = 0;
+        foreach($collector_ids as $collector_id) {
+            if ($id == $collector_id) {
+                $page = intval($i / 20) + 1;
+                break;
+            } else {
+                $i = $i + 1;
+            }
+        }
+
+        return view('collectors.show', compact('collector', 'page'));
     }
 
     /**

@@ -13,6 +13,7 @@ return [
     */
 
     'title_webpage' => 'TEST PAGE',
+    'title_home' => 'Home',
     'title_create' => 'Create New',
     'title_edit' => 'Edit',
 
@@ -22,12 +23,15 @@ return [
     'button_delete' => 'Delete',
 
     'collector_all' => 'Collectors',
+    'collector_count' => 'Number of Legends Collected',
     'narrator_all' => 'Narrators',
+    'narrator_count' => 'Number of Legends Narrated',
     'person_fullname' => 'Full name',
     'person_gender' => 'Gender',
     'person_man' => 'Man',
     'person_woman' => 'Woman',
     'person_unknown' => 'Unknown',
+    'person_unidentified' => 'Unknown',
 
     'source_all' => 'Sources',
     'source_identifier' => 'Unique Identifier',
@@ -38,7 +42,8 @@ return [
     'place_name' => 'Place name',
     'place_latitude' => 'Latitude',
     'place_longitude' => 'Longitude',
-    'place_external-map' => 'Open in Map',
+    'place_unidentified' => 'Unknown',
+    'place_map' => 'Location in Map',
 
     'legend_all' => 'Folk legends',
     'legend_identifier' => 'Item ID',
@@ -56,4 +61,9 @@ return [
     'legend_place' => 'Place',
     'legend_sources' => 'Sources / Other publications',
     'legend_select' => 'Select',
+
+    'external-link-open' => 'Open...',
+    'external-link-garamantas' => 'garamantas.lv',
+    'external-link-humma' => 'humma.lv ID',
+    'external-link-map' => 'Google Maps',
 ];

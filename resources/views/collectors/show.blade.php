@@ -1,19 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('resources.title_webpage') }}</title>
-</head>
-<body>
-    <div>
-        <div>
-        <h2>{{ $collector->fullname }}</h2>
-            <p>{{ $collector->fullname }}{{ $collector->gender ? ',' : '' }} {{ $collector->gender }}</p>
-            <form action="{{ route('collectors.edit', $collector->id) }}">
-                <button type="submit">{{ __('resources.button_edit') }}</button>
-            </form>
-        </div>
+@extends('site')
+
+@section('title', $collector->fullname)
+
+@section('content')
+    <div id="heading">
+        <h2><a class="return-link" href="{{ route('collectors.index').'?page='.$page }}">&nbsp;<&nbsp;</a>&nbsp;{{ $collector->fullname }}</h2>
+
+        <form action="{{ route('collectors.edit', $collector->id) }}">
+            <button class="resource-button" type="submit">{{ __('resources.button_edit') }}</button>
+        </form>
     </div>
-</body>
-</html>
+
+    <table>
+        <colgroup>
+            <col span="1" id="display-item-column" />
+            <col span="1" id="display-item-value"/>
+        </colgroup>
+        <tr>
+            <th>{{ __('resources.person_fullname') }}</th>
+            <td>{{ $collector->fullname }}</td>
+        </tr>
+        <tr>
+            <th>{{ __('resources.person_gender') }}</th>
+            <td>{{ $collector->gender }}</td>
+        </tr>
+        <tr>
+            <th>{{ __('resources.external-link-humma') }}</th>
+            <td>{{ $collector->external_identifier }}</td>
+        </tr>
+    </table>
+    <br>
+@endsection

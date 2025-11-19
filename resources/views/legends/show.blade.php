@@ -1,25 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('resources.title_webpage') }}</title>
-</head>
-<body>
-    <div>
-        <div>
-        <h2>{{ $legend->title_lv }}</h2>
-            <p>[{{ $legend->identifier }}] {{ $legend->metadata }}</p>
-            <p>{{ $legend->text_lv }}</p>
-            <form action="{{ route('legends.edit', $legend->identifier) }}">
-                <button type="submit">{{ __('resources.button_edit') }}</button>
-            </form>
-            @foreach ($legend->sources as $link)
-            <div>
-                <p>{{ $link->source->title }}</p>
-            </div>
-        @endforeach
-        </div>
+@extends('site')
+
+@section('title', $legend->title_lv)
+
+@section('content')
+    <div id="heading">
+        <h2><a class="return-link" href="{{ route('legends.index').'?page='.$page }}">&nbsp;<&nbsp;</a>&nbsp;{{ $legend->title_lv }}</h2>
+    
+        <form action="{{ route('legends.edit', $legend->identifier) }}">
+            <button class="resource-button" type="submit">{{ __('resources.button_edit') }}</button>
+        </form>
     </div>
-</body>
-</html>
+
+    <table>
+        <colgroup>
+            <col span="1" id="display-item-column" />
+            <col span="1" id="display-item-value"/>
+        </colgroup>
+        <tr>
+            <th>{{ __('resources.legend_identifier') }}</th>
+            <td>{{ $legend->identifier }}</td>
+        </tr>
+        <tr>
+            <th>{{ __('resources.legend_volume') }}</th>
+            <td>{{ $legend->volume }}</td>
+        </tr>
+        <tr>
+            <th>{{ __('resources.legend_chapter-lv') }}</th>
+            <td>{{ $legend->chapter_lv }}</td>
+        </tr>
+        <tr>
+            <th>{{ __('resources.legend_title-lv') }}</th>
+            <td>{{ $legend->title_lv }} / {{ $legend->title_de }}</td>
+        </tr>
+        <tr>
+            <th>{{ __('resources.legend_metadata') }}</th>
+            <td>{{ $legend->metadata }}</td>
+        </tr>
+
+        <tr>
+            <th>{{ __('resources.legend_collector') }}</th>
+            @if(isset($legend->collector_id))
+                <td><a href="{{ route('collectors.show', $legend->collector_id)}}">{{ $legend->collector->fullname }}</a></td>
+            @else
+                <td>{{ __('resources.person_unidentified') }}</td>
+            @endif
+        </tr>
+        <tr>
+            <th>{{ __('resources.legend_narrator') }}</th>
+            @if(isset($legend->narrator_id))
+                <td><a href="{{ route('narrators.show', $legend->narrator_id)}}">{{ $legend->narrator->fullname }}</a></td>
+            @else
+                <td>{{ __('resources.person_unidentified') }}</td>
+            @endif
+        </tr>
+        <tr>
+            <th>{{ __('resources.legend_place') }}</th>
+            @if(isset($legend->place_id))
+                <td><a href="{{ route('places.show', $legend->place_id)}}">{{ $legend->place->name }}</a></td>
+            @else
+                <td>{{ __('resources.place_unidentified') }}</td>
+            @endif
+        </tr>
+        <tr>
+            <th>{{ __('resources.legend_sources') }}</th>
+            <td>
+                @foreach($legend->sources as $link)
+                    <a href="{{ route('sources.show', $link->source_id)}}">{{ $link->source->title }}</a><br>
+                @endforeach
+            </td>
+        </tr>      
+    </table>
+    <br>
+    <table>
+        <colgroup>
+            <col span="1" id="legend-text-lv" />
+            <col span="1" id="legend-text-de"/>
+        </colgroup>
+        <tr>
+            <th>{{ __('resources.legend_text-lv') }}</th>
+            <th>{{ __('resources.legend_text-de') }}</th>
+        </tr>
+        <tr>
+            <td>{{ $legend->text_lv }}</td>
+            <td>{{ $legend->text_de }}</td>
+        </tr>
+    </table>
+    <br>
+@endsection

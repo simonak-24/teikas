@@ -1,19 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ __('resources.title_webpage') }}</title>
-</head>
-<body>
-    <div>
-        <div>
-        <h2>{{ $source->identifier }}</h2>
-            <p>{{ $source->title }} ({{ $source->author }})</p>
-            <form action="{{ route('sources.edit', $source->id) }}">
-                <button type="submit">{{ __('resources.button_edit') }}</button>
-            </form>
-        </div>
+@extends('site')
+
+@section('title', $source->title)
+
+@section('content')
+    <div id="heading">
+        <h2><a class="return-link" href="{{ route('sources.index').'?page='.$page }}">&nbsp;<&nbsp;</a>&nbsp;{{ $source->identifier }}</h2>
+
+        <form action="{{ route('sources.edit', $source->id) }}">
+            <button class="resource-button" type="submit">{{ __('resources.button_edit') }}</button>
+        </form>
     </div>
-</body>
-</html>
+
+    <table>
+        <colgroup>
+            <col span="1" id="display-item-column" />
+            <col span="1" id="display-item-value"/>
+        </colgroup>
+        <tr>
+            <th>{{ __('resources.source_identifier') }}</th>
+            <td>{{ $source->identifier }}</td>
+        </tr>
+        <tr>
+            <th>{{ __('resources.source_title') }}</th>
+            <td>{{ $source->title }}</td>
+        </tr>
+        <tr>
+            <th>{{ __('resources.source_author') }}</th>
+            <td>{{ $source->author }}</td>
+        </tr>
+    </table>
+    <br>
+@endsection

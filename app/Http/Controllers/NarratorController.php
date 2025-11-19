@@ -12,7 +12,7 @@ class NarratorController extends Controller
      */
     public function index()
     {
-        $narrators = Narrator::all()->sortBy('fullname');
+        $narrators = Narrator::all()->toQuery()->orderBy('fullname')->paginate(20);
         return view('narrators.index', compact('narrators'));
     }
 
@@ -50,7 +50,19 @@ class NarratorController extends Controller
     public function show(string $id)
     {
         $narrator = Narrator::findOrfail($id);
-        return view('narrators.show', compact('narrator'));
+
+        $narrator_ids = Narrator::all()->toQuery()->orderBy('fullname')->pluck('id');
+        $i = 0;
+        foreach($narrator_ids as $narrator_id) {
+            if ($id == $narrator_id) {
+                $page = intval($i / 20) + 1;
+                break;
+            } else {
+                $i = $i + 1;
+            }
+        }
+
+        return view('narrators.show', compact('narrator', 'page'));
     }
 
     /**

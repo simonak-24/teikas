@@ -12,7 +12,7 @@ class SourceController extends Controller
      */
     public function index()
     {
-        $sources = Source::all()->sortBy('identifier');
+        $sources = Source::all()->toQuery()->orderBy('identifier')->paginate(20);
         return view('sources.index', compact('sources'));
     }
 
@@ -50,7 +50,19 @@ class SourceController extends Controller
     public function show(string $id)
     {
         $source = Source::findOrfail($id);
-        return view('sources.show', compact('source'));
+
+        $source_ids = Source::all()->toQuery()->orderBy('identifier')->pluck('id');
+        $i = 0;
+        foreach ($source_ids as $source_id) {
+            if ($id == $source_id) {
+                $page = intval($i / 20) + 1;
+                break;
+            } else {
+                $i = $i + 1;
+            }
+        }
+
+        return view('sources.show', compact('source', 'page'));
     }
 
     /**
