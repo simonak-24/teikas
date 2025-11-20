@@ -13,7 +13,7 @@
             var lat = <?=($place->latitude)?>;
             var lon = <?=($place->longitude)?>;
             if (!(lat == 0 && lon == 0)) {
-                var map = L.map("map").setView([lat, lon], 10);
+                var map = L.map("resource-map").setView([lat, lon], 10);
                     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     maxZoom: 19,
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -52,7 +52,7 @@
         </tr>
         <tr>
             <th>{{ __('resources.place_map') }}</th>
-            <td><div id="map"></div></td>
+            <td><div id="resource-map"></div></td>
         </tr>
         <tr>
             <th>{{ __('resources.external-link-map') }}</th>

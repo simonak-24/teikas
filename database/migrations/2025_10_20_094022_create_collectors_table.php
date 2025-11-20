@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('collectors', function (Blueprint $table) {
             $table->id();
-            $table->string('fullname');
-            $table->string('gender')->nullable();
+            $table->string('fullname', 64);
+            $table->string('gender', 1)->nullable();
             $table->string('external_identifier', 7)->nullable();
         });
     }

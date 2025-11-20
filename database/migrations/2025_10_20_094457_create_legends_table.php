@@ -15,17 +15,18 @@ return new class extends Migration
             $table->id();
             $table->string('identifier', 9)->unique();
             $table->string('metadata');
-            $table->string('title_lv');
-            $table->string('title_de');
+            $table->string('title_lv', 100);
+            $table->string('title_de', 100);
             $table->text('text_lv');
             $table->text('text_de');
-            $table->string('chapter_lv');
-            $table->string('chapter_de');
+            $table->string('chapter_lv', 100);
+            $table->string('chapter_de', 100);
             $table->tinyInteger('volume');
             $table->text('comments')->nullable();
             $table->foreignId('collector_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('narrator_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('place_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('external_identifier', 7)->nullable();
         });
     }
 

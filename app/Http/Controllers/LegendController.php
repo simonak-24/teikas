@@ -52,9 +52,17 @@ class LegendController extends Controller
     public function store(Request $request)
     {
         $request->validate( [
-            'identifier' => 'required|unique:legends,identifier|regex:/^[0-9]+$/',
-            'volume' => 'regex:/^[0-9]+$/', // kkā būs jāpamato!!
+            'identifier' => 'max:9|regex:/^[0-9]+$/|required|unique:legends,identifier',
+            'metadata' => 'max:255|required',
+            'title_lv' => 'max:100|required',
+            'title_de' => 'max:100|required',
+            'text_lv' => 'required',
+            'text_de' => 'required',
+            'chapter_lv' => 'max:100|required',
+            'chapter_de' => 'max:100|required',
+            'volume' => 'max:2|regex:/^[0-9]+$/|required',
             'comments' => 'nullable',
+            'external_identifier' => 'max:7|regex:/^[0-9]+$/|nullable',
         ]);
 
         $legend = new Legend();
@@ -72,6 +80,7 @@ class LegendController extends Controller
         $legend->collector_id = $request->collector;
         $legend->narrator_id = $request->narrator;
         $legend->place_id = $request->place;
+        $legend->external_identifier = $request->external_id;
         $legend->save();
 
         if (isset($request->sources)) {
@@ -139,9 +148,17 @@ class LegendController extends Controller
         $legend = Legend::where('identifier', $id)->first();
 
         $request->validate( [
-            'identifier' => 'regex:/^[0-9]+$/|required|unique:legends,identifier,'.$legend->id,
-            'volume' => 'regex:/^[0-9]+$/', // kkā būs jāpamato!!
+            'identifier' => 'max:9|regex:/^[0-9]+$/|required|unique:legends,identifier,'.$legend->id,
+            'metadata' => 'max:255|required',
+            'title_lv' => 'max:100|required',
+            'title_de' => 'max:100|required',
+            'text_lv' => 'required',
+            'text_de' => 'required',
+            'chapter_lv' => 'max:100|required',
+            'chapter_de' => 'max:100|required',
+            'volume' => 'max:2|regex:/^[0-9]+$/|required',
             'comments' => 'nullable',
+            'external_identifier' => 'max:7|regex:/^[0-9]+$/|nullable',
         ]);
 
         $legend->identifier = $request->identifier;
@@ -158,6 +175,7 @@ class LegendController extends Controller
         $legend->collector_id = $request->collector;
         $legend->narrator_id = $request->narrator;
         $legend->place_id = $request->place;
+        $legend->external_identifier = $request->external_id;
         $legend->save();
 
         $old_sources = LegendSource::where('legend_id', $legend->id)->get();

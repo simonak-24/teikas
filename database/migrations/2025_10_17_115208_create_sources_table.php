@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('sources', function (Blueprint $table) {
             $table->id();
-            $table->string('identifier')->unique();
+            $table->string('identifier', 16)->unique();
             $table->string('title');
-            $table->string('author')->nullable();
+            $table->string('author', 64)->nullable();
         });
     }
 

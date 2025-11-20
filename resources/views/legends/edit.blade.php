@@ -163,14 +163,18 @@
                 @endforeach
             </select></td>
         </tr>
+        <tr>
+            <td><b><label for="external_id">{{ __('resources.external-link-humma') }}: </label></b></td>
+            <td><input type="number" id="external_id" name="external_id" value="{{ old('external_id', $collector->external_id) }}"></td>
+        </tr>
         </table>
         <br>
         <button class="resource-button" type="submit">{{ __('resources.button_save') }}</button>
     </form>
     <br>
     <div id="validation-errors">
-        @if($errors->any())
-            {{ implode('', $errors->all('<div>:message</div>')) }}
-        @endif
+        @foreach($errors->all() as $error)
+            {{ $error }}<br>
+        @endforeach
     </div>
 @endsection

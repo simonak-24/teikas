@@ -17,6 +17,7 @@ class Legend extends Model
         'chapter_de',
         'volume',
         'comments',
+        'external_identifier',
     ];
 
     // Removes timestamps (default settings).

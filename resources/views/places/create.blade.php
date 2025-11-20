@@ -31,8 +31,8 @@
         </tr>
 
         <tr>
-            <td><b><label for="external-id">{{ __('resources.place_external-identifier') }}: </label></b></td>
-            <td><input disabled type="number" id="external_id" name="external_id" value="{{ old('external_id', $place->external_id) }}"></td>
+            <td><b><label for="external_id">{{ __('resources.place_external-identifier') }}: </label></b></td>
+            <td><input type="number" id="external_id" name="external_id" value="{{ old('external_id', $place->external_id) }}"></td>
         </tr>
         </table>
         <br>
@@ -40,8 +40,8 @@
     </form>
     <br>
     <div id="validation-errors">
-        @if($errors->any())
-            {{ implode('', $errors->all('<div>:message</div>')) }}
-        @endif
+        @foreach($errors->all() as $error)
+            {{ $error }}<br>
+        @endforeach
     </div>
 @endsection

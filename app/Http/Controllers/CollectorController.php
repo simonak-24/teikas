@@ -32,14 +32,16 @@ class CollectorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'fullname' => 'required',
+            'fullname' => 'max:64|required',
             'gender' => 'in:M,F,?',
+            'external_identifier' => 'max:7|regex:/^[0-9]+$/|nullable',
         ]);
 
         $collector = new Collector();
         $collector->fullname = $request->fullname;
         $collector->gender = $request->gender;
         if ($collector->gender == '?') { $collector->gender = null; }
+        $collector->external_identifier = $request->external_id;
         $collector->save();
         return redirect()->route('collectors.show', $collector->id);
     }
@@ -82,13 +84,15 @@ class CollectorController extends Controller
     {
         $collector = Collector::findOrfail($id);
         $request->validate([
-            'fullname' => 'required',
+            'fullname' => 'max:64|required',
             'gender' => 'in:M,F,?',
+            'external_identifier' => 'max:7|regex:/^[0-9]+$/|nullable',
         ]);
 
         $collector->fullname = $request->fullname;
         $collector->gender = $request->gender;
         if ($collector->gender == '?') { $collector->gender = null; }
+        $collector->external_identifier = $request->external_id;
         $collector->save();
         return redirect()->route('collectors.show', $collector->id);
     }
