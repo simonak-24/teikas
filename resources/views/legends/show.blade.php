@@ -5,10 +5,12 @@
 @section('content')
     <div id="heading">
         <h2><a class="return-link" href="{{ route('legends.index').'?page='.$page }}">&nbsp;<&nbsp;</a>&nbsp;{{ $legend->title_lv }}</h2>
-    
+
+        @if(Auth::check())
         <form action="{{ route('legends.edit', $legend->identifier) }}">
             <button class="resource-button" type="submit">{{ __('resources.button_edit') }}</button>
         </form>
+        @endif
     </div>
 
     <table>

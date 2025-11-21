@@ -6,9 +6,11 @@
     <div id="heading">
         <h1>{{ __('resources.narrator_all') }}</h1>
 
+        @if(Auth::check())
         <form action="{{ route('narrators.create') }}">
             <button class="resource-button" type="submit">{{ __('resources.button_create') }}</button>
         </form>
+        @endif
     </div>
 
     <div id="display-list">

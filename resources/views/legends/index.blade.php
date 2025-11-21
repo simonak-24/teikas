@@ -5,10 +5,12 @@
 @section('content')
     <div id="heading">
         <h1>{{ __('resources.legend_all') }}</h1>
-    
+
+        @if(Auth::check())
         <form action="{{ route('legends.create') }}">
             <button class="resource-button" type="submit">{{ __('resources.button_create') }}</button>
         </form>
+        @endif
     </div>
 
     <div id="display-list">

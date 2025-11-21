@@ -6,9 +6,11 @@
     <div id="heading">
         <h2><a class="return-link" href="{{ route('sources.index').'?page='.$page }}">&nbsp;<&nbsp;</a>&nbsp;{{ $source->identifier }}</h2>
 
+        @if(Auth::check())
         <form action="{{ route('sources.edit', $source->id) }}">
             <button class="resource-button" type="submit">{{ __('resources.button_edit') }}</button>
         </form>
+        @endif
     </div>
 
     <table>

@@ -19,10 +19,22 @@
             <nav id="nav-bar">
                 <a id="home-link" class="nav-link" href="{{ route('home') }}">{{ __('resources.title_webpage') }}</a>
                 <div id="resource-links">
-                    <a class="nav-link" href="{{ route('legends.index') }}">{{ __('resources.legend_all') }}</a> | 
-                    <a class="nav-link" href="{{ route('collectors.index') }}">{{ __('resources.collector_all') }}</a> | 
-                    <a class="nav-link" href="{{ route('narrators.index') }}">{{ __('resources.narrator_all') }}</a> | 
-                    <a class="nav-link" href="{{ route('places.index') }}">{{ __('resources.place_all') }}</a> | 
+                    @if(Auth::check())
+                    <form id="logout-link" action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        @method('POST')
+                        <button class="user-button" type="submit">Log Out</button>
+                    </form>
+                    @else
+                        <form id="login-link" action="{{ route('login') }}" method="GET">
+                        @csrf
+                        <button class="user-button" type="submit">Log In</button>
+                    </form>
+                    @endif
+                    <a class="nav-link" href="{{ route('legends.index') }}">{{ __('resources.legend_all') }}</a>&nbsp;|&nbsp;
+                    <a class="nav-link" href="{{ route('collectors.index') }}">{{ __('resources.collector_all') }}</a> &nbsp;|&nbsp;
+                    <a class="nav-link" href="{{ route('narrators.index') }}">{{ __('resources.narrator_all') }}</a> &nbsp;|&nbsp;
+                    <a class="nav-link" href="{{ route('places.index') }}">{{ __('resources.place_all') }}</a>&nbsp;|&nbsp;
                     <a class="nav-link" href="{{ route('sources.index') }}">{{ __('resources.source_all') }}</a>
                 </div>
             </nav>

@@ -6,9 +6,11 @@
     <div id="heading">
         <h2><a class="return-link" href="{{ route('narrators.index').'?page='.$page }}">&nbsp;<&nbsp;</a>&nbsp;{{ $narrator->fullname }}</h2>
 
+        @if(Auth::check())
         <form action="{{ route('narrators.edit', $narrator->id) }}">
             <button class="resource-button" type="submit">{{ __('resources.button_edit') }}</button>
         </form>
+        @endif
     </div>
 
     <table>

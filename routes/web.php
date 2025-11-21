@@ -6,6 +6,7 @@ use App\Http\Controllers\NarratorController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\LegendController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\URL;
 
 // Redirects to the main page of the website (at the moment, meant for testing).
@@ -15,7 +16,7 @@ Route::get('/', function () {
 
 // Collector routes.
 Route::get('/collectors', [CollectorController::class, 'index'])->name('collectors.index');
-Route::get('/collector/create', [CollectorController::class, 'create'])->name('collectors.create');
+Route::get('/collector/create', [CollectorController::class, 'create'])->name('collectors.create')->middleware('auth');
 Route::post('/collector/create', [CollectorController::class, 'store'])->name('collectors.store');
 Route::get('/collector/{id}/', [CollectorController::class, 'show'])->name('collectors.show');
 Route::get('/collector/{id}/edit', [CollectorController::class, 'edit'])->name('collectors.edit');
@@ -57,6 +58,11 @@ Route::get('/legend/{identifier}/', [LegendController::class, 'show'])->name('le
 Route::get('/legend/{identifier}/edit', [LegendController::class, 'edit'])->name('legends.edit');
 Route::put('/legend/{identifier}/update', [LegendController::class, 'update'])->name('legends.update');
 Route::delete('/legend/{identifier}/delete', [LegendController::class, 'destroy'])->name('legends.destroy');
+
+// User routes.
+Route::get('/login', [UserController::class, 'login'])->name('login');
+Route::post('/authenticate', [UserController::class, 'authenticate'])->name('authenticate');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 URL::forceScheme('https');
 

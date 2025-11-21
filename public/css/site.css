@@ -4,6 +4,7 @@
     --main-color-light: #eeeeee;
     --text-color-dark: #444444;
     --text-color-light: #666666;
+    --text-color-error: #aa0000;
 }
 
 /* Sitewide rules. */
@@ -81,6 +82,12 @@ input, textarea, select {
     font-size: 16px;
 }
 
+#nav-bar, #resource-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 #nav-bar > *, #resource-links > * , .pagination-cell > * {
     color: white;
 }
@@ -88,10 +95,6 @@ input, textarea, select {
 #site-container {
     width: 80vw;
     margin: auto;
-}
-
-#resource-links {
-    float: right;
 }
 
 #content {
@@ -107,6 +110,14 @@ input, textarea, select {
     align-items: center;
 }
 
+#validation-errors, .validation-error {
+    color: var(--text-color-error);
+}
+
+#logout-link, #login-link {
+    margin: 0px 10px;
+}
+
 .return-link {
     font-weight: bolder;
 }
@@ -115,7 +126,7 @@ input, textarea, select {
     text-align: center;
 }
 
-.resource-button {
+.resource-button, .user-button {
     width: 5em;
     height: 2em;
 
@@ -124,6 +135,7 @@ input, textarea, select {
     border-color : var(--main-color-medium);
     border-radius: 0.5vw;
 }
+
 
 /* Index page rules. */
 #legend-index-identifier {
@@ -225,4 +237,45 @@ input, textarea, select {
 
 #resource-map {
     height: 40vh;
+}
+
+/* Login page rules */
+#login-frame {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+#login-pane {
+    margin: auto;
+    padding: 3vh 3vw 3vh 3vw;
+    width: 30vw;
+    height: 30vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--text-color-dark);
+    background-color: var(--main-color-medium);
+    border: solid;
+    border-width: 1px;
+    border-color : var(--main-color-dark);
+    border-radius: 2vw;
+}
+
+#login-form {
+    width: 60%;
+    height: 80%;
+}
+
+#login-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#login-form > input {
+    display: block;
+    width: 100%;
 }
