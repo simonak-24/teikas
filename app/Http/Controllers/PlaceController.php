@@ -34,13 +34,14 @@ class PlaceController extends Controller
             'name' => 'max:32|required',
             'latitude' => 'numeric|between:-90,90|nullable',
             'longitude' => 'numeric|between:-180,180|nullable',
-            'external_identifier' => 'max:7|regex:/^[0-9]+$/|nullable',
+            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
         ]);
 
         $place = new Place();
         $place->name = $request->name;
         $place->latitude = $request->latitude;
         $place->longitude = $request->longitude;
+        $place->external_identifier = $request->external_id;
         $place->save();
         return redirect()->route('places.show', $place->id);
     }
@@ -85,12 +86,13 @@ class PlaceController extends Controller
             'name' => 'max:32|required',
             'latitude' => 'numeric|between:-90,90|nullable',
             'longitude' => 'numeric|between:-180,180|nullable',
-            'external_identifier' => 'max:7|regex:/^[0-9]+$/|nullable',
+            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
         ]);
 
         $place->name = $request->name;
         $place->latitude = $request->latitude;
         $place->longitude = $request->longitude;
+        $place->external_identifier = $request->external_id;
         $place->save();
         return redirect()->route('places.show', $place->id);
     }
@@ -102,5 +104,20 @@ class PlaceController extends Controller
     {
         Place::findOrfail($id)->delete();
         return redirect()->route('places.index');
+    }
+
+    /**
+     * Show reasource in map view.
+     */
+    public function map(Request $request) {
+        $places = Place::all();
+        $php_coordinates = array();
+        foreach ($places as $place) {
+            if ($place->latitude != 0 && $place->latitude != 0) {
+                $php_coordinates[$place->id] = [$place->latitude, $place->longitude];
+            }
+        }
+        $coordinates = json_encode($php_coordinates);
+        return view('home', compact('places', 'coordinates'));
     }
 }

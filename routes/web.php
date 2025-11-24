@@ -9,10 +9,8 @@ use App\Http\Controllers\LegendController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\URL;
 
-// Redirects to the main page of the website (at the moment, meant for testing).
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+// Home / main page.
+Route::get('/', [PlaceController::class, 'map'])->name('home');
 
 // Collector routes.
 Route::get('/collectors', [CollectorController::class, 'index'])->name('collectors.index');

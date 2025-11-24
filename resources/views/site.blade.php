@@ -42,5 +42,8 @@
         <section id="content">@yield('content')</section>
         <footer></footer>
     </div>
+    <div id="popup">
+        @yield('popup')
+    </div>
 </body>
 </html>

@@ -37,7 +37,7 @@
         </tr>
 
         <tr>
-            <td><b><label for="external_id">{{ __('resources.place_external-identifier') }}: </label></b></td>
+            <td><b><label for="external_id">{{ __('resources.external-link-humma') }}: </label></b></td>
             <td><input type="number" id="external_id" name="external_id" value="{{ old('external_id', $place->external_id) }}"></td>
         </tr>
         </table>

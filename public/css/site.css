@@ -41,8 +41,9 @@ h1 {
 
 table {
     width: 100%;
-    background-color: var(--main-color-light);
+    font-size: 15px; 
 
+    background-color: var(--main-color-light);
     border: solid 1px var(--main-color-dark);
     border-collapse: collapse;
 }
@@ -104,7 +105,7 @@ input, textarea, select {
     background-color: white;
 }
 
-#heading {
+#heading, .heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -136,6 +137,49 @@ input, textarea, select {
     border-radius: 0.5vw;
 }
 
+.popup-link {
+    float: right;
+    font-size: 24px;
+
+    border: none;
+    color: var(--main-color-medium);
+    cursor: pointer;
+}
+
+/* Home page rules. */
+#analysis-map {
+    height: 80vh;
+}
+
+.place-legends {
+    display: none;
+
+    position: absolute;
+    z-index: 1000;
+
+    top: 14%;
+    bottom: 12%;
+    left: 20%;
+    width: 56%;
+    max-height: 74%;
+    overflow: scroll;
+
+    padding: 20px 30px 30px 30px;
+    background-color: white;
+    border: solid 1px;
+    border-color: var(--main-color-medium);
+    border-radius: 1vw;
+}
+
+#place-legend-identifier {
+    width: 15%;
+}
+#place-legend-chapter {
+    width: 35%;
+}
+#place-legend-name {
+    width: 50%;
+}
 
 /* Index page rules. */
 #legend-index-identifier {
