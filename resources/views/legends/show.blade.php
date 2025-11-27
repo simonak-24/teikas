@@ -4,7 +4,12 @@
 
 @section('content')
     <div id="heading">
-        <h2><a class="return-link" href="{{ route('legends.index').'?page='.$page }}">&nbsp;<&nbsp;</a>&nbsp;{{ $legend->title_lv }}</h2>
+        <h2>
+            <a class="resource-link" href="{{ route('legends.index').'?page='.$page }}">{{ __('resources.legend_all') }}</a>
+            &nbsp;>&nbsp;&nbsp;<a class="resource-link" href="{{ route('navigation.chapter', urlencode($legend->chapter_lv)) }}">{{ $legend->chapter_lv }} / {{ $legend->chapter_de }}</a>
+            &nbsp;>&nbsp;&nbsp;<a class="resource-link" href="{{ route('navigation.chapter', [urlencode($legend->chapter_lv), urlencode($legend->title_lv)]) }}">{{ $legend->title_lv }} / {{ $legend->title_de }}</a>
+            &nbsp;>&nbsp;&nbsp;{{ $legend->identifier }}
+        </h2>
 
         @if(Auth::check())
         <form action="{{ route('legends.edit', $legend->identifier) }}">

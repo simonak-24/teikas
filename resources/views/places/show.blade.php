@@ -26,7 +26,10 @@
 
 @section('content')
     <div id="heading">
-        <h2><a class="return-link" href="{{ route('places.index').'?page='.$page }}">&nbsp;<&nbsp;</a>&nbsp;{{ $place->name }}</h2>
+        <h2>
+            <a class="resource-link" href="{{ route('places.index').'?page='.$page }}">{{ __('resources.place_all') }}</a>
+            &nbsp;>&nbsp;&nbsp;{{ $place->name }}
+        </h2>
 
         @if(Auth::check())
         <form action="{{ route('places.edit', $place->id) }}">

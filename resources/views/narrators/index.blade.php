@@ -37,14 +37,29 @@
             @endforeach
         </table>
         <div id="pagination-links">
-            <div id="pagination-forward">
-                <div class="pagination-button"><a href="{{ $narrators->url(1) }}"> << </a></div>
-                <div class="pagination-button"><a href="{{ $narrators->previousPageUrl() }}"> < </a></div>
-            </div>
-            <div id="pagination-back">
-                <div class="pagination-button"><a href="{{ $narrators->nextPageUrl() }}"> > </a></div>
-                <div class="pagination-button"><a href="{{ $narrators->url($narrators->lastPage()) }}"> >> </a></div>
-            </div>
+            <div class="pagination-button"><a href="{{ $narrators->url(1) }}"> << </a></div>
+            <div class="pagination-button"><a href="{{ $narrators->previousPageUrl() }}"> < </a></div>
+            @if($narrators->lastPage() <= 9)
+                @for ($i = 1; $i <= $narrators->lastPage(); $i++)
+                <div class="pagination-button"><a href="{{ $narrators->url($i) }}"> {{ $i }} </a></div>
+                @endfor
+            @else
+                @if($narrators->currentPage() <= 5)
+                    @for ($i = 1; $i <= 9; $i++)
+                    <div class="pagination-button"><a href="{{ $narrators->url($i) }}"> {{ $i }} </a></div>
+                    @endfor
+                @elseif($narrators->currentPage() + 5 > $narrators->lastPage())
+                    @for ($i = $narrators->lastPage() - 9; $i <= $narrators->lastPage(); $i++)
+                    <div class="pagination-button"><a href="{{ $narrators->url($i) }}"> {{ $i }} </a></div>
+                    @endfor
+                @else
+                    @for ($i = $narrators->currentPage() - 4; $i <= $narrators->currentPage() + 4; $i++)
+                    <div class="pagination-button"><a href="{{ $narrators->url($i) }}"> {{ $i }} </a></div>
+                    @endfor
+                @endif
+            @endif
+            <div class="pagination-button"><a href="{{ $narrators->nextPageUrl() }}"> > </a></div>
+            <div class="pagination-button"><a href="{{ $narrators->url($narrators->lastPage()) }}"> >> </a></div>
         </div>
     </div>
 @endsection

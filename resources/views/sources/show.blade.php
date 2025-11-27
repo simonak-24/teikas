@@ -4,7 +4,10 @@
 
 @section('content')
     <div id="heading">
-        <h2><a class="return-link" href="{{ route('sources.index').'?page='.$page }}">&nbsp;<&nbsp;</a>&nbsp;{{ $source->identifier }}</h2>
+        <h2>
+            <a class="resource-link" href="{{ route('sources.index').'?page='.$page }}">{{ __('resources.source_all') }}</a>
+            &nbsp;>&nbsp;&nbsp;{{ $source->identifier }}
+        </h2>
 
         @if(Auth::check())
         <form action="{{ route('sources.edit', $source->id) }}">

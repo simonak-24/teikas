@@ -17,7 +17,11 @@
     <div id="site-container">
         <header>
             <nav id="nav-bar">
-                <a id="home-link" class="nav-link" href="{{ route('home') }}">{{ __('resources.title_webpage') }}</a>
+                <div id="main-links">
+                    <a id="home-link" class="nav-link" href="{{ route('home') }}">{{ __('resources.title_webpage') }}</a>
+                    <span>&nbsp;|&nbsp;</span>
+                    <a id="contents-link" class="nav-link" href="{{ route('navigation.contents') }}">{{ __('resources.title_contents') }}</a>
+                </div>
                 <div id="resource-links">
                     @if(Auth::check())
                     <form id="logout-link" action="{{ route('logout') }}" method="POST">

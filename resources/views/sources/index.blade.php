@@ -34,14 +34,13 @@
             @endforeach
         </table>
         <div id="pagination-links">
-            <div id="pagination-forward">
-                <div class="pagination-button"><a href="{{ $sources->url(1) }}"> << </a></div>
-                <div class="pagination-button"><a href="{{ $sources->previousPageUrl() }}"> < </a></div>
-            </div>
-            <div id="pagination-back">
-                <div class="pagination-button"><a href="{{ $sources->nextPageUrl() }}"> > </a></div>
-                <div class="pagination-button"><a href="{{ $sources->url($sources->lastPage()) }}"> >> </a></div>
-            </div>
+            <div class="pagination-button"><a href="{{ $sources->url(1) }}"> << </a></div>
+            <div class="pagination-button"><a href="{{ $sources->previousPageUrl() }}"> < </a></div>
+            @for ($i = 1; $i <= $sources->lastPage(); $i++)
+                <div class="pagination-button"><a href="{{ $sources->url($i) }}"> {{ $i }} </a></div>
+            @endfor
+            <div class="pagination-button"><a href="{{ $sources->nextPageUrl() }}"> > </a></div>
+            <div class="pagination-button"><a href="{{ $sources->url($sources->lastPage()) }}"> >> </a></div>
         </div>
     </div>
 @endsection

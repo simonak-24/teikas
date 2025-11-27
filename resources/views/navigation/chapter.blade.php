@@ -1,34 +1,27 @@
 @extends('site')
 
-@section('title', __('resources.legend_all'))
+@section('title', __('resources.title_contents'))
 
 @section('content')
-    <div id="heading">
-        <h1>{{ __('resources.legend_all') }}</h1>
-
-        @if(Auth::check())
-        <form action="{{ route('legends.create') }}">
-            <button class="resource-button" type="submit">{{ __('resources.button_create') }}</button>
-        </form>
-        @endif
+<div>
+    <div class="heading">
+        <h2>
+            <a class="resource-link" href="{{ route('navigation.contents') }}">{{ __('resources.title_contents') }}</a>
+            &nbsp;>&nbsp;&nbsp;{{ $legends->first()->chapter_lv }} / {{ $legends->first()->chapter_de }}
+        </h2>
     </div>
-
-    <div id="display-list">
+    <div>
         <table>
             <colgroup>
-                <col span="1" id="legend-index-identifier" />
-                <col span="1" id="legend-index-volume"/>
-                <col span="1" id="legend-index-chapter"/>
-                <col span="1" id="legend-index-title"/>
-                <col span="1" id="legend-index-text"/>
-                <col span="1" id="legend-index-collector"/>
-                <col span="1" id="legend-index-narrator"/>
-                <col span="1" id="legend-index-place"/>
+                <col span="1" id="contents-table-identifier" />
+                <col span="1" id="contents-table-title" />
+                <col span="1" id="contents-chapter-text"/>
+                <col span="1" id="contents-table-collector" />
+                <col span="1" id="contents-table-narrator"/>
+                <col span="1" id="contents-table-place" />
             </colgroup>
             <tr>
                 <th>{{ __('resources.legend_identifier') }}</th>
-                <th>{{ __('resources.legend_volume') }}</th>
-                <th>{{ __('resources.legend_chapter-lv') }}</th>
                 <th>{{ __('resources.legend_title-lv') }}</th>
                 <th>{{ __('resources.legend_preview') }}</th>
                 <th>{{ __('resources.legend_collector') }}</th>
@@ -38,10 +31,8 @@
             @foreach ($legends as $legend)
             <tr>
                 <td><a href="{{ route('legends.show', $legend->identifier) }}">{{ $legend->identifier }}</a></td>
-                <td class="center-cell">{{ $legend->volume }}</td>
-                <td><a href="{{ route('navigation.chapter', urlencode($legend->chapter_lv)) }}">{{ $legend->chapter_lv}}</a></td>
                 <td><a href="{{ route('navigation.subchapter', [urlencode($legend->chapter_lv), urlencode($legend->title_lv)]) }}">{{ $legend->title_lv }}</a></td>
-                <td>{{ Str::limit($legend->text_lv, 100) }}</td>
+                <td>{{ Str::limit($legend->text_lv, 110) }}</td>
                 @if(isset($legend->collector_id))
                     <td><a href="{{ route('collectors.show', $legend->collector_id) }}">{{ $legend->collector->fullname }}</a></td>
                 @else
@@ -60,6 +51,7 @@
             </tr>
             @endforeach
         </table>
+        @if($legends->lastPage() > 1)
         <div id="pagination-links">
             <div class="pagination-button"><a href="{{ $legends->url(1) }}"> << </a></div>
             <div class="pagination-button"><a href="{{ $legends->previousPageUrl() }}"> < </a></div>
@@ -85,5 +77,8 @@
             <div class="pagination-button"><a href="{{ $legends->nextPageUrl() }}"> > </a></div>
             <div class="pagination-button"><a href="{{ $legends->url($legends->lastPage()) }}"> >> </a></div>
         </div>
+        @endif
     </div>
+    <br>
+</div>
 @endsection

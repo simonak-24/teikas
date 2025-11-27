@@ -45,14 +45,29 @@
             @endforeach
         </table>
         <div id="pagination-links">
-            <div id="pagination-forward">
-                <div class="pagination-button"><a href="{{ $places->url(1) }}"> << </a></div>
-                <div class="pagination-button"><a href="{{ $places->previousPageUrl() }}"> < </a></div>
-            </div>
-            <div id="pagination-back">
-                <div class="pagination-button"><a href="{{ $places->nextPageUrl() }}"> > </a></div>
-                <div class="pagination-button"><a href="{{ $places->url($places->lastPage()) }}"> >> </a></div>
-            </div>
+            <div class="pagination-button"><a href="{{ $places->url(1) }}"> << </a></div>
+            <div class="pagination-button"><a href="{{ $places->previousPageUrl() }}"> < </a></div>
+            @if($places->lastPage() <= 9)
+                @for ($i = 1; $i <= $places->lastPage(); $i++)
+                <div class="pagination-button"><a href="{{ $places->url($i) }}"> {{ $i }} </a></div>
+                @endfor
+            @else
+                @if($places->currentPage() <= 5)
+                    @for ($i = 1; $i <= 9; $i++)
+                    <div class="pagination-button"><a href="{{ $places->url($i) }}"> {{ $i }} </a></div>
+                    @endfor
+                @elseif($places->currentPage() + 5 > $places->lastPage())
+                    @for ($i = $places->lastPage() - 9; $i <= $places->lastPage(); $i++)
+                    <div class="pagination-button"><a href="{{ $places->url($i) }}"> {{ $i }} </a></div>
+                    @endfor
+                @else
+                    @for ($i = $places->currentPage() - 4; $i <= $places->currentPage() + 4; $i++)
+                    <div class="pagination-button"><a href="{{ $places->url($i) }}"> {{ $i }} </a></div>
+                    @endfor
+                @endif
+            @endif
+            <div class="pagination-button"><a href="{{ $places->nextPageUrl() }}"> > </a></div>
+            <div class="pagination-button"><a href="{{ $places->url($places->lastPage()) }}"> >> </a></div>
         </div>
     </div>
 @endsection

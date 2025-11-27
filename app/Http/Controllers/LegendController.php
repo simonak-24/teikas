@@ -62,7 +62,7 @@ class LegendController extends Controller
             'chapter_de' => 'max:100|required',
             'volume' => 'max:2|regex:/^[0-9]+$/|required',
             'comments' => 'nullable',
-            'external_identifier' => 'max:7|regex:/^[0-9]+$/|nullable',
+            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
         ]);
 
         $legend = new Legend();
@@ -158,7 +158,7 @@ class LegendController extends Controller
             'chapter_de' => 'max:100|required',
             'volume' => 'max:2|regex:/^[0-9]+$/|required',
             'comments' => 'nullable',
-            'external_identifier' => 'max:7|regex:/^[0-9]+$/|nullable',
+            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
         ]);
 
         $legend->identifier = $request->identifier;
@@ -202,5 +202,51 @@ class LegendController extends Controller
     {
         Legend::where('identifier', $id)->first()->delete();
         return redirect()->route('legends.index');
+    }
+
+    /**
+     * Display full table of contents.
+     */
+    public function contents()
+    {
+        $chapters = [];
+        $subchapters = [];
+        $volumes_query = Legend::select('volume')->distinct('volume')->get();
+        foreach($volumes_query as $volume) {
+            $chapters[$volume['volume']] = [];
+            $subchapters[$volume['volume']] = [];
+        }
+
+        $chapters_query = Legend::select('volume', 'chapter_lv', 'chapter_de', 'title_lv', 'title_de')->distinct('title_lv')->get();
+        foreach($chapters_query as $chapter) {
+            if (!(in_array([$chapter['chapter_lv'], $chapter['chapter_de']], $chapters[$chapter['volume']]))) {
+                array_push($chapters[$chapter['volume']], [$chapter['chapter_lv'], $chapter['chapter_de']]);
+                $subchapters[$chapter['volume']][$chapter['chapter_lv']] = [];
+            }
+            if ($chapter['chapter_lv'] != str_replace('ŗ', 'r', $chapter['title_lv'])) {
+                array_push($subchapters[$chapter['volume']][$chapter['chapter_lv']], [$chapter['title_lv'], $chapter['title_de']]);
+            }
+        }
+        return view('navigation.contents', compact('chapters', 'subchapters'));
+    }
+
+    /**
+     * Display table of contents for a single chapter.
+     */
+    public function chapter(string $chapter)
+    {
+        $chapter_clean = urldecode($chapter);
+        $legends = Legend::where('chapter_lv', $chapter_clean)->paginate(20);
+        return view('navigation.chapter', compact('legends'));
+    }
+
+    /**
+     * Display table of contents for a single subchapter.
+     */
+    public function subchapter(string $chapter, string $subchapter)
+    {
+        $subchapter_clean = urldecode($subchapter);
+        $legends = Legend::where('title_lv', $subchapter_clean)->paginate(20);
+        return view('navigation.subchapter', compact('legends'));
     }
 }

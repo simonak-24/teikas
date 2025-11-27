@@ -4,7 +4,10 @@
 
 @section('content')
     <div id="heading">
-        <h2><a class="return-link" href="{{ route('collectors.index').'?page='.$page }}">&nbsp;<&nbsp;</a>&nbsp;{{ $collector->fullname }}</h2>
+        <h2>
+            <a class="resource-link" href="{{ route('collectors.index').'?page='.$page }}">{{ __('resources.collector_all') }}</a>
+            &nbsp;>&nbsp;&nbsp;{{ $collector->fullname }}
+        </h2>
 
         @if(Auth::check())
         <form action="{{ route('collectors.edit', $collector->id) }}">

@@ -14,13 +14,17 @@ return [
 
     'title_webpage' => 'TEST PAGE',
     'title_home' => 'Home',
+    'title_contents' => 'Table of Contents',
     'title_create' => 'Create New',
     'title_edit' => 'Edit',
+    'title_chapter' => 'Volume :number',
 
     'button_create' => 'Add New',
     'button_save' => 'Save',
     'button_edit' => 'Edit',
     'button_delete' => 'Delete',
+    'button_login' => 'Log In',
+    'button_logout' => 'Log Out',
 
     'collector_all' => 'Collectors',
     'collector_count' => 'Number of Legends Collected',
@@ -61,6 +65,7 @@ return [
     'legend_place' => 'Place',
     'legend_sources' => 'Sources / Other publications',
     'legend_select' => 'Select',
+    'legend_preview' => 'Text Preview',
 
     'external-link-open' => 'Open...',
     'external-link-garamantas' => 'garamantas.lv',
