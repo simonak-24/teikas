@@ -2,6 +2,10 @@
 
 @section('title', __('resources.source_all'))
 
+@section('scripts')
+    <script src="{{ asset('js/hidden-submit.js') }}"></script>  
+@endsection
+
 @section('content')
     <div id="heading">
         <h1>{{ __('resources.source_all') }}</h1>
@@ -25,6 +29,14 @@
                 <th>{{ __('resources.source_title') }}</th>
                 <th>{{ __('resources.source_author') }}</th>
             </tr>
+            <tr>
+                <form action="{{ route('sources.index') }}" method="GET">
+                    <td class="search-cell"><input type="text" id="search-sources-identifier" name="identifier" onblur="submitForm()" value="{{ old('identifier', request()->input('identifier')) }}"></td>
+                    <td class="search-cell"><input type="text" id="search-sources-title" name="title" onblur="submitForm()" value="{{ old('title', request()->input('title')) }}"></td>
+                    <td class="search-cell"><input type="text" id="search-sources-author" name="author" onblur="submitForm()" value="{{ old('author', request()->input('author')) }}"></td>
+                    <button id="search-button" type="submit"></button>
+                </form>
+            </tr>
             @foreach ($sources as $source)
             <tr>
                 <td><a href="{{ route('sources.show', $source->id) }}">{{ $source->identifier }}</a></td>
@@ -33,14 +45,16 @@
             </tr>
             @endforeach
         </table>
+        @if($sources->lastPage() > 1)
         <div id="pagination-links">
-            <div class="pagination-button"><a href="{{ $sources->url(1) }}"> << </a></div>
-            <div class="pagination-button"><a href="{{ $sources->previousPageUrl() }}"> < </a></div>
+            <div class="pagination-button"><a href="{{ $sources->withQueryString()->url(1) }}"> << </a></div>
+            <div class="pagination-button"><a href="{{ $sources->withQueryString()->previousPageUrl() }}"> < </a></div>
             @for ($i = 1; $i <= $sources->lastPage(); $i++)
-                <div class="pagination-button"><a href="{{ $sources->url($i) }}"> {{ $i }} </a></div>
+                <div class="pagination-button"><a href="{{ $sources->withQueryString()->url($i) }}"> {{ $i }} </a></div>
             @endfor
-            <div class="pagination-button"><a href="{{ $sources->nextPageUrl() }}"> > </a></div>
-            <div class="pagination-button"><a href="{{ $sources->url($sources->lastPage()) }}"> >> </a></div>
+            <div class="pagination-button"><a href="{{ $sources->withQueryString()->nextPageUrl() }}"> > </a></div>
+            <div class="pagination-button"><a href="{{ $sources->withQueryString()->url($sources->lastPage()) }}"> >> </a></div>
         </div>
+        @endif
     </div>
 @endsection

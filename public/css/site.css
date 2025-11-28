@@ -280,8 +280,11 @@ li {
 #person-index-fullname {
     width: 76%;
 }
-#person-index-gender, #person-index-count, #person-index-link {
-    width: 8%;
+#person-index-count {
+    width: 10%;
+}
+#person-index-gender, #person-index-link {
+    width: 7%;
 }
 
 #place-index-name {
@@ -331,6 +334,31 @@ li {
 }
 .pagination-button > a:hover, .return-link:hover {
     color: var(--text-color-light);
+}
+
+#search-sources-author {
+    width: 97%;
+}
+#search-title {
+    width: 95%;
+}
+#search-collector, #search-narrator,
+#search-latitude, #search-longitude {
+    width: 93%;
+}
+#search-chapter, #search-place,
+#search-sources-identifier {
+    width: 92%;
+}
+#search-identifier {
+    width: 90%;
+}
+#search-volume {
+    width: 88%;
+}
+
+#search-button {
+    display: none;
 }
 
 /* Resource display page rules. */

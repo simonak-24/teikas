@@ -10,9 +10,19 @@ class SourceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $sources = Source::all()->toQuery()->orderBy('identifier')->paginate(20);
+        $sources = Source::all()->toQuery();
+        if ($request->identifier != '') {
+            $sources = $sources->where('identifier', 'LIKE', '%'.$request->identifier.'%');
+        }
+        if ($request->title != '') {
+            $sources = $sources->where('title', 'LIKE', '%'.$request->title.'%');
+        }
+        if ($request->author != '') {
+            $sources = $sources->where('author', 'LIKE', '%'.$request->author.'%');
+        }
+        $sources = $sources->orderBy('identifier')->paginate(20);
         return view('sources.index', compact('sources'));
     }
 

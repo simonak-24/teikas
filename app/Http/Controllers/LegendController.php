@@ -15,9 +15,37 @@ class LegendController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $legends = Legend::orderBy('identifier')->paginate(20);
+        $legends = Legend::orderBy('identifier');
+        if ($request->identifier != '') {
+            $legends = $legends->where('identifier', 'LIKE', '%'.$request->identifier.'%');
+        }
+        if ($request->volume != '') {
+            $legends = $legends->where('volume', 'LIKE', '%'.$request->volume.'%');
+        }
+        if ($request->chapter != '') {
+            $legends = $legends->where('chapter_lv', 'LIKE', '%'.$request->chapter.'%');
+        }
+        if ($request->title != '') {
+            $legends = $legends->where('title_lv', 'LIKE', '%'.$request->title.'%');
+        }
+        if ($request->text != '') {
+            $legends = $legends->where('text_lv', 'LIKE', '%'.$request->text.'%');
+        }
+        if ($request->collector != '') {
+            $collectors = Collector::orderBy('fullname')->where('fullname', 'LIKE', '%'.$request->collector.'%')->pluck('id');
+            $legends = $legends->whereIn('collector_id', $collectors);
+        }
+        if ($request->narrator != '') {
+            $narrators = Narrator::orderBy('fullname')->where('fullname', 'LIKE', '%'.$request->narrator.'%')->pluck('id');
+            $legends = $legends->whereIn('narrator_id', $narrators);
+        }
+        if ($request->place != '') {
+            $places = Place::orderBy('name')->where('name', 'LIKE', '%'.$request->place.'%')->pluck('id');
+            $legends = $legends->whereIn('place_id', $places);
+        }
+        $legends = $legends->paginate(20);
         return view('legends.index', compact('legends'));
     }
 

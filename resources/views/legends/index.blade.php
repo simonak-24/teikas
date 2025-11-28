@@ -2,6 +2,10 @@
 
 @section('title', __('resources.legend_all'))
 
+@section('scripts')
+    <script src="{{ asset('js/hidden-submit.js') }}"></script>  
+@endsection
+
 @section('content')
     <div id="heading">
         <h1>{{ __('resources.legend_all') }}</h1>
@@ -35,6 +39,19 @@
                 <th>{{ __('resources.legend_narrator') }}</th>
                 <th>{{ __('resources.legend_place') }}</th>
             </tr>
+            <tr>
+                <form action="{{ route('legends.index') }}" method="GET">
+                    <td class="search-cell"><input type="text" id="search-identifier" name="identifier" onblur="submitForm()" value="{{ old('identifier', request()->input('identifier')) }}"></td>
+                    <td class="search-cell"><input type="text" id="search-volume" name="volume" onblur="submitForm()" value="{{ old('volume', request()->input('volume')) }}"></td>
+                    <td class="search-cell"><input type="text" id="search-chapter" name="chapter" onblur="submitForm()" value="{{ old('chapter', request()->input('chapter')) }}"></td>
+                    <td class="search-cell"><input type="text" id="search-title" name="title" onblur="submitForm()" value="{{ old('title', request()->input('title')) }}"></td>
+                    <td class="search-cell"><input type="text" id="search-text" name="text" onblur="submitForm()" value="{{ old('text', request()->input('text')) }}"></td>
+                    <td class="search-cell"><input type="text" id="search-collector" name="collector" onblur="submitForm()" value="{{ old('collector', request()->input('collector')) }}"></td>
+                    <td class="search-cell"><input type="text" id="search-narrator" name="narrator" onblur="submitForm()" value="{{ old('narrator', request()->input('narrator')) }}"></td>
+                    <td class="search-cell"><input type="text" id="search-place" name="place" onblur="submitForm()" value="{{ old('place', request()->input('place')) }}"></td>
+                    <button id="search-button" type="submit"></button>
+                </form>
+            </tr>
             @foreach ($legends as $legend)
             <tr>
                 <td><a href="{{ route('legends.show', $legend->identifier) }}">{{ $legend->identifier }}</a></td>
@@ -60,30 +77,32 @@
             </tr>
             @endforeach
         </table>
+        @if($legends->lastPage() > 1)
         <div id="pagination-links">
-            <div class="pagination-button"><a href="{{ $legends->url(1) }}"> << </a></div>
-            <div class="pagination-button"><a href="{{ $legends->previousPageUrl() }}"> < </a></div>
+            <div class="pagination-button"><a href="{{ $legends->withQueryString()->url(1) }}"> << </a></div>
+            <div class="pagination-button"><a href="{{ $legends->withQueryString()->previousPageUrl() }}"> < </a></div>
             @if($legends->lastPage() <= 9)
                 @for ($i = 1; $i <= $legends->lastPage(); $i++)
-                <div class="pagination-button"><a href="{{ $legends->url($i) }}"> {{ $i }} </a></div>
+                <div class="pagination-button"><a href="{{ $legends->withQueryString()->url($i) }}"> {{ $i }} </a></div>
                 @endfor
             @else
                 @if($legends->currentPage() <= 5)
                     @for ($i = 1; $i <= 9; $i++)
-                    <div class="pagination-button"><a href="{{ $legends->url($i) }}"> {{ $i }} </a></div>
+                    <div class="pagination-button"><a href="{{ $legends->withQueryString()->url($i) }}"> {{ $i }} </a></div>
                     @endfor
                 @elseif($legends->currentPage() + 5 > $legends->lastPage())
                     @for ($i = $legends->lastPage() - 9; $i <= $legends->lastPage(); $i++)
-                    <div class="pagination-button"><a href="{{ $legends->url($i) }}"> {{ $i }} </a></div>
+                    <div class="pagination-button"><a href="{{ $legends->withQueryString()->url($i) }}"> {{ $i }} </a></div>
                     @endfor
                 @else
                     @for ($i = $legends->currentPage() - 4; $i <= $legends->currentPage() + 4; $i++)
-                    <div class="pagination-button"><a href="{{ $legends->url($i) }}"> {{ $i }} </a></div>
+                    <div class="pagination-button"><a href="{{ $legends->withQueryString()->url($i) }}"> {{ $i }} </a></div>
                     @endfor
                 @endif
             @endif
-            <div class="pagination-button"><a href="{{ $legends->nextPageUrl() }}"> > </a></div>
-            <div class="pagination-button"><a href="{{ $legends->url($legends->lastPage()) }}"> >> </a></div>
+            <div class="pagination-button"><a href="{{ $legends->withQueryString()->nextPageUrl() }}"> > </a></div>
+            <div class="pagination-button"><a href="{{ $legends->withQueryString()->url($legends->lastPage()) }}"> >> </a></div>
         </div>
+        @endif
     </div>
 @endsection

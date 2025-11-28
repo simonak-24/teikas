@@ -10,9 +10,24 @@ class CollectorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $collectors = Collector::all()->toQuery()->orderBy('fullname')->paginate(20);
+        $collectors = Collector::all()->toQuery();
+        if ($request->fullname != '') {
+            $collectors = $collectors->where('fullname', 'LIKE', '%'.$request->fullname.'%');
+        }
+        if ($request->gender != '') {
+            if ($request->gender == '?') {
+                $collectors = $collectors->whereNull('gender');
+            } else {
+                $collectors = $collectors->where('gender', $request->gender);
+            }
+        }
+        if ($request->sort != '') {
+            $collectors = $collectors->withCount('legends')->orderBy('legends_count', $request->sort)->paginate(20);
+            return view('collectors.index', compact('collectors'));
+        }
+        $collectors = $collectors->orderBy('fullname')->paginate(20);
         return view('collectors.index', compact('collectors'));
     }
 

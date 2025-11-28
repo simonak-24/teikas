@@ -10,9 +10,13 @@ class PlaceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $places = Place::all()->toQuery()->orderBy('name')->paginate(20);
+        $places = Place::all()->toQuery();
+        if ($request->name != '') {
+            $places = $places->where('name', 'LIKE', '%'.$request->name.'%');
+        }
+        $places = $places->orderBy('name')->paginate(20);
         return view('places.index', compact('places'));
     }
 

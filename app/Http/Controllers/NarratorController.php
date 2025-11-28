@@ -10,9 +10,24 @@ class NarratorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $narrators = Narrator::all()->toQuery()->orderBy('fullname')->paginate(20);
+        $narrators = Narrator::all()->toQuery();
+        if ($request->fullname != '') {
+            $narrators = $narrators->where('fullname', 'LIKE', '%'.$request->fullname.'%');
+        }
+        if ($request->gender != '') {
+            if ($request->gender == '?') {
+                $narrators = $narrators->whereNull('gender');
+            } else {
+                $narrators = $narrators->where('gender', $request->gender);
+            }
+        }
+        if ($request->sort != '') {
+            $narrators = $narrators->withCount('legends')->orderBy('legends_count', $request->sort)->paginate(20);
+            return view('narrators.index', compact('narrators'));
+        }
+        $narrators = $narrators->orderBy('fullname')->paginate(20);
         return view('narrators.index', compact('narrators'));
     }
 

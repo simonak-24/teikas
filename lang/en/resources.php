@@ -26,6 +26,10 @@ return [
     'button_login' => 'Log In',
     'button_logout' => 'Log Out',
 
+    'sort_none' => 'Sort...',
+    'sort_ascending' => 'Ascending',
+    'sort_descending' => 'Descending',
+
     'collector_all' => 'Collectors',
     'collector_count' => 'Number of Legends Collected',
     'narrator_all' => 'Narrators',
@@ -35,6 +39,7 @@ return [
     'person_man' => 'Man',
     'person_woman' => 'Woman',
     'person_unknown' => 'Unknown',
+    'person_all' => 'All',
     'person_unidentified' => 'Unknown',
 
     'source_all' => 'Sources',
