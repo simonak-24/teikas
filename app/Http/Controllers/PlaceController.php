@@ -35,7 +35,7 @@ class PlaceController extends Controller
     public function store(Request $request)
     {
         $request->validate( [
-            'name' => 'max:32|required',
+            'name' => 'required|max:32',
             'latitude' => 'numeric|between:-90,90|nullable',
             'longitude' => 'numeric|between:-180,180|nullable',
             'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
@@ -87,7 +87,7 @@ class PlaceController extends Controller
     {
         $place = Place::findOrfail($id);
         $request->validate([
-            'name' => 'max:32|required',
+            'name' => 'required|max:32',
             'latitude' => 'numeric|between:-90,90|nullable',
             'longitude' => 'numeric|between:-180,180|nullable',
             'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',

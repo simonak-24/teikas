@@ -17,31 +17,30 @@
         </colgroup>
         <tr>
             <td><b><label for="name">{{ __('resources.place_name') }}: </label></b></td>
-            <td><input type="text" id="name" name="name" value="{{ old('name', $place->name) }}"></td>
+            <td><input type="text" id="name" name="name" value="{{ old('name', $place->name) }}">
+            @if($errors->has('name'))<div class="validation-error"> {{ $errors->get('name')[0] }} </div>@endif</td>
         </tr>
 
         <tr>
             <td><b><label for="latitude">{{ __('resources.place_latitude') }}: </label></b></td>
-            <td><input type="number" step="0.000001" id="latitude" name="latitude" value="{{ old('latitude', $place->latitude) }}"></td>
+            <td><input type="number" step="0.000001" id="latitude" name="latitude" value="{{ old('latitude', $place->latitude) }}">
+            @if($errors->has('latitude'))<div class="validation-error"> {{ $errors->get('latitude')[0] }} </div>@endif</td>
         </tr>
 
         <tr>
             <td><b><label for="longitude">{{ __('resources.place_longitude') }}: </label></b></td>
-            <td><input type="number" step="0.000001" id="longitude" name="longitude" value="{{ old('longitude', $place->longitude) }}"></td>
+            <td><input type="number" step="0.000001" id="longitude" name="longitude" value="{{ old('longitude', $place->longitude) }}">
+            @if($errors->has('longitude'))<div class="validation-error"> {{ $errors->get('longitude')[0] }} </div>@endif</td>
         </tr>
 
         <tr>
             <td><b><label for="external_id">{{ __('resources.external-link-humma') }}: </label></b></td>
-            <td><input type="number" id="external_id" name="external_id" value="{{ old('external_id', $place->external_id) }}"></td>
+            <td><input type="text" id="external_id" name="external_id" value="{{ old('external_id', $place->external_id) }}">
+            @if($errors->has('external_id'))<div class="validation-error"> {{ $errors->get('external_id')[0] }} </div>@endif</td>
         </tr>
         </table>
         <br>
         <button class="resource-button" type="submit">{{ __('resources.button_save') }}</button>
     </form>
     <br>
-    <div id="validation-errors">
-        @foreach($errors->all() as $error)
-            {{ $error }}<br>
-        @endforeach
-    </div>
 @endsection

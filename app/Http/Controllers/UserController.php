@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -24,8 +25,8 @@ class UserController extends Controller
     public function authenticate(Request $request) : RedirectResponse
     {
         $credentials = $request->validate([
-            'name' => 'max:32|required',
-            'password' => 'max:32|required',
+            'name' => 'required',
+            'password' => 'required',
         ]);
 
         if (Auth::attempt($credentials)) {
@@ -66,8 +67,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate( [
-            'name' => 'max:32|required|unique:users,name',
-            'password' => 'max:32|confirmed|required',
+            'name' => 'required|max:32|unique:users,name',
+            'password' => [Password::min(8)->max(32)->letters()->numbers()->symbols(), 'confirmed'],
         ]);
 
         $user = new User();

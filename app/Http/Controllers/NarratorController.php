@@ -47,9 +47,9 @@ class NarratorController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'fullname' => 'max:64|required',
+            'fullname' => 'required|max:64',
             'gender' => 'in:M,F,?',
-            'external_identifier' => 'max:7|regex:/^[0-9]+$/|nullable',
+            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
         ]);
 
         $narrator = new Narrator();
@@ -99,9 +99,9 @@ class NarratorController extends Controller
     {
         $narrator = Narrator::findOrfail($id);
         $request->validate([
-            'fullname' => 'max:64|required',
+            'fullname' => 'required|max:64',
             'gender' => 'in:M,F,?',
-            'external_identifier' => 'max:7|regex:/^[0-9]+$/|nullable',
+            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
         ]);
 
         $narrator->fullname = $request->fullname;

@@ -80,15 +80,15 @@ class LegendController extends Controller
     public function store(Request $request)
     {
         $request->validate( [
-            'identifier' => 'max:9|regex:/^[0-9]+$/|required|unique:legends,identifier',
-            'metadata' => 'max:255|required',
-            'title_lv' => 'max:100|required',
-            'title_de' => 'max:100|required',
+            'identifier' => 'required|max:9|regex:/^[0-9]+$/|unique:legends,identifier',
+            'metadata' => 'required|max:255',
+            'title_lv' => 'required|max:100',
+            'title_de' => 'required|max:100',
             'text_lv' => 'required',
             'text_de' => 'required',
-            'chapter_lv' => 'max:100|required',
-            'chapter_de' => 'max:100|required',
-            'volume' => 'max:2|regex:/^[0-9]+$/|required',
+            'chapter_lv' => 'required|max:100',
+            'chapter_de' => 'required|max:100',
+            'volume' => 'required|max:2|regex:/^[0-9]+$/',
             'comments' => 'nullable',
             'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
         ]);
@@ -105,9 +105,9 @@ class LegendController extends Controller
         $legend->volume = $request->volume;
         $legend->comments = $request->comments;
 
-        $legend->collector_id = $request->collector;
-        $legend->narrator_id = $request->narrator;
-        $legend->place_id = $request->place;
+        $legend->collector_id = $request->collector_id;
+        $legend->narrator_id = $request->narrator_id;
+        $legend->place_id = $request->place_id;
         $legend->external_identifier = $request->external_id;
         $legend->save();
 
@@ -176,15 +176,15 @@ class LegendController extends Controller
         $legend = Legend::where('identifier', $id)->first();
 
         $request->validate( [
-            'identifier' => 'max:9|regex:/^[0-9]+$/|required|unique:legends,identifier,'.$legend->id,
-            'metadata' => 'max:255|required',
-            'title_lv' => 'max:100|required',
-            'title_de' => 'max:100|required',
+            'identifier' => 'required|max:9|regex:/^[0-9]+$/|unique:legends,identifier,'.$legend->id,
+            'metadata' => 'required|max:255',
+            'title_lv' => 'required|max:100',
+            'title_de' => 'required|max:100',
             'text_lv' => 'required',
             'text_de' => 'required',
-            'chapter_lv' => 'max:100|required',
-            'chapter_de' => 'max:100|required',
-            'volume' => 'max:2|regex:/^[0-9]+$/|required',
+            'chapter_lv' => 'required|max:100',
+            'chapter_de' => 'required|max:100',
+            'volume' => 'required|max:2|regex:/^[0-9]+$/',
             'comments' => 'nullable',
             'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
         ]);
@@ -200,9 +200,9 @@ class LegendController extends Controller
         $legend->volume = $request->volume;
         $legend->comments = $request->comments;
 
-        $legend->collector_id = $request->collector;
-        $legend->narrator_id = $request->narrator;
-        $legend->place_id = $request->place;
+        $legend->collector_id = $request->collector_id;
+        $legend->narrator_id = $request->narrator_id;
+        $legend->place_id = $request->place_id;
         $legend->external_identifier = $request->external_id;
         $legend->save();
 

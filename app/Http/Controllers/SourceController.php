@@ -41,9 +41,9 @@ class SourceController extends Controller
     public function store(Request $request)
     {
         $request->validate( [
-            'identifier' => 'max:16|required|unique:sources,identifier',
-            'title' => 'max:255|required',
-            'author' => 'max:16|nullable',
+            'identifier' => 'required|max:16|unique:sources,identifier',
+            'title' => 'required|max:255',
+            'author' => 'max:64|nullable',
         ]);
 
         $source = new Source();
@@ -91,8 +91,8 @@ class SourceController extends Controller
     {
         $source = Source::findOrfail($id);
         $request->validate( [
-            'identifier' => 'max:16|required|unique:sources,identifier,'.$id,
-            'title' => 'max:255|required',
+            'identifier' => 'required|max:16|unique:sources,identifier,'.$id,
+            'title' => 'required|max:255',
             'author' => 'max:64|nullable',
         ]);
 

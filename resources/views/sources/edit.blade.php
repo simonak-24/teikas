@@ -19,26 +19,24 @@
         <table>
         <tr>
             <td><b><label for="identifier">{{ __('resources.source_identifier') }}: </label></b></td>
-            <td><input type="text" id="identifier" name="identifier" value="{{ old('identifier', $source->identifier) }}"></td>
+            <td><input type="text" id="identifier" name="identifier" value="{{ old('identifier', $source->identifier) }}">
+            @if($errors->has('identifier'))<div class="validation-error"> {{ $errors->get('identifier')[0] }} </div>@endif</td>
         </tr>
 
         <tr>
             <td><b><label for="title">{{ __('resources.source_title') }}: </label></b></td>
-            <td><input type="text" id="title" name="title" value="{{ old('title', $source->title) }}"></td>
+            <td><input type="text" id="title" name="title" value="{{ old('title', $source->title) }}">
+            @if($errors->has('title'))<div class="validation-error"> {{ $errors->get('title')[0] }} </div>@endif</td>
         </tr>
 
         <tr>
             <td><b><label for="author">{{ __('resources.source_author') }}: </label></b></td>
-            <td><input type="text" id="author" name="author" value="{{ old('author', $source->author) }}"></td>
+            <td><input type="text" id="author" name="author" value="{{ old('author', $source->author) }}">
+            @if($errors->has('author'))<div class="validation-error"> {{ $errors->get('author')[0] }} </div>@endif</td>
         </tr>
         </table>
         <br>
         <button class="resource-button" type="submit">{{ __('resources.button_save') }}</button>
     </form>
     <br>
-    <div id="validation-errors">
-        @foreach($errors->all() as $error)
-            {{ $error }}<br>
-        @endforeach
-    </div>
 @endsection

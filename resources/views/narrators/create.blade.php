@@ -17,7 +17,8 @@
             </colgroup>
             <tr>
                 <td><b><label for="fullname">{{ __('resources.person_fullname') }}: </label></b></td>
-                <td><input type="text" id="fullname" name="fullname" value="{{ old('fullname', $narrator->fullname) }}"></td>
+                <td><input type="text" id="fullname" name="fullname" value="{{ old('fullname', $narrator->fullname) }}">
+                @if($errors->has('fullname'))<div class="validation-error"> {{ $errors->get('fullname')[0] }} </div>@endif</td>
             </tr>
             <tr>
                 <td><b><label for="gender">{{ __('resources.person_gender') }}: </label></b></td>
@@ -25,20 +26,17 @@
                     <option value="M" {{ old('gender', $narrator->gender) == "M" ? 'selected' : '' }}>{{ __('resources.person_man') }}</option>
                     <option value="F" {{ old('gender', $narrator->gender) == "F" ? 'selected' : '' }}>{{ __('resources.person_woman') }}</option>
                     <option value="?" {{ old('gender', $narrator->gender) == "?" ? 'selected' : ''  }}>{{ __('resources.person_unknown') }}</option>
-                </select></td>
+                </select>
+                @if($errors->has('gender'))<div class="validation-error"> {{ $errors->get('gender')[0] }} </div>@endif</td>
             </tr>
             <tr>
                 <td><b><label for="external_id">{{ __('resources.external-link-humma') }}: </label></b></td>
-                <td><input type="number" id="external_id" name="external_id" value="{{ old('external_id', $narrator->external_id) }}"></td>
+                <td><input type="text" id="external_id" name="external_id" value="{{ old('external_id', $narrator->external_id) }}">
+                @if($errors->has('external_id'))<div class="validation-error"> {{ $errors->get('external_id')[0] }} </div>@endif</td>
             </tr>
         </table>
         <br>
         <button class="resource-button" type="submit">{{ __('resources.button_save') }}</button>
     </form>
     <br>
-    <div id="validation-errors">
-        @foreach($errors->all() as $error)
-            {{ $error }}<br>
-        @endforeach
-    </div>
 @endsection
