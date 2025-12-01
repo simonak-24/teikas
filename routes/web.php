@@ -63,7 +63,10 @@ Route::delete('/legend/{identifier}/delete', [LegendController::class, 'destroy'
 // User routes.
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/authenticate', [UserController::class, 'authenticate'])->name('authenticate');
-Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout')->middleware('auth');
+Route::get('/user/list', [UserController::class, 'index'])->name('user.index')->middleware('auth');
+Route::post('/user/store', [UserController::class, 'store'])->name('user.store')->middleware('auth');
+Route::delete('/user/{id}/delete', [UserController::class, 'destroy'])->name('user.destroy')->middleware('auth');
 
 URL::forceScheme('https');
 

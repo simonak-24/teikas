@@ -381,7 +381,7 @@ li {
     color: var(--text-color-light);
 }
 
-/* Login page rules */
+/* User page rules */
 #login-frame {
     display: flex;
     width: 100vw;
@@ -420,4 +420,51 @@ li {
 #login-form > input {
     display: block;
     width: 100%;
+}
+
+#display-grid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+#display-grid > div {
+    margin: 20px 30px;
+    padding: 30px;
+    text-align: center;
+
+    background-color: var(--main-color-light);
+}
+
+#user-create {
+    padding: 10px 15px 15px 15px;
+    background-color: var(--main-color-medium);
+
+    border: solid;
+    border-width: 1px;
+    border-color : var(--main-color-dark);
+    border-radius: 1vw;
+}
+
+.delete-popup {
+    display: none;
+
+    position: absolute;
+    z-index: 1000;
+
+    top: 34%;
+    left: 33%;
+    width: 30%;
+
+    padding: 20px 30px 30px 30px;
+    background-color: white;
+    border: solid 1px;
+    border-color: var(--main-color-medium);
+    border-radius: 1vw;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
 }

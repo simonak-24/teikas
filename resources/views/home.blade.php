@@ -58,7 +58,7 @@
     @foreach($places as $place)
         <div id="place-{{ $place->id }}" class="place-legends">
             <div class="heading">
-                <h3>{{ $place->name }}</h4>
+                <h3>{{ $place->name }}</h3>
                 <a class="popup-link" onclick="closePopup()">X</a>
             </div>
             <br>

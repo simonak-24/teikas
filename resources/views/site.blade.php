@@ -24,6 +24,7 @@
                 </div>
                 <div id="resource-links">
                     @if(Auth::check())
+                    <a class="nav-link" href="{{ route('user.index') }}">{{ __('resources.user_all') }}</a>
                     <form id="logout-link" action="{{ route('logout') }}" method="POST">
                         @csrf
                         @method('POST')

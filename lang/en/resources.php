@@ -23,8 +23,12 @@ return [
     'button_save' => 'Save',
     'button_edit' => 'Edit',
     'button_delete' => 'Delete',
+    'button_return' => 'Return',
     'button_login' => 'Log In',
     'button_logout' => 'Log Out',
+
+    'delete_confirmation' => 'Confirmation',
+    'delete_question' => 'Are you sure you want to delete this :resource?',
 
     'sort_none' => 'Sort...',
     'sort_ascending' => 'Ascending',
@@ -71,6 +75,11 @@ return [
     'legend_sources' => 'Sources / Other publications',
     'legend_select' => 'Select',
     'legend_preview' => 'Text Preview',
+
+    'user_all' => 'Users',
+    'user_name' => 'Username',
+    'user_password' => 'Password',
+    'user_confirmation' => 'Confirm Password',
 
     'external-link-open' => 'Open...',
     'external-link-garamantas' => 'garamantas.lv',
