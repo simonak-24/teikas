@@ -33,7 +33,7 @@
 
         @if(Auth::check())
         <form action="{{ route('places.edit', $place->id) }}">
-            <button class="resource-button" type="submit">{{ __('resources.button_edit') }}</button>
+            <button class="resource-button" type="submit">{{ __('site.button_edit') }}</button>
         </form>
         @endif
     </div>
@@ -60,8 +60,8 @@
             <td><div id="resource-map"></div></td>
         </tr>
         <tr>
-            <th>{{ __('resources.external-link-map') }}</th>
-            <td><div><a href="https://www.google.com/maps/place/{{ $place->latitude }},{{ $place->longitude }}" target="_blank">{{ __('resources.external-link-open') }}</a></div></td>
+            <th>{{ __('site.external-link-map') }}</th>
+            <td><div><a href="https://www.google.com/maps/place/{{ $place->latitude }},{{ $place->longitude }}" target="_blank">{{ __('site.external-link-open') }}</a></div></td>
         </tr>
     </table>
     <br>

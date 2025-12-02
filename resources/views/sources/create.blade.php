@@ -1,10 +1,10 @@
 @extends('site')
 
-@section('title', __('resources.title_create'))
+@section('title', __('site.title_create'))
 
 @section('content')
     <div id="heading">
-        <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('resources.button_create') }}</h2>
+        <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.button_create') }}</h2>
     </div>
 
     <form action="{{ route('sources.store') }}" method="POST">
@@ -30,7 +30,7 @@
         </tr>
         </table>
         <br>
-        <button class="resource-button" type="submit">{{ __('resources.button_save') }}</button>
+        <button class="resource-button" type="submit">{{ __('site.button_save') }}</button>
     </form>
     <br>
 @endsection

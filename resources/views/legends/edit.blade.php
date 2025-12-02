@@ -1,6 +1,6 @@
 @extends('site')
 
-@section('title', __('title_edit'))
+@section('title', __('site.title_edit'))
 
 @section('stylesheets')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -66,12 +66,12 @@
 
 @section('content')
     <div id="heading">
-        <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('resources.title_edit') }}</a></h2>
+        <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.title_edit') }}</a></h2>
 
         <form method="POST" action="{{ route('legends.destroy', $legend->identifier) }}">
             @csrf
             @method('DELETE')
-            <button class="resource-button" type="submit">{{ __('resources.button_delete') }}</button>
+            <button class="resource-button" type="submit">{{ __('site.button_delete') }}</button>
         </form>
     </div>
     
@@ -173,13 +173,13 @@
             </select></td>
         </tr>
         <tr>
-            <td><b><label for="external_id">{{ __('resources.external-link-humma') }}: </label></b></td>
+            <td><b><label for="external_id">{{ __('site.external-link-humma') }}: </label></b></td>
             <td><input type="text" id="external_id" name="external_id" value="{{ old('external_id', $collector->external_id) }}">
             @if($errors->has('external_id'))<div class="validation-error"> {{ $errors->get('external_id')[0] }} </div>@endif</td>
         </tr>
         </table>
         <br>
-        <button class="resource-button" type="submit">{{ __('resources.button_save') }}</button>
+        <button class="resource-button" type="submit">{{ __('site.button_save') }}</button>
     </form>
     <br>
 @endsection

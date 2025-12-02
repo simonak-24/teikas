@@ -12,7 +12,7 @@
 
         @if(Auth::check())
         <form action="{{ route('sources.create') }}">
-            <button class="resource-button" type="submit">{{ __('resources.button_create') }}</button>
+            <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>
         </form>
         @endif
     </div>

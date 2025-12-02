@@ -31,7 +31,7 @@ class UserController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('/');
+            return redirect()->route('home');
         } else {
             return back()->withErrors([
                 'password' => __('validation.credentials'),
@@ -47,9 +47,11 @@ class UserController extends Controller
     public function logout(Request $request) : RedirectResponse
     {
         Auth::logout();
+        $lan = $request->session()->get('locale');
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        $request->session()->put('locale', $lan);
+        return redirect()->route('home');
     }
 
     /**

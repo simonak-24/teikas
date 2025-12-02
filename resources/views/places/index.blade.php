@@ -12,7 +12,7 @@
         
         @if(Auth::check())
         <form action="{{ route('places.create') }}">
-            <button class="resource-button" type="submit">{{ __('resources.button_create') }}</button>
+            <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>
         </form>
         @endif
     </div>
@@ -29,7 +29,7 @@
                 <th>{{ __('resources.place_name') }}</th>
                 <th>{{ __('resources.place_latitude') }}</th>
                 <th>{{ __('resources.place_longitude') }}</th>
-                <th>{{ __('resources.external-link-garamantas') }}</th>
+                <th>{{ __('site.external-link-garamantas') }}</th>
             </tr>
             <tr>
                 <form action="{{ route('places.index') }}" method="GET">
@@ -46,14 +46,14 @@
                     @if($place->latitude != 0)
                     <td class="center-cell">{{ $place->latitude }}</td>
                     @else
-                    <td  class="center-cell">null</td>
+                    <td  class="center-cell"></td>
                     @endif
                     @if($place->latitude != 0)
                     <td class="center-cell">{{ $place->longitude }}</td>
                     @else
-                    <td  class="center-cell">null</td>
+                    <td  class="center-cell"></td>
                     @endif
-                    <td class="center-cell"><a href="">{{ __('resources.external-link-open') }}</a></td>
+                    <td class="center-cell"><a href="">{{ __('site.external-link-open') }}</a></td>
                     </tr>
             @endforeach
         </table>

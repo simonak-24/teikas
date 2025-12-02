@@ -5,6 +5,7 @@
     --text-color-dark: #444444;
     --text-color-light: #666666;
     --text-color-error: #aa0000;
+    --shadow-color-main: #777777;
 }
 
 /* Sitewide rules. */
@@ -95,9 +96,36 @@ input, textarea, select {
     align-items: center;
 }
 
-#nav-bar > *, #home-link, #contents-link,
-#resource-links > * , .pagination-cell > * {
+#home-link, #contents-link, .nav-link, .lan-link,
+.divider, .pagination-cell > * {
     color: white;
+}
+
+#lan-dropdown {
+    position: relative;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+#dropdown-link {
+    padding-bottom: 12px;
+}
+
+#lan-content {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+
+    padding: 10px 12px;
+    background-color: var(--main-color-medium);
+    box-shadow: 0px 4px 16px 0px var(--shadow-color-main);
+}
+
+#lan-dropdown:hover #lan-content {
+    display: block;
+}
+#lan-content:hover {
+    display: block;
 }
 
 #site-container {
@@ -157,6 +185,7 @@ input, textarea, select {
 /* Home page rules. */
 #analysis-map {
     height: 80vh;
+    margin: 15px;
 }
 
 .place-legends {

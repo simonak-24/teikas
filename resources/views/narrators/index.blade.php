@@ -12,7 +12,7 @@
 
         @if(Auth::check())
         <form action="{{ route('narrators.create') }}">
-            <button class="resource-button" type="submit">{{ __('resources.button_create') }}</button>
+            <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>
         </form>
         @endif
     </div>
@@ -29,7 +29,7 @@
                 <th>{{ __('resources.person_fullname') }}</th>
                 <th>{{ __('resources.person_gender') }}</th>
                 <th>{{ __('resources.narrator_count') }}</th>
-                <th>{{ __('resources.external-link-garamantas') }}</th>
+                <th>{{ __('site.external-link-garamantas') }}</th>
             </tr>
             <tr>
                 <form action="{{ route('narrators.index') }}" method="GET">
@@ -41,9 +41,9 @@
                         <option value="?"  {{ old('gender', request()->input('gender')) == "?" ? 'selected' : '' }}>{{ __('resources.person_unknown') }}</option>
                     </select></td>
                     <td class="search-cell"><select id="sort" name="sort" onchange="submitForm()">
-                        <option value="" {{ old('sort', request()->input('sort')) == "" ? 'selected' : '' }}>{{ __('resources.sort_none') }}</option>
-                        <option value="asc"  {{ old('sort', request()->input('sort')) == "asc" ? 'selected' : '' }}>{{ __('resources.sort_ascending') }}</option>
-                        <option value="desc"  {{ old('sort', request()->input('sort')) == "desc" ? 'selected' : '' }}>{{ __('resources.sort_descending') }}</option>
+                        <option value="" {{ old('sort', request()->input('sort')) == "" ? 'selected' : '' }}>{{ __('site.sort_none') }}</option>
+                        <option value="asc"  {{ old('sort', request()->input('sort')) == "asc" ? 'selected' : '' }}>{{ __('site.sort_ascending') }}</option>
+                        <option value="desc"  {{ old('sort', request()->input('sort')) == "desc" ? 'selected' : '' }}>{{ __('site.sort_descending') }}</option>
                     </select></td>
                     <td class="search-cell"></td>
                     <button id="search-button" type="submit"></button>
@@ -54,7 +54,7 @@
                 <td><a href="{{ route('narrators.show', $narrator->id) }}">{{ $narrator->fullname }}</a></td>
                 <td class="center-cell">{{ $narrator->gender }}</td>
                 <td class="center-cell">{{ count($narrator->legends) }}</td>
-                <td class="center-cell"><a href="">{{ __('resources.external-link-open') }}</a></td>
+                <td class="center-cell"><a href="">{{ __('site.external-link-open') }}</a></td>
             </tr>
             @endforeach
         </table>

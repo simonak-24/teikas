@@ -1,19 +1,19 @@
 @extends('site')
 
-@section('title', $legend->title_lv)
+@section('title', $legend->identifier)
 
 @section('content')
     <div id="heading">
         <h2>
             <a class="resource-link" href="{{ route('legends.index').'?page='.$page }}">{{ __('resources.legend_all') }}</a>
             &nbsp;>&nbsp;&nbsp;<a class="resource-link" href="{{ route('navigation.chapter', urlencode($legend->chapter_lv)) }}">{{ $legend->chapter_lv }} / {{ $legend->chapter_de }}</a>
-            &nbsp;>&nbsp;&nbsp;<a class="resource-link" href="{{ route('navigation.chapter', [urlencode($legend->chapter_lv), urlencode($legend->title_lv)]) }}">{{ $legend->title_lv }} / {{ $legend->title_de }}</a>
+            &nbsp;>&nbsp;&nbsp;<a class="resource-link" href="{{ route('navigation.subchapter', [urlencode($legend->chapter_lv), urlencode($legend->title_lv)]) }}">{{ $legend->title_lv }} / {{ $legend->title_de }}</a>
             &nbsp;>&nbsp;&nbsp;{{ $legend->identifier }}
         </h2>
 
         @if(Auth::check())
         <form action="{{ route('legends.edit', $legend->identifier) }}">
-            <button class="resource-button" type="submit">{{ __('resources.button_edit') }}</button>
+            <button class="resource-button" type="submit">{{ __('site.button_edit') }}</button>
         </form>
         @endif
     </div>
@@ -33,7 +33,7 @@
         </tr>
         <tr>
             <th>{{ __('resources.legend_chapter-lv') }}</th>
-            <td>{{ $legend->chapter_lv }}</td>
+            <td>{{ $legend->chapter_lv }}  / {{ $legend->chapter_de }}</td>
         </tr>
         <tr>
             <th>{{ __('resources.legend_title-lv') }}</th>

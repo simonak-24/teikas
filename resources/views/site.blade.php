@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 
 <head>
     <!-- Metadata -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> @yield('title') | {{ __('resources.title_webpage') }}</title>
+    <title> @yield('title') | {{ __('site.title_webpage') }}</title>
     <!-- Stylesheets -->
     <link href="{{ asset('css/site.css') }}" rel="stylesheet">
     @yield('stylesheets')
@@ -18,9 +18,9 @@
         <header>
             <nav id="nav-bar">
                 <div id="main-links">
-                    <a id="home-link" class="nav-link" href="{{ route('home') }}">{{ __('resources.title_webpage') }}</a>
-                    <span>&nbsp;|&nbsp;</span>
-                    <a id="contents-link" class="nav-link" href="{{ route('navigation.contents') }}">{{ __('resources.title_contents') }}</a>
+                    <a id="home-link" class="nav-link" href="{{ route('home') }}">{{ __('site.title_webpage') }}</a>
+                    <span class="divider">&nbsp;|&nbsp;</span>
+                    <a id="contents-link" class="nav-link" href="{{ route('navigation.contents') }}">{{ __('site.title_contents') }}</a>
                 </div>
                 <div id="resource-links">
                     @if(Auth::check())
@@ -28,19 +28,29 @@
                     <form id="logout-link" action="{{ route('logout') }}" method="POST">
                         @csrf
                         @method('POST')
-                        <button class="user-button" type="submit">Log Out</button>
+                        <button class="user-button" type="submit">{{ __('site.button_logout') }}</button>
                     </form>
                     @else
                         <form id="login-link" action="{{ route('login') }}" method="GET">
                         @csrf
-                        <button class="user-button" type="submit">Log In</button>
+                        <button class="user-button" type="submit">{{ __('site.button_login') }}</button>
                     </form>
                     @endif
-                    <a class="nav-link" href="{{ route('legends.index') }}">{{ __('resources.legend_all') }}</a>&nbsp;|&nbsp;
-                    <a class="nav-link" href="{{ route('collectors.index') }}">{{ __('resources.collector_all') }}</a> &nbsp;|&nbsp;
-                    <a class="nav-link" href="{{ route('narrators.index') }}">{{ __('resources.narrator_all') }}</a> &nbsp;|&nbsp;
-                    <a class="nav-link" href="{{ route('places.index') }}">{{ __('resources.place_all') }}</a>&nbsp;|&nbsp;
-                    <a class="nav-link" href="{{ route('sources.index') }}">{{ __('resources.source_all') }}</a>
+                    <a class="nav-link" href="{{ route('legends.index') }}">{{ __('resources.legend_all') }}</a><span class="divider">&nbsp;|&nbsp;</span>
+                    <a class="nav-link" href="{{ route('collectors.index') }}">{{ __('resources.collector_all') }}</a><span class="divider">&nbsp;|&nbsp;</span>
+                    <a class="nav-link" href="{{ route('narrators.index') }}">{{ __('resources.narrator_all') }}</a><span class="divider">&nbsp;|&nbsp;</span>
+                    <a class="nav-link" href="{{ route('places.index') }}">{{ __('resources.place_all') }}</a><span class="divider">&nbsp;|&nbsp;</span>
+                    <a class="nav-link" href="{{ route('sources.index') }}">{{ __('resources.source_all') }}</a><span class="divider">&nbsp;&nbsp;||</span>
+                    <div id="lan-dropdown">
+                        &nbsp;&nbsp;<span id="dropdown-link" class="nav-link" href="">{{ Request::segment(1) }}</span>&nbsp;&nbsp;
+                        <div id="lan-content">
+                            @if (Request::segment(1) == 'lv')
+                            <a class="lan-link" href="{{ route('language.set', 'en') }}">EN</a>
+                            @else
+                            <a class="lan-link" href="{{ route('language.set', 'lv') }}">LV</a>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </nav>
         </header>

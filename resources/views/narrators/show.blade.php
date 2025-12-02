@@ -11,7 +11,7 @@
 
         @if(Auth::check())
         <form action="{{ route('narrators.edit', $narrator->id) }}">
-            <button class="resource-button" type="submit">{{ __('resources.button_edit') }}</button>
+            <button class="resource-button" type="submit">{{ __('site.button_edit') }}</button>
         </form>
         @endif
     </div>
@@ -30,7 +30,7 @@
             <td>{{ $narrator->gender }}</td>
         </tr>
         <tr>
-            <th>{{ __('resources.external-link-humma') }}</th>
+            <th>{{ __('site.external-link-humma') }}</th>
             <td>{{ $narrator->external_identifier }}</td>
         </tr>
     </table>

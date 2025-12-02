@@ -1,6 +1,6 @@
 @extends('site')
 
-@section('title', $source->title)
+@section('title', $source->identifier)
 
 @section('content')
     <div id="heading">
@@ -11,7 +11,7 @@
 
         @if(Auth::check())
         <form action="{{ route('sources.edit', $source->id) }}">
-            <button class="resource-button" type="submit">{{ __('resources.button_edit') }}</button>
+            <button class="resource-button" type="submit">{{ __('site.button_edit') }}</button>
         </form>
         @endif
     </div>

@@ -1,15 +1,15 @@
 @extends('site')
 
-@section('title', __('resources.title_edit'))
+@section('title', __('site.title_edit'))
 
 @section('content')
     <div id="heading">
-        <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('resources.title_edit') }}</h2>
+        <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.title_edit') }}</h2>
 
         <form method="POST" action="{{ route('sources.destroy', $source->id) }}">
             @csrf
             @method('DELETE')
-            <button class="resource-button" type="submit">{{ __('resources.button_delete') }}</button>
+            <button class="resource-button" type="submit">{{ __('site.button_delete') }}</button>
         </form>
     </div>
 
@@ -36,7 +36,7 @@
         </tr>
         </table>
         <br>
-        <button class="resource-button" type="submit">{{ __('resources.button_save') }}</button>
+        <button class="resource-button" type="submit">{{ __('site.button_save') }}</button>
     </form>
     <br>
 @endsection

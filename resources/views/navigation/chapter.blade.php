@@ -1,12 +1,12 @@
 @extends('site')
 
-@section('title', __('resources.title_contents'))
+@section('title', $legends->first()->chapter_lv.' / '.$legends->first()->chapter_de)
 
 @section('content')
 <div>
     <div class="heading">
         <h2>
-            <a class="resource-link" href="{{ route('navigation.contents') }}">{{ __('resources.title_contents') }}</a>
+            <a class="resource-link" href="{{ route('navigation.contents') }}">{{ __('site.title_contents') }}</a>
             &nbsp;>&nbsp;&nbsp;{{ $legends->first()->chapter_lv }} / {{ $legends->first()->chapter_de }}
         </h2>
     </div>

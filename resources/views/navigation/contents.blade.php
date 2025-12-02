@@ -1,6 +1,6 @@
 @extends('site')
 
-@section('title', __('resources.title_contents'))
+@section('title', __('site.title_contents'))
 
 @section('scripts')
     <script>
@@ -19,7 +19,7 @@
 <div id="table-of-contents">
     @foreach($chapters as $number => $volume)
         <div>
-            <h3 class="heading">{{ __('resources.title_chapter', ['number' => $number]) }}</h3>
+            <h3 class="heading">{{ __('site.title_chapter', ['number' => $number]) }}</h3>
             <ul>
                 @foreach($volume as $chapter)
                 <li class="chapter">

@@ -7,32 +7,10 @@ return [
     | Resource Language Lines
     |--------------------------------------------------------------------------
     |
-    | The following language lines are used in views concerning the website's
-    | resources and their manipulation.
+    | The following language lines are used to refer to various resource
+    | attributes.
     |
     */
-
-    'title_webpage' => 'TEST PAGE',
-    'title_home' => 'Home',
-    'title_contents' => 'Table of Contents',
-    'title_create' => 'Create New',
-    'title_edit' => 'Edit',
-    'title_chapter' => 'Volume :number',
-
-    'button_create' => 'Add New',
-    'button_save' => 'Save',
-    'button_edit' => 'Edit',
-    'button_delete' => 'Delete',
-    'button_return' => 'Return',
-    'button_login' => 'Log In',
-    'button_logout' => 'Log Out',
-
-    'delete_confirmation' => 'Confirmation',
-    'delete_question' => 'Are you sure you want to delete this :resource?',
-
-    'sort_none' => 'Sort...',
-    'sort_ascending' => 'Ascending',
-    'sort_descending' => 'Descending',
 
     'collector_all' => 'Collectors',
     'collector_count' => 'Number of Legends Collected',
@@ -80,9 +58,4 @@ return [
     'user_name' => 'Username',
     'user_password' => 'Password',
     'user_confirmation' => 'Confirm Password',
-
-    'external-link-open' => 'Open...',
-    'external-link-garamantas' => 'garamantas.lv',
-    'external-link-humma' => 'humma.lv ID',
-    'external-link-map' => 'Google Maps',
 ];

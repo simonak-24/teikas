@@ -34,7 +34,7 @@
     </div>
 
     <div id="user-create">
-        <h3>{{ __('resources.title_create') }}</h3>
+        <h3>{{ __('site.title_create') }}</h3>
         <form action="{{ route('user.store') }}" method="POST">
             @csrf
             @method('POST')
@@ -57,7 +57,7 @@
             <br>
             @endif
             <br>
-            <button class="resource-button" type="submit">{{ __('resources.button_create') }}</button>
+            <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>
         </form>
     </div>
 @endsection
@@ -66,17 +66,17 @@
 @foreach($users as $user)
     <div id="user-{{ $user->id }}" class="delete-popup">
             <div class="heading">
-                <h3>{{ __('resources.delete_confirmation') }}</h3>
+                <h3>{{ __('site.delete_confirmation') }}</h3>
                 <a class="popup-link" onclick="closePopup()">X</a>
             </div>
-            <p>{{ __('resources.delete_question', ['resource' => 'user']) }}</p>
+            <p>{{ __('site.delete_question', ['resource' => 'user']) }}</p>
             <br>
             <div class="button-group">
-                <form><button class="resource-button" onclick="closePopup()">{{ __('resources.button_return') }}</button></form>
+                <form><button class="resource-button" onclick="closePopup()">{{ __('site.button_return') }}</button></form>
                 <form method="POST" action="{{ route('user.destroy', $user->id) }}">
                     @csrf
                     @method('DELETE')
-                    <button class="resource-button" type="submit">{{ __('resources.button_delete') }}</button>
+                    <button class="resource-button" type="submit">{{ __('site.button_delete') }}</button>
                 </form>
             </div>
         </div>

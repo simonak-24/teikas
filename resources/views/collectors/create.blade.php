@@ -1,10 +1,10 @@
 @extends('site')
 
-@section('title', __('resources.title_create'))
+@section('title', __('site.title_create'))
 
 @section('content')
     <div id="heading">
-        <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('resources.button_create') }}</h2>
+        <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.button_create') }}</h2>
     </div>
     
     <form action="{{ route('collectors.store') }}" method="POST">
@@ -30,13 +30,13 @@
                 @if($errors->has('gender'))<div class="validation-error"> {{ $errors->get('gender')[0] }} </div>@endif</td>
             </tr>
             <tr>
-                <td><b><label for="external_id">{{ __('resources.external-link-humma') }}: </label></b></td>
+                <td><b><label for="external_id">{{ __('site.external-link-humma') }}: </label></b></td>
                 <td><input type="text" id="external_id" name="external_id" value="{{ old('external_id', $collector->external_id) }}">
                 @if($errors->has('external_id'))<div class="validation-error"> {{ $errors->get('external_id')[0] }} </div>@endif</td></td>
             </tr>
         </table>
         <br>
-        <button class="resource-button" type="submit">{{ __('resources.button_save') }}</button>
+        <button class="resource-button" type="submit">{{ __('site.button_save') }}</button>
     </form>
     <br>
 @endsection
