@@ -66,8 +66,11 @@ class CollectorController extends Controller
      */
     public function show(string $id)
     {
-        $collector = Collector::findOrfail($id);
-
+        $collector = Collector::find($id);
+        if (!$collector) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
+        
         $collector_ids = Collector::all()->toQuery()->orderBy('fullname')->pluck('id');
         $i = 0;
         foreach($collector_ids as $collector_id) {
@@ -87,7 +90,10 @@ class CollectorController extends Controller
      */
     public function edit(string $id)
     {
-        $collector = Collector::findOrfail($id);
+        $collector = Collector::find($id);
+        if (!$collector) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
         if ($collector->gender == null) { $collector->gender = '?'; }
         return view('collectors.edit', compact('collector'));
     }
@@ -97,7 +103,11 @@ class CollectorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $collector = Collector::findOrfail($id);
+        $collector = Collector::find($id);
+        if (!$collector) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
+
         $request->validate([
             'fullname' => 'required|max:64',
             'gender' => 'in:M,F,?',
@@ -117,7 +127,11 @@ class CollectorController extends Controller
      */
     public function destroy(string $id)
     {
-        Collector::findOrfail($id)->delete();
+        $collector = Collector::find($id);
+        if (!$collector) {
+            return redirect()->route('collectors.index')->with('not-found', __('resources.none_single'));
+        }
+        $collector->delete();
         return redirect()->route('collectors.index');
     }
 }

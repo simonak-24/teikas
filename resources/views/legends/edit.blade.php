@@ -132,7 +132,7 @@
         <tr>
             <td><b><label for="collector_id">{{ __('resources.legend_collector') }}: </label></b></td>
             <td><select id="collector_id" name="collector_id" class="select2-collector">
-                <option value="" disabled selected></option>
+                <option value="" selected>{{ __('resources.person_unidentified') }}</option>
                 @foreach ($collectors as $collector)
                     <option value="{{ $collector->id }}" {{ $collector->id == old('collector_id', $legend->collector_id) ? 'selected' : '' }}>
                         {{ $collector->fullname }}
@@ -143,7 +143,7 @@
         <tr>
             <td><b><label for="narrator_id">{{ __('resources.legend_narrator') }}: </label></b></td>
             <td><select id="narrator_id" name="narrator_id" class="select2-narrator">
-                <option value="" disabled selected></option>
+                <option value="" selected>{{ __('resources.person_unidentified') }}</option>
                 @foreach ($narrators as $narrator)
                     <option value="{{ $narrator->id }}" {{ $narrator->id == old('narrator_id', $legend->narrator_id) ? 'selected' : '' }}>
                         {{ $narrator->fullname }}
@@ -154,7 +154,7 @@
         <tr>
             <td><b><label for="place_id">{{ __('resources.legend_place') }}: </label></b></td>
             <td><select id="place_id" name="place_id" class="select2-place">
-                <option value="" disabled selected></option>
+                <option value="" selected>{{ __('resources.place_unidentified') }}</option>
                 @foreach ($places as $place)
                     <option value="{{ $place->id }}" {{ $place->id == old('place_id', $legend->place_id) ? 'selected' : '' }}>
                         {{ $place->name }} ({{ $place->latitude }}, {{ $place->longitude }})

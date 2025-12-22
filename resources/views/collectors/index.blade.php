@@ -51,14 +51,15 @@
             </tr>
             @foreach ($collectors as $collector)
             <tr>
-                @if ($collector->fullname != 'Nezināms')    <!-- Vēlāk jānoņem, lai nepastāvētu Nezināms. -->
-                    <td><a href="{{ route('collectors.show', $collector->id) }}">{{ $collector->fullname }}</a></td>
-                    <td class="center-cell">{{ $collector->gender }}</td>
-                    <td class="center-cell">{{ count($collector->legends) }}</td>
-                    <td class="center-cell"><a href="">{{ __('site.external-link-open') }}</a></td>
-                @endif
+                <td><a href="{{ route('collectors.show', $collector->id) }}">{{ $collector->fullname }}</a></td>
+                <td class="center-cell">{{ $collector->gender }}</td>
+                <td class="center-cell">{{ count($collector->legends) }}</td>
+                <td class="center-cell"><a href="">{{ __('site.external-link-open') }}</a></td>
             </tr>
             @endforeach
+            @if($collectors->total() == 0)
+                <tr><td colspan="8">{{ __('resources.none_multiple') }}</td></tr>
+            @endif
         </table>
         @if($collectors->lastPage() > 1)
         <div id="pagination-links">

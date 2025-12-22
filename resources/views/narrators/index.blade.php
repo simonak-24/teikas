@@ -57,6 +57,9 @@
                 <td class="center-cell"><a href="">{{ __('site.external-link-open') }}</a></td>
             </tr>
             @endforeach
+            @if($narrators->total() == 0)
+                <tr><td colspan="8">{{ __('resources.none_multiple') }}</td></tr>
+            @endif
         </table>
         @if($narrators->lastPage() > 1)
         <div id="pagination-links">

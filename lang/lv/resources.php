@@ -58,4 +58,7 @@ return [
     'user_name' => 'Lietotājvārds',
     'user_password' => 'Parole',
     'user_confirmation' => 'Apstiprināt paroli',
+
+    'none_multiple' => 'Nekas netika atrasts.',
+    'none_single' => 'Resurss netika atrasts.',
 ];

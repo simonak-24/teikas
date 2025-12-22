@@ -29,7 +29,7 @@ return [
     'button_logout' => 'Log Out',
 
     'delete_confirmation' => 'Confirmation',
-    'delete_question' => 'Are you sure you want to delete this :resource?',
+    'delete_question' => 'Are you sure you want to delete this unit?',
 
     'sort_none' => 'Sort...',
     'sort_ascending' => 'Ascending',

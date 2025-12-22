@@ -58,4 +58,7 @@ return [
     'user_name' => 'Username',
     'user_password' => 'Password',
     'user_confirmation' => 'Confirm Password',
+
+    'none_multiple' => 'No results found.',
+    'none_single' => 'Resource not found.',
 ];

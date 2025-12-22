@@ -55,7 +55,10 @@ class PlaceController extends Controller
      */
     public function show(string $id)
     {
-        $place = Place::findOrfail($id);
+        $place = Place::find($id);
+        if (!$place) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
 
         $place_ids = Place::all()->toQuery()->orderBy('name')->pluck('id');
         $i = 0;
@@ -76,7 +79,10 @@ class PlaceController extends Controller
      */
     public function edit(string $id)
     {
-        $place = Place::findOrfail($id);
+        $place = Place::find($id);
+        if (!$place) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
         return view('places.edit', compact('place'));
     }
 
@@ -85,7 +91,11 @@ class PlaceController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $place = Place::findOrfail($id);
+        $place = Place::find($id);
+        if (!$place) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
+
         $request->validate([
             'name' => 'required|max:32',
             'latitude' => 'numeric|between:-90,90|nullable',
@@ -106,7 +116,11 @@ class PlaceController extends Controller
      */
     public function destroy(string $id)
     {
-        Place::findOrfail($id)->delete();
+        $place = Place::find($id);
+        if (!$place) {
+            return redirect()->route('places.index')->with('not-found', __('resources.none_single'));
+        }
+        $place->delete();
         return redirect()->route('places.index');
     }
 

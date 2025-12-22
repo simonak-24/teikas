@@ -66,7 +66,10 @@ class NarratorController extends Controller
      */
     public function show(string $id)
     {
-        $narrator = Narrator::findOrfail($id);
+        $narrator = Narrator::find($id);
+        if (!$narrator) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
 
         $narrator_ids = Narrator::all()->toQuery()->orderBy('fullname')->pluck('id');
         $i = 0;
@@ -87,7 +90,10 @@ class NarratorController extends Controller
      */
     public function edit(string $id)
     {
-        $narrator = Narrator::findOrfail($id);
+        $narrator = Narrator::find($id);
+        if (!$narrator) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
         if ($narrator->gender == null) { $narrator->gender = '?'; }
         return view('narrators.edit', compact('narrator'));
     }
@@ -97,7 +103,11 @@ class NarratorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $narrator = Narrator::findOrfail($id);
+        $narrator = Narrator::find($id);
+        if (!$narrator) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
+
         $request->validate([
             'fullname' => 'required|max:64',
             'gender' => 'in:M,F,?',
@@ -117,7 +127,11 @@ class NarratorController extends Controller
      */
     public function destroy(string $id)
     {
-        Narrator::findOrfail($id)->delete();
+        $narrator = Narrator::find($id);
+        if (!$narrator) {
+            return redirect()->route('narrators.index')->with('not-found', __('resources.none_single'));
+        }
+        $narrator->delete();
         return redirect()->route('narrators.index');
     }
 }

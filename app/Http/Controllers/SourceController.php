@@ -59,7 +59,10 @@ class SourceController extends Controller
      */
     public function show(string $id)
     {
-        $source = Source::findOrfail($id);
+        $source = Source::find($id);
+        if (!$source) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
 
         $source_ids = Source::all()->toQuery()->orderBy('identifier')->pluck('id');
         $i = 0;
@@ -80,7 +83,10 @@ class SourceController extends Controller
      */
     public function edit(string $id)
     {
-        $source = Source::findOrfail($id);
+        $source = Source::find($id);
+        if (!$source) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
         return view('sources.edit', compact('source'));
     }
 
@@ -89,7 +95,11 @@ class SourceController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $source = Source::findOrfail($id);
+        $source = Source::find($id);
+        if (!$source) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
+
         $request->validate( [
             'identifier' => 'required|max:16|unique:sources,identifier,'.$id,
             'title' => 'required|max:255',
@@ -108,7 +118,11 @@ class SourceController extends Controller
      */
     public function destroy(string $id)
     {
-        Source::findOrfail($id)->delete();
+        $source = Source::find($id);
+        if (!$source) {
+            return redirect()->route('sources.index')->with('not-found', __('resources.none_single'));
+        }
+        $source->delete();
         return redirect()->route('sources.index');
     }
 }

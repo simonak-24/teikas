@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
         $line = fgetcsv($seed_file);
         while ($line != NULL) {
             if (DB::table('collectors')->where('fullname', $line[6])->doesntExist()) {
-                if ($line[6] != 'null') {
+                if ($line[6] != 'null' && $line[6] != 'Nezināms') {
                     $gender = $line[7];
                     if ($gender == 'null') {
                         $gender = null;

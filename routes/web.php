@@ -74,6 +74,8 @@ Route::prefix('/{lang}')->group(function () {
 // Language route.
 Route::get('language/{lan}', [LanguageController::class, 'set'])->name('language.set');
 
+Route::redirect('/', '/lv');
+
 URL::forceScheme('https');
 
 /*

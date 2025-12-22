@@ -29,7 +29,7 @@ return [
     'button_logout' => 'Atteikties',
 
     'delete_confirmation' => 'Apstiprinājums',
-    'delete_question' => 'Vai jūs tiešām vēlaties dzēst šo :resource?',
+    'delete_question' => 'Vai jūs tiešām vēlaties dzēst šo vienumu?',
 
     'sort_none' => 'Kārtot...',
     'sort_ascending' => 'Augoši',

@@ -44,6 +44,9 @@
                 <td>{{ $source->author }}</td>
             </tr>
             @endforeach
+            @if($sources->total() == 0)
+                <tr><td colspan="8">{{ __('resources.none_multiple') }}</td></tr>
+            @endif
         </table>
         @if($sources->lastPage() > 1)
         <div id="pagination-links">

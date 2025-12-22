@@ -128,6 +128,9 @@ class LegendController extends Controller
     public function show(string $id)
     {
         $legend = Legend::where('identifier', $id)->first();
+        if (!$legend) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
 
         $legend_ids = Legend::all()->sortBy('identifier')->pluck('identifier');
         $i = 0;
@@ -149,6 +152,9 @@ class LegendController extends Controller
     public function edit(string $id)
     {
         $legend = Legend::where('identifier', $id)->first();
+        if (!$legend) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
 
         $collectors = Collector::all()->sortBy('fullname');
         $collectors_search = json_encode($collectors->toArray());
@@ -174,6 +180,9 @@ class LegendController extends Controller
     public function update(Request $request, string $id)
     {
         $legend = Legend::where('identifier', $id)->first();
+        if (!$legend) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
 
         $request->validate( [
             'identifier' => 'required|max:9|regex:/^[0-9]+$/|unique:legends,identifier,'.$legend->id,
@@ -228,7 +237,11 @@ class LegendController extends Controller
      */
     public function destroy(string $id)
     {
-        Legend::where('identifier', $id)->first()->delete();
+        $legend = Legend::where('identifier', $id)->first();
+        if (!$legend) {
+            return redirect()->route('legends.index')->with('not-found', __('resources.none_single'));
+        }
+        $legend->delete();
         return redirect()->route('legends.index');
     }
 
@@ -265,6 +278,9 @@ class LegendController extends Controller
     {
         $chapter_clean = urldecode($chapter);
         $legends = Legend::where('chapter_lv', $chapter_clean)->paginate(20);
+        if ($legends->total() == 0) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
         return view('navigation.chapter', compact('legends'));
     }
 
@@ -275,6 +291,9 @@ class LegendController extends Controller
     {
         $subchapter_clean = urldecode($subchapter);
         $legends = Legend::where('title_lv', $subchapter_clean)->paginate(20);
+        if ($legends->total() == 0) {
+            return redirect()->back()->with('not-found', __('resources.none_single'));
+        }
         return view('navigation.subchapter', compact('legends'));
     }
 }

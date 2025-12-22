@@ -173,6 +173,24 @@ input, textarea, select {
     border-radius: 0.5vw;
 }
 
+#error-message {
+    position: absolute;
+    z-index: 1000;
+
+    top: 45%;
+    left: 40%;
+    width: 20%;
+
+    padding: 20px 30px 30px 30px;
+    background-color: white;
+    border: solid 1px;
+    border-color: var(--main-color-medium);
+    border-radius: 1vw;
+}
+#error-message > div {
+    padding-top: 16px;
+}
+
 .popup-link {
     float: right;
     font-size: 24px;

@@ -10,6 +10,11 @@
     <link href="{{ asset('css/site.css') }}" rel="stylesheet">
     @yield('stylesheets')
     <!-- Scripts -->
+    <script>
+        function closeError() {
+            document.getElementById("error-message").style.display = "none";
+        }
+    </script>
     @yield('scripts')
 </head>
 
@@ -60,5 +65,11 @@
     <div id="popup">
         @yield('popup')
     </div>
+    @if(Session::has('not-found'))
+    <div id="error-message">
+        <a class="popup-link" onclick="closeError()">X</a>
+        <div>{{ Session::get('not-found') }}<div>
+    </div>
+    @endif
 </body>
 </html>

@@ -56,6 +56,9 @@
                     <td class="center-cell"><a href="">{{ __('site.external-link-open') }}</a></td>
                     </tr>
             @endforeach
+            @if($places->total() == 0)
+                <tr><td colspan="8">{{ __('resources.none_multiple') }}</td></tr>
+            @endif
         </table>
         @if($places->lastPage() > 1)
         <div id="pagination-links">

@@ -3,7 +3,7 @@
 @section('title', __('resources.legend_all'))
 
 @section('scripts')
-    <script src="{{ asset('js/hidden-submit.js') }}"></script>  
+    <script src="{{ asset('js/hidden-submit.js') }}"></script>
 @endsection
 
 @section('content')
@@ -76,6 +76,9 @@
                 @endif
             </tr>
             @endforeach
+            @if($legends->total() == 0)
+                <tr><td colspan="8">{{ __('resources.none_multiple') }}</td></tr>
+            @endif
         </table>
         @if($legends->lastPage() > 1)
         <div id="pagination-links">
