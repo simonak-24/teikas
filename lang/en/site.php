@@ -29,7 +29,9 @@ return [
     'button_logout' => 'Log Out',
 
     'delete_confirmation' => 'Confirmation',
-    'delete_question' => 'Are you sure you want to delete this unit?',
+    'delete_question' => 'Are you sure you want to delete this item?',
+    'delete_user-prompt' => "To confirm, enter the selected user's password:",
+    'delete_user-fail' => "To confirm, enter the selected user's password:",
 
     'sort_none' => 'Sort...',
     'sort_ascending' => 'Ascending',

@@ -166,7 +166,8 @@ return [
     'ulid' => 'The :attribute field must be a valid ULID.',
     'uuid' => 'The :attribute field must be a valid UUID.',
 
-    'credentials' => 'User does not exist.', 
+    'credentials' => 'Dotais lietotājvārds / parole netika atrasti.',
+    'delete' => 'Dotā parole ir nepareiza.',
 
     /*
     |--------------------------------------------------------------------------

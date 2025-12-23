@@ -6,19 +6,30 @@
     <script src="{{ asset('js/hidden-submit.js') }}"></script>
     <script>
         var openPopupId = -1;
+        var errors = <?= $errors ?? "" ?>;
+        if(errors.length != 0) {
+            popupKey = Object.keys(errors);
+            openPopupId = parseInt(popupKey[0].substring(5));
+        }
 
         function openPopup(id) {
             if (openPopupId > -1) {
                 document.getElementById("user-" + openPopupId).style.display = "none";
             }
             document.getElementById("user-" + id).style.display = "block";
-            openPopupId = id
+            openPopupId = id;
         }
 
         function closePopup() {
             document.getElementById("user-" + openPopupId).style.display = "none";
             openPopupId = -1;
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (openPopupId != -1) {
+                openPopup(openPopupId);
+            }
+        });
     </script>
 @endsection
 
@@ -65,20 +76,27 @@
 @section('popup')
 @foreach($users as $user)
     <div id="user-{{ $user->id }}" class="delete-popup">
-            <div class="heading">
-                <h3>{{ __('site.delete_confirmation') }}</h3>
-                <a class="popup-link" onclick="closePopup()">X</a>
-            </div>
-            <p>{{ __('site.delete_question', ['resource' => 'user']) }}</p>
-            <br>
-            <div class="button-group">
-                <form><button class="resource-button" onclick="closePopup()">{{ __('site.button_return') }}</button></form>
-                <form method="POST" action="{{ route('user.destroy', $user->id) }}">
-                    @csrf
-                    @method('DELETE')
-                    <button class="resource-button" type="submit">{{ __('site.button_delete') }}</button>
-                </form>
-            </div>
+        <div class="heading">
+            <h3>{{ __('site.delete_confirmation') }}</h3>
+            <a class="popup-link" onclick="closePopup()">X</a>
         </div>
+        <p>{{ __('site.delete_question') }}</p>
+        <form id="user-delete-{{ $user->id }}" method="POST" action="{{ route('user.destroy', $user->id) }}">
+            @csrf
+            @method('DELETE')
+            <label for="delete-{{ $user->id }}">{{ __('site.delete_user') }}</label>
+            <input type="password" id= "delete-{{ $user->id }}" name="delete">
+            @if($errors->has('user-'.$user->id))
+            <div class="validation-error"> {{ $errors->get('user-'.$user->id)[0] }}</div>
+            @else
+            <br>
+            @endif
+        </form>
+        <br><br>
+        <div class="button-group">
+            <button class="resource-button" onclick="closePopup()">{{ __('site.button_return') }}</button>
+            <button form="user-delete-{{ $user->id }}" class="resource-button" type="submit">{{ __('site.button_delete') }}</button>
+        </div>
+    </div>
 @endforeach
 @endsection

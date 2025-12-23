@@ -84,13 +84,20 @@ class UserController extends Controller
     /**
      * Remove the specified user from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
         $user = User::find($id);
         if (!$user) {
             return redirect()->back()->with('not-found', __('resources.none_single'));
         }
-        $user->delete();
-        return redirect()->route('user.index');
+
+        if (Hash::check($request->delete, $user->password)) {
+            $user->delete();
+            return redirect()->route('user.index');
+        } else {
+            return back()->withErrors([
+                'user-'.$user->id => __('validation.delete'),
+            ]);
+        }
     }
 }

@@ -30,6 +30,7 @@ return [
 
     'delete_confirmation' => 'Apstiprinājums',
     'delete_question' => 'Vai jūs tiešām vēlaties dzēst šo vienumu?',
+    'delete_user' => "Lai apstiprinātu, ievadiet izvēlētā lietotāja paroli:",
 
     'sort_none' => 'Kārtot...',
     'sort_ascending' => 'Augoši',

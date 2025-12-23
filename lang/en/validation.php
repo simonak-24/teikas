@@ -166,7 +166,8 @@ return [
     'ulid' => 'The :attribute field must be a valid ULID.',
     'uuid' => 'The :attribute field must be a valid UUID.',
 
-    'credentials' => 'User does not exist.', 
+    'credentials' => 'These credentials do not match our records.',
+    'delete' => 'The provided password is incorrect.',
 
     /*
     |--------------------------------------------------------------------------

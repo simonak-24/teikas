@@ -9,6 +9,7 @@
 @section('scripts')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ asset('js/delete-popup.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             var collectors_search = <?=($collectors_search)?>;
@@ -67,12 +68,7 @@
 @section('content')
     <div id="heading">
         <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.title_edit') }}</a></h2>
-
-        <form method="POST" action="{{ route('legends.destroy', $legend->identifier) }}">
-            @csrf
-            @method('DELETE')
-            <button class="resource-button" type="submit">{{ __('site.button_delete') }}</button>
-        </form>
+        <button class="resource-button" onclick="openDeletePopup()">{{ __('site.button_delete') }}</button>
     </div>
     
     <form action="{{ route('legends.update', $legend->identifier) }}" method="POST">
@@ -182,4 +178,23 @@
         <button class="resource-button" type="submit">{{ __('site.button_save') }}</button>
     </form>
     <br>
+@endsection
+
+@section('popup')
+    <div id="resource-delete" class="delete-popup">
+        <div class="heading">
+            <h3>{{ __('site.delete_confirmation') }}</h3>
+            <a class="popup-link" onclick="closeDeletePopup()">X</a>
+        </div>
+        <p>{{ __('site.delete_question') }}</p>
+        <form id="delete-form" method="POST" action="{{ route('legends.destroy', $legend->identifier) }}">
+            @csrf
+            @method('DELETE')
+        </form>
+        <br>
+        <div class="button-group">
+            <button class="resource-button" onclick="closeDeletePopup()">{{ __('site.button_return') }}</button>
+            <button form="delete-form" class="resource-button" type="submit">{{ __('site.button_delete') }}</button>
+        </div>
+    </div>
 @endsection
