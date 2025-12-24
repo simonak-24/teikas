@@ -201,7 +201,7 @@ input, textarea, select {
 }
 
 /* Home page rules. */
-#analysis-map {
+#home-map {
     height: 80vh;
     margin: 15px;
 }
@@ -234,6 +234,14 @@ input, textarea, select {
 }
 #place-legend-name {
     width: 50%;
+}
+
+#home-select {
+    display: flex;
+}
+#home-select > * {
+    padding: 4px;
+    margin: auto;
 }
 
 /* Table of contents rules. */

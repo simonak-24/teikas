@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Place;
+use App\Models\Legend;
+use Illuminate\Database\Eloquent\Builder;
 
 class PlaceController extends Controller
 {
@@ -128,14 +130,42 @@ class PlaceController extends Controller
      * Show reasource in map view.
      */
     public function map(Request $request) {
-        $places = Place::all();
+        // $places = Place::all();
         $php_coordinates = array();
+        $chapters_titles = [];
+        $titles_selected = [];
+
+        if (isset($request->titles)) {
+            foreach($request->titles as $title){
+                array_push($titles_selected, $title);
+            }
+            $places = Place::whereHas('legends', function(Builder $query) use ($titles_selected) {
+                $query->whereIn('title_lv', $titles_selected);
+            })->with(['legends' => function($query) use ($titles_selected) {
+                    $query->whereIn('title_lv', $titles_selected);
+                }
+            ])->get();
+        } else {
+            $places = Place::all();
+        }
+
         foreach ($places as $place) {
             if ($place->latitude != 0 && $place->latitude != 0) {
                 $php_coordinates[$place->id] = [$place->latitude, $place->longitude];
             }
         }
+
+        $titles_query = Legend::select('chapter_lv', 'chapter_de', 'title_lv', 'title_de')->distinct('title_lv')->get();
+        foreach($titles_query as $title) {
+            if (isset($chapters_titles[$title['chapter_lv'].' / '.$title['chapter_de']])) {
+                array_push($chapters_titles[$title['chapter_lv'].' / '.$title['chapter_de']], [$title['title_lv'], $title['title_de']]);
+            } else {
+                $chapters_titles[$title['chapter_lv'].' / '.$title['chapter_de']] = [[$title['title_lv'], $title['title_de']]];
+            }
+            
+        }
+        
         $coordinates = json_encode($php_coordinates);
-        return view('home', compact('places', 'coordinates'));
+        return view('home', compact('places', 'coordinates', 'chapters_titles', 'titles_selected'));
     }
 }

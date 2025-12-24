@@ -27,6 +27,7 @@ return [
     'button_return' => 'Return',
     'button_login' => 'Log In',
     'button_logout' => 'Log Out',
+    'button_filter' => 'Filter',
 
     'delete_confirmation' => 'Confirmation',
     'delete_question' => 'Are you sure you want to delete this item?',

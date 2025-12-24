@@ -53,7 +53,6 @@
             });
 
             var selected = <?=json_encode(old('sources', ($sources_selected)))?>;
-            console.log(<?=json_encode(old('sources', ($sources_selected)))?>);
             var selected_data = [];
             for (var key in selected) {
                 var obj = selected[key];

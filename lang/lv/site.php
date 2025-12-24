@@ -27,6 +27,7 @@ return [
     'button_return' => 'Atpakaļ',
     'button_login' => 'Pieteikties',
     'button_logout' => 'Atteikties',
+    'button_filter' => 'Atlasīt',
 
     'delete_confirmation' => 'Apstiprinājums',
     'delete_question' => 'Vai jūs tiešām vēlaties dzēst šo vienumu?',
