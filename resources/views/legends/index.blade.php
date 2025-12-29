@@ -10,11 +10,7 @@
     <div id="heading">
         <h1>{{ __('resources.legend_all') }}</h1>
 
-        @if(Auth::check())
-        <form action="{{ route('legends.create') }}">
-            <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>
-        </form>
-        @endif
+        <button class="resource-button" name="format" value="CSV" type="submit" form="search-form">{{ __('site.button_csv') }}</button>
     </div>
 
     <div id="display-list">
@@ -40,7 +36,7 @@
                 <th>{{ __('resources.legend_place') }}</th>
             </tr>
             <tr>
-                <form action="{{ route('legends.index') }}" method="GET">
+                <form id="search-form" action="{{ route('legends.index') }}" method="GET">
                     <td class="search-cell"><input type="text" id="search-identifier" name="identifier" onblur="submitForm()" value="{{ old('identifier', request()->input('identifier')) }}"></td>
                     <td class="search-cell"><input type="text" id="search-volume" name="volume" onblur="submitForm()" value="{{ old('volume', request()->input('volume')) }}"></td>
                     <td class="search-cell"><input type="text" id="search-chapter" name="chapter" onblur="submitForm()" value="{{ old('chapter', request()->input('chapter')) }}"></td>
@@ -80,6 +76,8 @@
                 <tr><td colspan="8">{{ __('resources.none_multiple') }}</td></tr>
             @endif
         </table>
+
+        <div id="pagination-section">
         @if($legends->lastPage() > 1)
         <div id="pagination-links">
             <div class="pagination-button"><a href="{{ $legends->withQueryString()->url(1) }}"> << </a></div>
@@ -107,5 +105,12 @@
             <div class="pagination-button"><a href="{{ $legends->withQueryString()->url($legends->lastPage()) }}"> >> </a></div>
         </div>
         @endif
+
+        @if(Auth::check())
+        <form action="{{ route('legends.create') }}">
+            <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>
+        </form>
+        @endif
+        </div>
     </div>
 @endsection

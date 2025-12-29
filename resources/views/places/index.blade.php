@@ -10,11 +10,7 @@
     <div id="heading">
         <h1>{{ __('resources.place_all') }}</h1>
         
-        @if(Auth::check())
-        <form action="{{ route('places.create') }}">
-            <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>
-        </form>
-        @endif
+        <button class="resource-button" name="format" value="CSV" type="submit" form="search-form">{{ __('site.button_csv') }}</button>
     </div>
 
     <div id="display-list">
@@ -32,7 +28,7 @@
                 <th>{{ __('site.external-link-garamantas') }}</th>
             </tr>
             <tr>
-                <form action="{{ route('places.index') }}" method="GET">
+                <form id="search-form" action="{{ route('places.index') }}" method="GET">
                     <td class="search-cell"><input type="text" id="search-name" name="name" onblur="submitForm()" value="{{ old('name', request()->input('name')) }}"></td>
                     <td></td>
                     <td></td>
@@ -60,6 +56,8 @@
                 <tr><td colspan="8">{{ __('resources.none_multiple') }}</td></tr>
             @endif
         </table>
+
+        <div id="pagination-section">
         @if($places->lastPage() > 1)
         <div id="pagination-links">
             <div class="pagination-button"><a href="{{ $places->withQueryString()->url(1) }}"> << </a></div>
@@ -87,5 +85,12 @@
             <div class="pagination-button"><a href="{{ $places->withQueryString()->url($places->lastPage()) }}"> >> </a></div>
         </div>
         @endif
+
+        @if(Auth::check())
+        <form action="{{ route('places.create') }}">
+            <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>
+        </form>
+        @endif
+        </div>
     </div>
 @endsection

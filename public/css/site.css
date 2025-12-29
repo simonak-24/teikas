@@ -90,7 +90,7 @@ input, textarea, select {
     font-size: 24px;
 }
 
-#nav-bar, #resource-links {
+#nav-bar, #resource-links, #pagination-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -164,7 +164,7 @@ input, textarea, select {
 }
 
 .resource-button, .user-button {
-    width: 5em;
+    width: 8em;
     height: 2em;
 
     border: solid;
@@ -362,6 +362,11 @@ li {
     width: 25%;
 }
 
+#pagination-section {
+    width: 100%;
+    padding-top: 8px;
+}
+
 #pagination-links, #pagination-forward, #pagination-back {
     display: flex;
 }
@@ -389,6 +394,10 @@ li {
 }
 .pagination-button > a:hover, .return-link:hover {
     color: var(--text-color-light);
+}
+
+#pagination-section > form {
+    float: right;
 }
 
 #search-sources-author {

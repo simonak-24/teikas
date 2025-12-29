@@ -10,11 +10,7 @@
     <div id="heading">
         <h1>{{ __('resources.collector_all') }}</h1>
 
-        @if(Auth::check())
-        <form action="{{ route('collectors.create') }}">
-            <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>
-        </form>
-        @endif
+        <button class="resource-button" name="format" value="CSV" type="submit" form="search-form">{{ __('site.button_csv') }}</button>
     </div>
 
     <div id="display-list">
@@ -32,7 +28,7 @@
                 <th>{{ __('site.external-link-garamantas') }}</th>
             </tr>
             <tr>
-                <form action="{{ route('collectors.index') }}" method="GET">
+                <form id="search-form" action="{{ route('collectors.index') }}" method="GET">
                     <td class="search-cell"><input type="fullname" id="search-fullname" name="fullname" onblur="submitForm()" value="{{ old('fullname', request()->input('fullname')) }}"></td>
                     <td class="search-cell"><select id="gender" name="gender" onchange="submitForm()">
                         <option value="" {{ old('gender', request()->input('gender')) == "" ? 'selected' : '' }}>{{ __('resources.person_all') }}</option>
@@ -61,6 +57,8 @@
                 <tr><td colspan="8">{{ __('resources.none_multiple') }}</td></tr>
             @endif
         </table>
+
+        <div id="pagination-section">
         @if($collectors->lastPage() > 1)
         <div id="pagination-links">
             <div class="pagination-button"><a href="{{ $collectors->withQueryString()->url(1) }}"> << </a></div>
@@ -88,5 +86,12 @@
             <div class="pagination-button"><a href="{{ $collectors->withQueryString()->url($collectors->lastPage()) }}"> >> </a></div>
         </div>
         @endif
+        
+        @if(Auth::check())
+        <form action="{{ route('collectors.create') }}">
+            <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>
+        </form>
+        @endif
+        </div>
     </div>
 @endsection

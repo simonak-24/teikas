@@ -28,6 +28,7 @@ return [
     'button_login' => 'Log In',
     'button_logout' => 'Log Out',
     'button_filter' => 'Filter',
+    'button_csv' => 'Download CSV',
 
     'delete_confirmation' => 'Confirmation',
     'delete_question' => 'Are you sure you want to delete this item?',

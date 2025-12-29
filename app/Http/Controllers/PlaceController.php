@@ -18,7 +18,40 @@ class PlaceController extends Controller
         if ($request->name != '') {
             $places = $places->where('name', 'LIKE', '%'.$request->name.'%');
         }
-        $places = $places->orderBy('name')->paginate(20);
+        $places = $places->orderBy('name');
+
+        if (isset($request->format)) {
+            $filename = 'places_'.strval(rand()).'.csv';        // To prevent errors when two users attempt to download a file at the same time,
+                                                                // the files are given randomized names, preventing a colision.
+            $columns = [__('resources.place_name'), __('resources.place_latitude'), __('resources.place_longitude')];
+            $query = [$request->name];
+            
+            $file = fopen($filename, "w");
+            fputcsv($file, $columns);
+            fputcsv($file, $query);
+            $places_csv = $places->get();
+            foreach($places_csv as $place) {
+                if ($place->latitude != 0) {
+                    $latitude = $place->latitude; 
+                } else {
+                    $latitude = 'null';
+                }
+                if ($place->longitude != 0) {
+                    $longitude = $place->longitude; 
+                } else {
+                    $longitude = 'null';
+                }
+                fputcsv($file, [$place->name, $latitude, $longitude]);
+            }
+            fclose($file);
+
+            $headers = [
+                'Content-Type' => 'text/csv',
+            ];
+            return response()->download($filename, 'places_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
+        }
+
+        $places = $places->paginate(20);
         return view('places.index', compact('places'));
     }
 

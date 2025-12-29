@@ -10,11 +10,7 @@
     <div id="heading">
         <h1>{{ __('resources.source_all') }}</h1>
 
-        @if(Auth::check())
-        <form action="{{ route('sources.create') }}">
-            <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>
-        </form>
-        @endif
+        <button class="resource-button" name="format" value="CSV" type="submit" form="search-form">{{ __('site.button_csv') }}</button>
     </div>
 
     <div id="display-list">
@@ -30,7 +26,7 @@
                 <th>{{ __('resources.source_author') }}</th>
             </tr>
             <tr>
-                <form action="{{ route('sources.index') }}" method="GET">
+                <form id="search-form" action="{{ route('sources.index') }}" method="GET">
                     <td class="search-cell"><input type="text" id="search-sources-identifier" name="identifier" onblur="submitForm()" value="{{ old('identifier', request()->input('identifier')) }}"></td>
                     <td class="search-cell"><input type="text" id="search-sources-title" name="title" onblur="submitForm()" value="{{ old('title', request()->input('title')) }}"></td>
                     <td class="search-cell"><input type="text" id="search-sources-author" name="author" onblur="submitForm()" value="{{ old('author', request()->input('author')) }}"></td>
@@ -48,6 +44,8 @@
                 <tr><td colspan="8">{{ __('resources.none_multiple') }}</td></tr>
             @endif
         </table>
+
+        <div id="pagination-section">
         @if($sources->lastPage() > 1)
         <div id="pagination-links">
             <div class="pagination-button"><a href="{{ $sources->withQueryString()->url(1) }}"> << </a></div>
@@ -59,5 +57,11 @@
             <div class="pagination-button"><a href="{{ $sources->withQueryString()->url($sources->lastPage()) }}"> >> </a></div>
         </div>
         @endif
+        @if(Auth::check())
+        <form action="{{ route('sources.create') }}">
+            <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>
+        </form>
+        @endif
+        </div>
     </div>
 @endsection

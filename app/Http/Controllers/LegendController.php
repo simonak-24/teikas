@@ -45,6 +45,43 @@ class LegendController extends Controller
             $places = Place::orderBy('name')->where('name', 'LIKE', '%'.$request->place.'%')->pluck('id');
             $legends = $legends->whereIn('place_id', $places);
         }
+
+        if (isset($request->format)) {
+            $filename = 'legends_'.strval(rand()).'.csv';       // To prevent errors when two users attempt to download a file at the same time,
+                                                                // the files are given randomized names, preventing a colision.
+            $columns = [__('resources.legend_identifier'), __('resources.legend_volume'), __('resources.legend_chapter-lv'), __('resources.legend_title-lv'), __('resources.legend_preview'), __('resources.legend_collector'), __('resources.legend_narrator'), __('resources.legend_place')];
+            $query = [$request->identifier, $request->volume, $request->chapter, $request->title, $request->text, $request->collector, $request->narrator, $request->place];
+            
+            $file = fopen($filename, "w");
+            fputcsv($file, $columns);
+            fputcsv($file, $query);
+            $legends_csv = $legends->get();
+            foreach($legends_csv as $legend) {
+                if (isset($legend->collector_id)) {
+                    $collector = $legend->collector->fullname; 
+                } else {
+                    $collector = 'null';
+                }
+                if (isset($legend->narrator_id)) {
+                    $narrator = $legend->narrator->fullname; 
+                } else {
+                    $narrator = 'null';
+                }
+                if (isset($legend->place_id)) {
+                    $place = $legend->place->name; 
+                } else {
+                    $place = 'null';
+                }
+                fputcsv($file, [$legend->identifier, $legend->volume, $legend->chapter_lv, $legend->title_lv, $legend->text_lv, $collector, $narrator, $place]);
+            }
+            fclose($file);
+
+            $headers = [
+                'Content-Type' => 'text/csv',
+            ];
+            return response()->download($filename, 'legends_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
+        }
+
         $legends = $legends->paginate(20);
         return view('legends.index', compact('legends'));
     }

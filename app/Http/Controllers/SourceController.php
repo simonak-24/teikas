@@ -22,7 +22,30 @@ class SourceController extends Controller
         if ($request->author != '') {
             $sources = $sources->where('author', 'LIKE', '%'.$request->author.'%');
         }
-        $sources = $sources->orderBy('identifier')->paginate(20);
+        $sources = $sources->orderBy('identifier');
+
+        if (isset($request->format)) {
+            $filename = 'sources_'.strval(rand()).'.csv';           // To prevent errors when two users attempt to download a file at the same time,
+                                                                    // the files are given randomized names, preventing a colision.
+            $columns = [__('resources.source_identifier'), __('resources.source_title'), __('resources.source_author')];
+            $query = [$request->identifier, $request->title, $request->author];
+            
+            $file = fopen($filename, "w");
+            fputcsv($file, $columns);
+            fputcsv($file, $query);
+            $sources_csv = $sources->get();
+            foreach($sources_csv as $source) {
+                fputcsv($file, [$source->identifier, $source->title, $source->author]);
+            }
+            fclose($file);
+
+            $headers = [
+                'Content-Type' => 'text/csv',
+            ];
+            return response()->download($filename, 'sources_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
+        }
+
+        $sources = $sources->paginate(20);
         return view('sources.index', compact('sources'));
     }
 

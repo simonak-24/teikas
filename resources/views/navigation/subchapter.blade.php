@@ -36,7 +36,7 @@
                     <td>{{ __('resources.person_unidentified') }}</td>
                 @endif
                 @if(isset($legend->narrator_id))
-                    <td><a href="{{ route('narrators.show', $legend->collector_id)}}">{{ $legend->narrator->fullname }}</a></td>
+                    <td><a href="{{ route('narrators.show', $legend->narrator_id)}}">{{ $legend->narrator->fullname }}</a></td>
                 @else
                     <td>{{ __('resources.person_unidentified') }}</td>
                 @endif

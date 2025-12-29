@@ -24,10 +24,33 @@ class NarratorController extends Controller
             }
         }
         if ($request->sort != '') {
-            $narrators = $narrators->withCount('legends')->orderBy('legends_count', $request->sort)->paginate(20);
-            return view('narrators.index', compact('narrators'));
+            $narrators = $narrators->withCount('legends')->orderBy('legends_count', $request->sort);
+        } else {
+            $narrators = $narrators->orderBy('fullname');
         }
-        $narrators = $narrators->orderBy('fullname')->paginate(20);
+
+        if (isset($request->format)) {
+            $filename = 'narrators_'.strval(rand()).'.csv';          // To prevent errors when two users attempt to download a file at the same time,
+                                                        // the files are given randomized names, preventing a colision.
+            $columns = [__('resources.person_fullname'), __('resources.person_gender'), __('resources.narrator_count')];
+            $query = [$request->fullname, $request->gender, $request->sort];
+            
+            $file = fopen($filename, "w");
+            fputcsv($file, $columns);
+            fputcsv($file, $query);
+            $narrators_csv = $narrators->get();
+            foreach($narrators_csv as $narrator) {
+                fputcsv($file, [$narrator->fullname, $narrator->gender, count($narrator->legends)]);
+            }
+            fclose($file);
+
+            $headers = [
+                'Content-Type' => 'text/csv',
+            ];
+            return response()->download($filename, 'narrators_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
+        }
+
+        $narrators = $narrators->paginate(20);
         return view('narrators.index', compact('narrators'));
     }
 

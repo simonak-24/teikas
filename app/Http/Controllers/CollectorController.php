@@ -24,10 +24,33 @@ class CollectorController extends Controller
             }
         }
         if ($request->sort != '') {
-            $collectors = $collectors->withCount('legends')->orderBy('legends_count', $request->sort)->paginate(20);
-            return view('collectors.index', compact('collectors'));
+            $collectors = $collectors->withCount('legends')->orderBy('legends_count', $request->sort);
+        } else {
+            $collectors = $collectors->orderBy('fullname');
         }
-        $collectors = $collectors->orderBy('fullname')->paginate(20);
+        
+        if (isset($request->format)) {
+            $filename = 'collectors_'.strval(rand()).'.csv';          // To prevent errors when two users attempt to download a file at the same time,
+                                                        // the files are given randomized names, preventing a colision.
+            $columns = [__('resources.person_fullname'), __('resources.person_gender'), __('resources.collector_count')];
+            $query = [$request->fullname, $request->gender, $request->sort];
+            
+            $file = fopen($filename, "w");
+            fputcsv($file, $columns);
+            fputcsv($file, $query);
+            $collectors_csv = $collectors->get();
+            foreach($collectors_csv as $collector) {
+                fputcsv($file, [$collector->fullname, $collector->gender, count($collector->legends)]);
+            }
+            fclose($file);
+
+            $headers = [
+                'Content-Type' => 'text/csv',
+            ];
+            return response()->download($filename, 'collectors_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
+        }
+
+        $collectors = $collectors->paginate(20);
         return view('collectors.index', compact('collectors'));
     }
 
