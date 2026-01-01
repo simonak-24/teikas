@@ -30,8 +30,8 @@
             <td>{{ $narrator->gender }}</td>
         </tr>
         <tr>
-            <th>{{ __('site.external-link-humma') }}</th>
-            <td>{{ $narrator->external_identifier }}</td>
+            <th>{{ __('site.external-link-garamantas') }}</th>
+            <td>@if(isset($narrator->external_identifier))<a href="{{ 'https://garamantas.lv/lv/person/'.$narrator->external_identifier }}" target="_blank">{{ __('site.external-link-open')  }}</a>@endif</td>
         </tr>
     </table>
     <br>

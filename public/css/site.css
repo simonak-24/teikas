@@ -333,23 +333,20 @@ li {
 }
 
 #person-index-fullname {
-    width: 76%;
+    width: 82%;
+}
+#person-index-gender {
+    width: 8%;
 }
 #person-index-count {
     width: 10%;
 }
-#person-index-gender, #person-index-link {
-    width: 7%;
-}
 
 #place-index-name {
-    width: 75%;
+    width: 80%;
 }
 #place-index-latitude, #place-index-longitude {
     width: 10%;
-}
-#place-index-link {
-    width: 5%;
 }
 
 #source-index-identifier {

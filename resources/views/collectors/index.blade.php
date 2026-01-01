@@ -19,13 +19,11 @@
                 <col span="1" id="person-index-fullname" />
                 <col span="1" id="person-index-gender"/>
                 <col span="1" id="person-index-count"/>
-                <col span="1" id="person-index-link"/>
             </colgroup>
             <tr>
                 <th>{{ __('resources.person_fullname') }}</th>
                 <th>{{ __('resources.person_gender') }}</th>
                 <th>{{ __('resources.collector_count') }}</th>
-                <th>{{ __('site.external-link-garamantas') }}</th>
             </tr>
             <tr>
                 <form id="search-form" action="{{ route('collectors.index') }}" method="GET">
@@ -41,7 +39,6 @@
                         <option value="asc"  {{ old('sort', request()->input('sort')) == "asc" ? 'selected' : '' }}>{{ __('site.sort_ascending') }}</option>
                         <option value="desc"  {{ old('sort', request()->input('sort')) == "desc" ? 'selected' : '' }}>{{ __('site.sort_descending') }}</option>
                     </select></td>
-                    <td class="search-cell"></td>
                     <button id="search-button" type="submit"></button>
                 </form>
             </tr>
@@ -50,7 +47,6 @@
                 <td><a href="{{ route('collectors.show', $collector->id) }}">{{ $collector->fullname }}</a></td>
                 <td class="center-cell">{{ $collector->gender }}</td>
                 <td class="center-cell">{{ count($collector->legends) }}</td>
-                <td class="center-cell"><a href="">{{ __('site.external-link-open') }}</a></td>
             </tr>
             @endforeach
             @if($collectors->total() == 0)

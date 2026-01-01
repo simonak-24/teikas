@@ -19,13 +19,11 @@
                 <col span="1" id="person-index-fullname" />
                 <col span="1" id="person-index-gender"/>
                 <col span="1" id="person-index-count"/>
-                <col span="1" id="person-index-link"/>
             </colgroup>
             <tr>
                 <th>{{ __('resources.person_fullname') }}</th>
                 <th>{{ __('resources.person_gender') }}</th>
                 <th>{{ __('resources.narrator_count') }}</th>
-                <th>{{ __('site.external-link-garamantas') }}</th>
             </tr>
             <tr>
                 <form id="search-form" action="{{ route('narrators.index') }}" method="GET">
@@ -41,7 +39,6 @@
                         <option value="asc"  {{ old('sort', request()->input('sort')) == "asc" ? 'selected' : '' }}>{{ __('site.sort_ascending') }}</option>
                         <option value="desc"  {{ old('sort', request()->input('sort')) == "desc" ? 'selected' : '' }}>{{ __('site.sort_descending') }}</option>
                     </select></td>
-                    <td class="search-cell"></td>
                     <button id="search-button" type="submit"></button>
                 </form>
             </tr>
@@ -50,7 +47,6 @@
                 <td><a href="{{ route('narrators.show', $narrator->id) }}">{{ $narrator->fullname }}</a></td>
                 <td class="center-cell">{{ $narrator->gender }}</td>
                 <td class="center-cell">{{ count($narrator->legends) }}</td>
-                <td class="center-cell"><a href="">{{ __('site.external-link-open') }}</a></td>
             </tr>
             @endforeach
             @if($narrators->total() == 0)

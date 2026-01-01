@@ -56,12 +56,10 @@
             <td>{{ $place->longitude }}</td>
         </tr>
         <tr>
+            @if($place->latitude != 0 && $place->longitude != 0)
             <th>{{ __('resources.place_map') }}</th>
             <td><div id="resource-map"></div></td>
-        </tr>
-        <tr>
-            <th>{{ __('site.external-link-map') }}</th>
-            <td><div><a href="https://www.google.com/maps/place/{{ $place->latitude }},{{ $place->longitude }}" target="_blank">{{ __('site.external-link-open') }}</a></div></td>
+            @endif
         </tr>
     </table>
     <br>

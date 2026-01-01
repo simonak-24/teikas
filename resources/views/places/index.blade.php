@@ -19,18 +19,15 @@
                 <col span="1" id="place-index-name" />
                 <col span="1" id="place-index-latitude"/>
                 <col span="1" id="place-index-longitude"/>
-                <col span="1" id="place-index-link"/>
             </colgroup>
             <tr>
                 <th>{{ __('resources.place_name') }}</th>
                 <th>{{ __('resources.place_latitude') }}</th>
                 <th>{{ __('resources.place_longitude') }}</th>
-                <th>{{ __('site.external-link-garamantas') }}</th>
             </tr>
             <tr>
                 <form id="search-form" action="{{ route('places.index') }}" method="GET">
                     <td class="search-cell"><input type="text" id="search-name" name="name" onblur="submitForm()" value="{{ old('name', request()->input('name')) }}"></td>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <button id="search-button" type="submit"></button>
@@ -49,7 +46,6 @@
                     @else
                     <td  class="center-cell"></td>
                     @endif
-                    <td class="center-cell"><a href="">{{ __('site.external-link-open') }}</a></td>
                     </tr>
             @endforeach
             @if($places->total() == 0)

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name', 32);
             $table->decimal('latitude', 9, 6)->nullable();
             $table->decimal('longitude', 9, 6)->nullable();
-            $table->string('external_identifier', 7)->nullable();
         });
     }
 

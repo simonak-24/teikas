@@ -36,7 +36,7 @@
         </tr>
         <tr>
             <td><b><label for="external_id">{{ __('site.external-link-humma') }}: </label></b></td>
-            <td><input type="text" id="external_id" name="external_id" value="{{ old('external_id', $narrator->external_id) }}">
+            <td><input type="text" id="external_id" name="external_id" value="{{ old('external_id', $narrator->external_identifier) }}">
             @if($errors->has('external_id'))<div class="validation-error"> {{ $errors->get('external_id')[0] }} </div>@endif</td>
         </tr>
         </table>

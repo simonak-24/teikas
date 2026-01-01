@@ -42,5 +42,5 @@ return [
     'external-link-open' => 'Open...',
     'external-link-garamantas' => 'garamantas.lv',
     'external-link-humma' => 'humma.lv ID',
-    'external-link-map' => 'Google Maps',
+    'external-link-map' => 'OpenStreetMap',
 ];

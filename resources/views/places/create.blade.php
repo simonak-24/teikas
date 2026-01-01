@@ -32,12 +32,6 @@
             <td><input type="number" step="0.000001" id="longitude" name="longitude" value="{{ old('longitude', $place->longitude) }}">
             @if($errors->has('longitude'))<div class="validation-error"> {{ $errors->get('longitude')[0] }} </div>@endif</td>
         </tr>
-
-        <tr>
-            <td><b><label for="external_id">{{ __('site.external-link-humma') }}: </label></b></td>
-            <td><input type="text" id="external_id" name="external_id" value="{{ old('external_id', $place->external_id) }}">
-            @if($errors->has('external_id'))<div class="validation-error"> {{ $errors->get('external_id')[0] }} </div>@endif</td>
-        </tr>
         </table>
         <br>
         <button class="resource-button" type="submit">{{ __('site.button_save') }}</button>
