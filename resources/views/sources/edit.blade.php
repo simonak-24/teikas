@@ -8,7 +8,7 @@
 
 @section('content')
     <div id="heading">
-        <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.title_edit') }}</h2>
+        <h2><a class="return-link" href="{{ route('sources.show', $source->id) }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.title_edit') }}</h2>
         <button class="resource-button" onclick="openDeletePopup()">{{ __('site.button_delete') }}</button>
     </div>
 
@@ -16,6 +16,10 @@
         @csrf
         @method('PUT')
         <table>
+        <colgroup>
+            <col span="1" id="display-item-column" />
+            <col span="1" id="display-item-value"/>
+        </colgroup>
         <tr>
             <td><b><label for="identifier">{{ __('resources.source_identifier') }}: </label></b></td>
             <td><input type="text" id="identifier" name="identifier" value="{{ old('identifier', $source->identifier) }}">

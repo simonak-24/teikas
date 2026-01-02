@@ -31,8 +31,8 @@
             @foreach ($legends as $legend)
             <tr>
                 <td><a href="{{ route('legends.show', $legend->identifier) }}">{{ $legend->identifier }}</a></td>
-                <td><a href="{{ route('navigation.subchapter', [urlencode($legend->chapter_lv), urlencode($legend->title_lv)]) }}">{{ $legend->title_lv }}</a></td>
-                <td>{{ Str::limit($legend->text_lv, 110) }}</td>
+                <td><a href="{{ route('navigation.subchapter', [urlencode($legend->chapter_lv), urlencode($legend->title_lv)]) }}">{{ $legend->title_lv }} / {{ $legend->title_de }}</a></td>
+                <td>{{ Str::limit($legend->text_lv, 100) }}</td>
                 @if(isset($legend->collector_id))
                     <td><a href="{{ route('collectors.show', $legend->collector_id) }}">{{ $legend->collector->fullname }}</a></td>
                 @else

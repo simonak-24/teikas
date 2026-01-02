@@ -77,6 +77,10 @@
             </td>
         </tr>  
         <tr>
+            <th>{{ __('resources.legend_comments') }}</th>
+            <td>{{ $legend->comments }}</td>
+        </tr>
+        <tr>
             <th>{{ __('site.external-link-garamantas') }}</th>
             <td>@if(isset($legend->external_identifier))<a href="{{ 'https://garamantas.lv/lv/unit/'.$legend->external_identifier }}" target="_blank">{{ __('site.external-link-open')  }}</a>@endif</td>
         </tr>    

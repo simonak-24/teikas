@@ -19,6 +19,9 @@ return [
     'title_edit' => 'Izmainīt',
     'title_chapter' => ':number. sējums',
     'title_login' => 'Pieteikties',
+    'title_information' => 'Par lapu',
+    'text_information_1' => 'Pētera Šmita "Latviešu tautas pasakas un teikas" ir 15 sējumu vēstītājfolkloras krājums, līdz šim lielākais, kas publicēts latviešu valodā. Krājums ir ticis tulkots svešvalodās, no kurām viena ir vācu.',
+    'text_information_2' => 'Šajā lapā ir pieejamas krājumā publicētās latviešu teikas (13.-15. sējums), latviski un vāciski.',
 
     'button_create' => 'Izveidot',
     'button_save' => 'Saglabāt',

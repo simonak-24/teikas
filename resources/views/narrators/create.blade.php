@@ -4,7 +4,7 @@
 
 @section('content')
     <div id="heading">
-        <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.button_create') }}</h2>
+        <h2><a class="return-link" href="{{ route('narrators.index') }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.button_create') }}</h2>
     </div>
     
     <form action="{{ route('narrators.store') }}" method="POST">

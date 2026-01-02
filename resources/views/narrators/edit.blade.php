@@ -8,7 +8,7 @@
 
 @section('content')
     <div id="heading">
-        <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.title_edit') }}</h2>
+        <h2><a class="return-link" href="{{ route('narrators.show', $narrator->id) }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.title_edit') }}</h2>
         <button class="resource-button" onclick="openDeletePopup()">{{ __('site.button_delete') }}</button>
     </div>
     

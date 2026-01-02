@@ -66,7 +66,7 @@
 
 @section('content')
     <div id="heading">
-        <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.button_create') }}</h2>
+        <h2><a class="return-link" href="{{ route('legends.index') }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.button_create') }}</h2>
     </div>
 
     <form action="{{ route('legends.store') }}" method="POST">
@@ -165,6 +165,12 @@
                         </option>
                     @endforeach
                 </select></td>
+            </tr>
+
+            <tr>
+                <td><b><label for="comments">{{ __('resources.legend_comments') }}: </label></b></td>
+                <td><input type="text" id="comments" name="comments" value="{{ old('comments', $legend->comments)  }}">
+                @if($errors->has('comments'))<div class="validation-error"> {{ $errors->get('comments')[0] }} </div>@endif</td>
             </tr>
             <tr>
                 <td><b><label for="external_id">{{ __('site.external-link-humma') }}: </label></b></td>

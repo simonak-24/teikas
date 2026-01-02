@@ -19,6 +19,9 @@ return [
     'title_edit' => 'Edit',
     'title_chapter' => 'Volume :number',
     'title_login' => 'Log In',
+    'title_information' => 'About',
+    'text_information_1' => 'Peter Schmidt\'s "Latvian Tales and Legends" is a 15 volume collection of folklore, one of the largest published in Latvian to date. The collection has been translated to other languages, one of which being German.',
+    'text_information_2' => 'This page offers the folk legends published in this collection (Vol. 13-15) in Latvian and German.',
 
     'button_create' => 'Add New',
     'button_save' => 'Save',
@@ -32,8 +35,7 @@ return [
 
     'delete_confirmation' => 'Confirmation',
     'delete_question' => 'Are you sure you want to delete this item?',
-    'delete_user-prompt' => "To confirm, enter the selected user's password:",
-    'delete_user-fail' => "To confirm, enter the selected user's password:",
+    'delete_user' => "To confirm, enter the selected user's password:",
 
     'sort_none' => 'Sort...',
     'sort_ascending' => 'Ascending',

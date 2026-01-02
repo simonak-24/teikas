@@ -4,13 +4,17 @@
 
 @section('content')
     <div id="heading">
-        <h2><a class="return-link" href="{{ url()->previous() }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.button_create') }}</h2>
+        <h2><a class="return-link" href="{{ route('sources.index') }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.button_create') }}</h2>
     </div>
 
     <form action="{{ route('sources.store') }}" method="POST">
         @csrf
         @method('POST')
         <table>
+        <colgroup>
+            <col span="1" id="display-item-column" />
+            <col span="1" id="display-item-value"/>
+        </colgroup>
         <tr>
             <td><b><label for="identifier">{{ __('resources.source_identifier') }}: </label></b></td>
             <td><input type="text" id="identifier" name="identifier" value="{{ old('identifier', $source->identifier) }}">

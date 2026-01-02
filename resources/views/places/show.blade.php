@@ -49,11 +49,11 @@
         </tr>
         <tr>
             <th>{{ __('resources.place_latitude') }}</th>
-            <td>{{ $place->latitude }}</td>
+            <td>@if($place->longitude != 0){{ $place->latitude }}@endif</td>
         </tr>
         <tr>
             <th>{{ __('resources.place_longitude') }}</th>
-            <td>{{ $place->longitude }}</td>
+            <td>@if($place->longitude != 0){{ $place->longitude }}@endif</td>
         </tr>
         <tr>
             @if($place->latitude != 0 && $place->longitude != 0)

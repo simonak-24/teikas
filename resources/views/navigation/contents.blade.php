@@ -20,7 +20,7 @@
     @foreach($chapters as $number => $volume)
         <div>
             <h3 class="heading">{{ __('site.title_chapter', ['number' => $number]) }}</h3>
-            <ul>
+            <ul class="chapters">
                 @foreach($volume as $chapter)
                 <li class="chapter">
                     @if(empty($subchapters[$number][$chapter[0]]))
