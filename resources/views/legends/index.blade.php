@@ -48,7 +48,7 @@
                     <button id="search-button" type="submit"></button>
                 </form>
             </tr>
-            @foreach ($legends as $legend)
+            @foreach ($paginator as $legend)
             <tr>
                 <td><a href="{{ route('legends.show', $legend->identifier) }}">{{ $legend->identifier }}</a></td>
                 <td class="center-cell">{{ $legend->volume }}</td>
@@ -72,40 +72,13 @@
                 @endif
             </tr>
             @endforeach
-            @if($legends->total() == 0)
+            @if($paginator->total() == 0)
                 <tr><td colspan="8">{{ __('resources.none_multiple') }}</td></tr>
             @endif
         </table>
 
         <div id="pagination-section">
-        @if($legends->lastPage() > 1)
-        <div id="pagination-links">
-            <div class="pagination-button"><a href="{{ $legends->withQueryString()->url(1) }}"> << </a></div>
-            <div class="pagination-button"><a href="{{ $legends->withQueryString()->previousPageUrl() }}"> < </a></div>
-            @if($legends->lastPage() <= 9)
-                @for ($i = 1; $i <= $legends->lastPage(); $i++)
-                <div class="pagination-button"><a href="{{ $legends->withQueryString()->url($i) }}"> {{ $i }} </a></div>
-                @endfor
-            @else
-                @if($legends->currentPage() <= 5)
-                    @for ($i = 1; $i <= 9; $i++)
-                    <div class="pagination-button"><a href="{{ $legends->withQueryString()->url($i) }}"> {{ $i }} </a></div>
-                    @endfor
-                @elseif($legends->currentPage() + 5 > $legends->lastPage())
-                    @for ($i = $legends->lastPage() - 9; $i <= $legends->lastPage(); $i++)
-                    <div class="pagination-button"><a href="{{ $legends->withQueryString()->url($i) }}"> {{ $i }} </a></div>
-                    @endfor
-                @else
-                    @for ($i = $legends->currentPage() - 4; $i <= $legends->currentPage() + 4; $i++)
-                    <div class="pagination-button"><a href="{{ $legends->withQueryString()->url($i) }}"> {{ $i }} </a></div>
-                    @endfor
-                @endif
-            @endif
-            <div class="pagination-button"><a href="{{ $legends->withQueryString()->nextPageUrl() }}"> > </a></div>
-            <div class="pagination-button"><a href="{{ $legends->withQueryString()->url($legends->lastPage()) }}"> >> </a></div>
-        </div>
-        @endif
-
+        @include('navigation.pagination')
         @if(Auth::check())
         <form action="{{ route('legends.create') }}">
             <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>

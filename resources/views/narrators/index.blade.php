@@ -42,47 +42,20 @@
                     <button id="search-button" type="submit"></button>
                 </form>
             </tr>
-            @foreach ($narrators as $narrator)
+            @foreach ($paginator as $narrator)
             <tr>
                 <td><a href="{{ route('narrators.show', $narrator->id) }}">{{ $narrator->fullname }}</a></td>
                 <td class="center-cell">{{ $narrator->gender }}</td>
                 <td class="center-cell">{{ count($narrator->legends) }}</td>
             </tr>
             @endforeach
-            @if($narrators->total() == 0)
+            @if($paginator->total() == 0)
                 <tr><td colspan="8">{{ __('resources.none_multiple') }}</td></tr>
             @endif
         </table>
 
         <div id="pagination-section">
-        @if($narrators->lastPage() > 1)
-        <div id="pagination-links">
-            <div class="pagination-button"><a href="{{ $narrators->withQueryString()->url(1) }}"> << </a></div>
-            <div class="pagination-button"><a href="{{ $narrators->withQueryString()->previousPageUrl() }}"> < </a></div>
-            @if($narrators->lastPage() <= 9)
-                @for ($i = 1; $i <= $narrators->lastPage(); $i++)
-                <div class="pagination-button"><a href="{{ $narrators->withQueryString()->url($i) }}"> {{ $i }} </a></div>
-                @endfor
-            @else
-                @if($narrators->currentPage() <= 5)
-                    @for ($i = 1; $i <= 9; $i++)
-                    <div class="pagination-button"><a href="{{ $narrators->withQueryString()->url($i) }}"> {{ $i }} </a></div>
-                    @endfor
-                @elseif($narrators->currentPage() + 5 > $narrators->lastPage())
-                    @for ($i = $narrators->lastPage() - 9; $i <= $narrators->lastPage(); $i++)
-                    <div class="pagination-button"><a href="{{ $narrators->withQueryString()->url($i) }}"> {{ $i }} </a></div>
-                    @endfor
-                @else
-                    @for ($i = $narrators->currentPage() - 4; $i <= $narrators->currentPage() + 4; $i++)
-                    <div class="pagination-button"><a href="{{ $narrators->withQueryString()->url($i) }}"> {{ $i }} </a></div>
-                    @endfor
-                @endif
-            @endif
-            <div class="pagination-button"><a href="{{ $narrators->withQueryString()->nextPageUrl() }}"> > </a></div>
-            <div class="pagination-button"><a href="{{ $narrators->withQueryString()->url($narrators->lastPage()) }}"> >> </a></div>
-        </div>
-        @endif
-
+        @include('navigation.pagination')
         @if(Auth::check())
         <form action="{{ route('narrators.create') }}">
             <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>

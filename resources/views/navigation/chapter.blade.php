@@ -1,13 +1,13 @@
 @extends('site')
 
-@section('title', $legends->first()->chapter_lv.' / '.$legends->first()->chapter_de)
+@section('title', $paginator->first()->chapter_lv.' / '.$paginator->first()->chapter_de)
 
 @section('content')
 <div>
     <div class="heading">
         <h2>
             <a class="resource-link" href="{{ route('navigation.contents') }}">{{ __('site.title_contents') }}</a>
-            &nbsp;>&nbsp;&nbsp;{{ $legends->first()->chapter_lv }} / {{ $legends->first()->chapter_de }}
+            &nbsp;>&nbsp;&nbsp;{{ $paginator->first()->chapter_lv }} / {{ $paginator->first()->chapter_de }}
         </h2>
     </div>
     <div>
@@ -28,7 +28,7 @@
                 <th>{{ __('resources.legend_narrator') }}</th>
                 <th>{{ __('resources.legend_place') }}</th>
             </tr>
-            @foreach ($legends as $legend)
+            @foreach ($paginator as $legend)
             <tr>
                 <td><a href="{{ route('legends.show', $legend->identifier) }}">{{ $legend->identifier }}</a></td>
                 <td><a href="{{ route('navigation.subchapter', [urlencode($legend->chapter_lv), urlencode($legend->title_lv)]) }}">{{ $legend->title_lv }} / {{ $legend->title_de }}</a></td>
@@ -51,33 +51,7 @@
             </tr>
             @endforeach
         </table>
-        @if($legends->lastPage() > 1)
-        <div id="pagination-links">
-            <div class="pagination-button"><a href="{{ $legends->url(1) }}"> << </a></div>
-            <div class="pagination-button"><a href="{{ $legends->previousPageUrl() }}"> < </a></div>
-            @if($legends->lastPage() <= 9)
-                @for ($i = 1; $i <= $legends->lastPage(); $i++)
-                <div class="pagination-button"><a href="{{ $legends->url($i) }}"> {{ $i }} </a></div>
-                @endfor
-            @else
-                @if($legends->currentPage() <= 5)
-                    @for ($i = 1; $i <= 9; $i++)
-                    <div class="pagination-button"><a href="{{ $legends->url($i) }}"> {{ $i }} </a></div>
-                    @endfor
-                @elseif($legends->currentPage() + 5 > $legends->lastPage())
-                    @for ($i = $legends->lastPage() - 9; $i <= $legends->lastPage(); $i++)
-                    <div class="pagination-button"><a href="{{ $legends->url($i) }}"> {{ $i }} </a></div>
-                    @endfor
-                @else
-                    @for ($i = $legends->currentPage() - 4; $i <= $legends->currentPage() + 4; $i++)
-                    <div class="pagination-button"><a href="{{ $legends->url($i) }}"> {{ $i }} </a></div>
-                    @endfor
-                @endif
-            @endif
-            <div class="pagination-button"><a href="{{ $legends->nextPageUrl() }}"> > </a></div>
-            <div class="pagination-button"><a href="{{ $legends->url($legends->lastPage()) }}"> >> </a></div>
-        </div>
-        @endif
+        @include('navigation.pagination')
     </div>
     <br>
 </div>

@@ -1,14 +1,14 @@
 @extends('site')
 
-@section('title', $legends->first()->title_lv.' / '.$legends->first()->title_de)
+@section('title', $paginator->first()->title_lv.' / '.$paginator->first()->title_de)
 
 @section('content')
 <div>
     <div class="heading">
         <h2>
             <a class="resource-link" href="{{ route('navigation.contents') }}">{{ __('site.title_contents') }}</a>
-            &nbsp;>&nbsp;&nbsp;<a class="resource-link" href="{{ route('navigation.chapter', urlencode($legends->first()->chapter_lv)) }}">{{ $legends->first()->chapter_lv }} / {{ $legends->first()->chapter_de }}</a>
-            &nbsp;>&nbsp;&nbsp;{{ $legends->first()->title_lv }} / {{ $legends->first()->title_de }}
+            &nbsp;>&nbsp;&nbsp;<a class="resource-link" href="{{ route('navigation.chapter', urlencode($paginator->first()->chapter_lv)) }}">{{ $paginator->first()->chapter_lv }} / {{ $paginator->first()->chapter_de }}</a>
+            &nbsp;>&nbsp;&nbsp;{{ $paginator->first()->title_lv }} / {{ $paginator->first()->title_de }}
     </div>
     <div>
         <table>
@@ -26,7 +26,7 @@
                 <th>{{ __('resources.legend_narrator') }}</th>
                 <th>{{ __('resources.legend_place') }}</th>
             </tr>
-            @foreach ($legends as $legend)
+            @foreach ($paginator as $legend)
             <tr>
                 <td><a href="{{ route('legends.show', $legend->identifier) }}">{{ $legend->identifier }}</a></td>
                 <td>{{ Str::limit($legend->text_lv, 190) }}</td>
@@ -48,17 +48,7 @@
             </tr>
             @endforeach
         </table>
-        @if($legends->lastPage() > 1)
-        <div id="pagination-links">
-            <div class="pagination-button"><a href="{{ $legends->url(1) }}"> << </a></div>
-            <div class="pagination-button"><a href="{{ $legends->previousPageUrl() }}"> < </a></div>
-            @for ($i = 1; $i <= $legends->lastPage(); $i++)
-                <div class="pagination-button"><a href="{{ $legends->url($i) }}"> {{ $i }} </a></div>
-            @endfor
-            <div class="pagination-button"><a href="{{ $legends->nextPageUrl() }}"> > </a></div>
-            <div class="pagination-button"><a href="{{ $legends->url($legends->lastPage()) }}"> >> </a></div>
-        </div>
-        @endif
+        @include('navigation.pagination')
     </div>
     <br>
 </div>

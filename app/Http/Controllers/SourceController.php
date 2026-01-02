@@ -45,8 +45,8 @@ class SourceController extends Controller
             return response()->download($filename, 'sources_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
         }
 
-        $sources = $sources->paginate(20);
-        return view('sources.index', compact('sources'));
+        $paginator = $sources->paginate(20);
+        return view('sources.index', compact('paginator'));
     }
 
     /**

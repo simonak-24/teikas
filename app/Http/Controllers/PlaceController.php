@@ -51,8 +51,8 @@ class PlaceController extends Controller
             return response()->download($filename, 'places_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
         }
 
-        $places = $places->paginate(20);
-        return view('places.index', compact('places'));
+        $paginator = $places->paginate(20);
+        return view('places.index', compact('paginator'));
     }
 
     /**

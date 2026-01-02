@@ -42,47 +42,20 @@
                     <button id="search-button" type="submit"></button>
                 </form>
             </tr>
-            @foreach ($collectors as $collector)
+            @foreach ($paginator as $collector)
             <tr>
                 <td><a href="{{ route('collectors.show', $collector->id) }}">{{ $collector->fullname }}</a></td>
                 <td class="center-cell">{{ $collector->gender }}</td>
                 <td class="center-cell">{{ count($collector->legends) }}</td>
             </tr>
             @endforeach
-            @if($collectors->total() == 0)
+            @if($paginator->total() == 0)
                 <tr><td colspan="8">{{ __('resources.none_multiple') }}</td></tr>
             @endif
         </table>
 
         <div id="pagination-section">
-        @if($collectors->lastPage() > 1)
-        <div id="pagination-links">
-            <div class="pagination-button"><a href="{{ $collectors->withQueryString()->url(1) }}"> << </a></div>
-            <div class="pagination-button"><a href="{{ $collectors->withQueryString()->previousPageUrl() }}"> < </a></div>
-            @if($collectors->lastPage() <= 9)
-                @for ($i = 1; $i <= $collectors->lastPage(); $i++)
-                <div class="pagination-button"><a href="{{ $collectors->withQueryString()->url($i) }}"> {{ $i }} </a></div>
-                @endfor
-            @else
-                @if($collectors->currentPage() <= 5)
-                    @for ($i = 1; $i <= 9; $i++)
-                    <div class="pagination-button"><a href="{{ $collectors->withQueryString()->url($i) }}"> {{ $i }} </a></div>
-                    @endfor
-                @elseif($collectors->currentPage() + 5 > $collectors->lastPage())
-                    @for ($i = $collectors->lastPage() - 9; $i <= $collectors->lastPage(); $i++)
-                    <div class="pagination-button"><a href="{{ $collectors->withQueryString()->url($i) }}"> {{ $i }} </a></div>
-                    @endfor
-                @else
-                    @for ($i = $collectors->currentPage() - 4; $i <= $collectors->currentPage() + 4; $i++)
-                    <div class="pagination-button"><a href="{{ $collectors->withQueryString()->url($i) }}"> {{ $i }} </a></div>
-                    @endfor
-                @endif
-            @endif
-            <div class="pagination-button"><a href="{{ $collectors->withQueryString()->nextPageUrl() }}"> > </a></div>
-            <div class="pagination-button"><a href="{{ $collectors->withQueryString()->url($collectors->lastPage()) }}"> >> </a></div>
-        </div>
-        @endif
-        
+        @include('navigation.pagination')
         @if(Auth::check())
         <form action="{{ route('collectors.create') }}">
             <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>

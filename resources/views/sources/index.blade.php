@@ -33,30 +33,20 @@
                     <button id="search-button" type="submit"></button>
                 </form>
             </tr>
-            @foreach ($sources as $source)
+            @foreach ($paginator as $source)
             <tr>
                 <td><a href="{{ route('sources.show', $source->id) }}">{{ $source->identifier }}</a></td>
                 <td><a href="{{ route('sources.show', $source->id) }}">{{ $source->title }}</a></td>
                 <td>{{ $source->author }}</td>
             </tr>
             @endforeach
-            @if($sources->total() == 0)
+            @if($paginator->total() == 0)
                 <tr><td colspan="8">{{ __('resources.none_multiple') }}</td></tr>
             @endif
         </table>
 
         <div id="pagination-section">
-        @if($sources->lastPage() > 1)
-        <div id="pagination-links">
-            <div class="pagination-button"><a href="{{ $sources->withQueryString()->url(1) }}"> << </a></div>
-            <div class="pagination-button"><a href="{{ $sources->withQueryString()->previousPageUrl() }}"> < </a></div>
-            @for ($i = 1; $i <= $sources->lastPage(); $i++)
-                <div class="pagination-button"><a href="{{ $sources->withQueryString()->url($i) }}"> {{ $i }} </a></div>
-            @endfor
-            <div class="pagination-button"><a href="{{ $sources->withQueryString()->nextPageUrl() }}"> > </a></div>
-            <div class="pagination-button"><a href="{{ $sources->withQueryString()->url($sources->lastPage()) }}"> >> </a></div>
-        </div>
-        @endif
+        @include('navigation.pagination')
         @if(Auth::check())
         <form action="{{ route('sources.create') }}">
             <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>

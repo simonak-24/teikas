@@ -82,8 +82,8 @@ class LegendController extends Controller
             return response()->download($filename, 'legends_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
         }
 
-        $legends = $legends->paginate(20);
-        return view('legends.index', compact('legends'));
+        $paginator = $legends->paginate(20);
+        return view('legends.index', compact('paginator'));
     }
 
     /**
@@ -318,7 +318,8 @@ class LegendController extends Controller
         if ($legends->total() == 0) {
             return redirect()->back()->with('not-found', __('resources.none_single'));
         }
-        return view('navigation.chapter', compact('legends'));
+        $paginator = $legends;
+        return view('navigation.chapter', compact('paginator'));
     }
 
     /**
@@ -331,6 +332,7 @@ class LegendController extends Controller
         if ($legends->total() == 0) {
             return redirect()->back()->with('not-found', __('resources.none_single'));
         }
-        return view('navigation.subchapter', compact('legends'));
+        $paginator = $legends;
+        return view('navigation.subchapter', compact('paginator'));
     }
 }
