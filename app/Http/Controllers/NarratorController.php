@@ -30,8 +30,8 @@ class NarratorController extends Controller
         }
 
         if (isset($request->format)) {
-            $filename = 'narrators_'.strval(rand()).'.csv';          // To prevent errors when two users attempt to download a file at the same time,
-                                                        // the files are given randomized names, preventing a colision.
+            $filename = 'narrators_'.strval(rand()).'.csv';         // To prevent errors when two users attempt to download a file at the same time,
+                                                                    // the files are given randomized names, preventing a colision.
             $columns = [__('resources.person_fullname'), __('resources.person_gender'), __('resources.narrator_count')];
             $query = [$request->fullname, $request->gender, $request->sort];
             
@@ -40,7 +40,12 @@ class NarratorController extends Controller
             fputcsv($file, $query);
             $narrators_csv = $narrators->get();
             foreach($narrators_csv as $narrator) {
-                fputcsv($file, [$narrator->fullname, $narrator->gender, count($narrator->legends)]);
+                if (isset($narrator->gender)) {
+                    $gender = $narrator->gender; 
+                } else {
+                    $gender = 'null';
+                }
+                fputcsv($file, [$narrator->fullname, $gender, count($narrator->legends)]);
             }
             fclose($file);
 

@@ -30,8 +30,8 @@ class CollectorController extends Controller
         }
         
         if (isset($request->format)) {
-            $filename = 'collectors_'.strval(rand()).'.csv';          // To prevent errors when two users attempt to download a file at the same time,
-                                                        // the files are given randomized names, preventing a colision.
+            $filename = 'collectors_'.strval(rand()).'.csv';        // To prevent errors when two users attempt to download a file at the same time,
+                                                                    // the files are given randomized names, preventing a colision.
             $columns = [__('resources.person_fullname'), __('resources.person_gender'), __('resources.collector_count')];
             $query = [$request->fullname, $request->gender, $request->sort];
             
@@ -40,7 +40,12 @@ class CollectorController extends Controller
             fputcsv($file, $query);
             $collectors_csv = $collectors->get();
             foreach($collectors_csv as $collector) {
-                fputcsv($file, [$collector->fullname, $collector->gender, count($collector->legends)]);
+                if (isset($collector->gender)) {
+                    $gender = $collector->gender; 
+                } else {
+                    $gender = 'null';
+                }
+                fputcsv($file, [$collector->fullname, $gender, count($collector->legends)]);
             }
             fclose($file);
 
