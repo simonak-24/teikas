@@ -167,7 +167,8 @@ return [
     'uuid' => 'The :attribute field must be a valid UUID.',
 
     'credentials' => 'These credentials do not match our records.',
-    'delete' => 'The provided password is incorrect.',
+    'delete_incorrect' => 'The provided password is incorrect.',
+    'delete_only' => 'The only user cannot be deleted.',
 
     /*
     |--------------------------------------------------------------------------

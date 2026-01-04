@@ -70,7 +70,7 @@ class UserController extends Controller
     {
         $request->validate( [
             'name' => 'required|max:32|unique:users,name',
-            'password' => [Password::min(8)->max(32)->letters()->numbers()->symbols(), 'confirmed'],
+            'password' => ['required', Password::min(8)->max(32)->letters()->numbers()->symbols(), 'confirmed'],
         ]);
 
         $user = new User();
@@ -92,11 +92,17 @@ class UserController extends Controller
         }
 
         if (Hash::check($request->delete, $user->password)) {
-            $user->delete();
-            return redirect()->route('user.index');
+            if (User::count() > 1) {
+                $user->delete();
+                return redirect()->route('user.index');
+            } else {
+                return back()->withErrors([
+                    'user-'.$user->id => __('validation.delete_only'),
+                ]);
+            }
         } else {
             return back()->withErrors([
-                'user-'.$user->id => __('validation.delete'),
+                'user-'.$user->id => __('validation.delete_incorrect'),
             ]);
         }
     }

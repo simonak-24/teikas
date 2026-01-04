@@ -167,7 +167,8 @@ return [
     'uuid' => 'The :attribute field must be a valid UUID.',
 
     'credentials' => 'Dotais lietotājvārds / parole netika atrasti.',
-    'delete' => 'Dotā parole ir nepareiza.',
+    'delete_incorrect' => 'Dotā parole ir nepareiza.',
+    'delete_only' => 'Vienīgais lietotājs nevar tikt dzēsts.',
 
     /*
     |--------------------------------------------------------------------------

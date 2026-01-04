@@ -59,15 +59,14 @@
             <br><br>
             <label for="password">{{ __('resources.user_password') }}: </label>
             <input type="password" id="password" name="password"  class="user-input">
-            <br><br>
-            <label for="password_confirmation">{{ __('resources.user_confirmation') }}: </label>
-            <input type="password" id="password_confirmation" name="password_confirmation"  class="user-input">
             @if($errors->has('password'))
             <div class="validation-error"> {{ $errors->get('password')[0] }} </div>
             @else
             <br>
-            @endif
-            <br>
+            @endif<br>
+            <label for="password_confirmation">{{ __('resources.user_confirmation') }}: </label>
+            <input type="password" id="password_confirmation" name="password_confirmation"  class="user-input">
+            <br><br>
             <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>
         </form>
     </div>
