@@ -9,7 +9,7 @@
 @section('content')
     <div id="heading">
         <h1>{{ __('resources.place_all') }}</h1>
-        
+        <button id="search-button" type="submit" form="search-form"></button>
         <button class="resource-button" name="format" value="CSV" type="submit" form="search-form">{{ __('site.button_csv') }}</button>
     </div>
 
@@ -30,7 +30,6 @@
                     <td class="search-cell"><input type="text" id="search-name" name="name" onblur="submitForm()" value="{{ old('name', request()->input('name')) }}"></td>
                     <td></td>
                     <td></td>
-                    <button id="search-button" type="submit"></button>
                 </form>
             </tr>
             @foreach ($paginator as $place)

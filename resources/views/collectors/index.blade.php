@@ -9,7 +9,7 @@
 @section('content')
     <div id="heading">
         <h1>{{ __('resources.collector_all') }}</h1>
-
+        <button id="search-button" type="submit" form="search-form"></button>
         <button class="resource-button" name="format" value="CSV" type="submit" form="search-form">{{ __('site.button_csv') }}</button>
     </div>
 
@@ -39,7 +39,6 @@
                         <option value="asc"  {{ old('sort', request()->input('sort')) == "asc" ? 'selected' : '' }}>{{ __('site.sort_ascending') }}</option>
                         <option value="desc"  {{ old('sort', request()->input('sort')) == "desc" ? 'selected' : '' }}>{{ __('site.sort_descending') }}</option>
                     </select></td>
-                    <button id="search-button" type="submit"></button>
                 </form>
             </tr>
             @foreach ($paginator as $collector)

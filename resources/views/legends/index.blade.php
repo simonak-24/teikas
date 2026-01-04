@@ -9,7 +9,7 @@
 @section('content')
     <div id="heading">
         <h1>{{ __('resources.legend_all') }}</h1>
-
+        <button id="search-button" type="submit" form="search-form"></button>
         <button class="resource-button" name="format" value="CSV" type="submit" form="search-form">{{ __('site.button_csv') }}</button>
     </div>
 
@@ -45,7 +45,6 @@
                     <td class="search-cell"><input type="text" id="search-collector" name="collector" onblur="submitForm()" value="{{ old('collector', request()->input('collector')) }}"></td>
                     <td class="search-cell"><input type="text" id="search-narrator" name="narrator" onblur="submitForm()" value="{{ old('narrator', request()->input('narrator')) }}"></td>
                     <td class="search-cell"><input type="text" id="search-place" name="place" onblur="submitForm()" value="{{ old('place', request()->input('place')) }}"></td>
-                    <button id="search-button" type="submit"></button>
                 </form>
             </tr>
             @foreach ($paginator as $legend)
