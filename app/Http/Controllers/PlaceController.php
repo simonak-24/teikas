@@ -71,8 +71,8 @@ class PlaceController extends Controller
     {
         $request->validate( [
             'name' => 'required|max:32',
-            'latitude' => 'numeric|between:-90,90|nullable',
-            'longitude' => 'numeric|between:-180,180|nullable',
+            'latitude' => 'numeric|between:-90,90|decimal:0,6|nullable',
+            'longitude' => 'numeric|between:-180,180|decimal:0,6|nullable',
         ]);
 
         $place = new Place();
@@ -131,8 +131,8 @@ class PlaceController extends Controller
 
         $request->validate([
             'name' => 'required|max:32',
-            'latitude' => 'numeric|between:-90,90|nullable',
-            'longitude' => 'numeric|between:-180,180|nullable',
+            'latitude' => 'numeric|between:-90,90|decimal:0,6|nullable',
+            'longitude' => 'numeric|between:-180,180|decimal:0,6|nullable',
         ]);
 
         $place->name = $request->name;
