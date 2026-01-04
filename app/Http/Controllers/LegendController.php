@@ -121,12 +121,12 @@ class LegendController extends Controller
             'metadata' => 'required|max:255',
             'title_lv' => 'required|max:100',
             'title_de' => 'required|max:100',
-            'text_lv' => 'required',
-            'text_de' => 'required',
+            'text_lv' => 'required|max:65535',
+            'text_de' => 'required|max:65535',
             'chapter_lv' => 'required|max:100',
             'chapter_de' => 'required|max:100',
             'volume' => 'required|max:2|regex:/^[0-9]+$/',
-            'comments' => 'nullable',
+            'comments' => 'nullable|max:65535',
             'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
         ]);
 
@@ -226,12 +226,12 @@ class LegendController extends Controller
             'metadata' => 'required|max:255',
             'title_lv' => 'required|max:100',
             'title_de' => 'required|max:100',
-            'text_lv' => 'required',
-            'text_de' => 'required',
+            'text_lv' => 'required|max:65535',
+            'text_de' => 'required|max:65535',
             'chapter_lv' => 'required|max:100',
             'chapter_de' => 'required|max:100',
             'volume' => 'required|max:2|regex:/^[0-9]+$/',
-            'comments' => 'nullable',
+            'comments' => 'nullable|max:65535',
             'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
         ]);
 
