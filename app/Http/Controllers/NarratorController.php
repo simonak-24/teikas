@@ -8,7 +8,7 @@ use App\Models\Narrator;
 class NarratorController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Filter and display all narrators, download a CSV file of the results (if the format is specified).
      */
     public function index(Request $request)
     {
@@ -60,7 +60,7 @@ class NarratorController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new narrator.
      */
     public function create()
     {
@@ -70,7 +70,7 @@ class NarratorController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created narrator in storage.
      */
     public function store(Request $request)
     {
@@ -90,7 +90,7 @@ class NarratorController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified narrator.
      */
     public function show(string $id)
     {
@@ -99,6 +99,7 @@ class NarratorController extends Controller
             return redirect()->route('narrators.index')->with('not-found', __('resources.none_single'));
         }
 
+        // Calculates the index page the specified narrator is on (needed for a return link to the index).
         $narrator_ids = Narrator::all()->toQuery()->orderBy('fullname')->pluck('id');
         $i = 0;
         foreach($narrator_ids as $narrator_id) {
@@ -114,7 +115,7 @@ class NarratorController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified narrator.
      */
     public function edit(string $id)
     {
@@ -127,7 +128,7 @@ class NarratorController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified narrator in storage.
      */
     public function update(Request $request, string $id)
     {
@@ -151,7 +152,7 @@ class NarratorController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified narrator from storage.
      */
     public function destroy(string $id)
     {

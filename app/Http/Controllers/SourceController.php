@@ -8,7 +8,7 @@ use App\Models\Source;
 class SourceController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Filter and display all sources, download a CSV file of the results (if the format is specified).
      */
     public function index(Request $request)
     {
@@ -50,7 +50,7 @@ class SourceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new source.
      */
     public function create()
     {
@@ -59,7 +59,7 @@ class SourceController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created source in storage.
      */
     public function store(Request $request)
     {
@@ -78,7 +78,7 @@ class SourceController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified source.
      */
     public function show(string $id)
     {
@@ -87,6 +87,7 @@ class SourceController extends Controller
             return redirect()->route('sources.index')->with('not-found', __('resources.none_single'));
         }
 
+        // Calculates the index page the specified source is on (needed for a return link to the index).
         $source_ids = Source::all()->toQuery()->orderBy('identifier')->pluck('id');
         $i = 0;
         foreach ($source_ids as $source_id) {
@@ -102,7 +103,7 @@ class SourceController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified source.
      */
     public function edit(string $id)
     {
@@ -114,7 +115,7 @@ class SourceController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in source.
      */
     public function update(Request $request, string $id)
     {
@@ -137,7 +138,7 @@ class SourceController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified source from storage.
      */
     public function destroy(string $id)
     {

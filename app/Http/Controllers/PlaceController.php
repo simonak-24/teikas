@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 class PlaceController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Filter and display all places, download a CSV file of the results (if the format is specified).
      */
     public function index(Request $request)
     {
@@ -56,7 +56,7 @@ class PlaceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new place.
      */
     public function create()
     {
@@ -65,7 +65,7 @@ class PlaceController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created place in storage.
      */
     public function store(Request $request)
     {
@@ -84,7 +84,7 @@ class PlaceController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified place.
      */
     public function show(string $id)
     {
@@ -93,6 +93,7 @@ class PlaceController extends Controller
             return redirect()->route('places.index')->with('not-found', __('resources.none_single'));
         }
 
+        // Calculates the index page the specified place is on (needed for a return link to the index).
         $place_ids = Place::all()->toQuery()->orderBy('name')->pluck('id');
         $i = 0;
         foreach($place_ids as $place_id) {
@@ -108,7 +109,7 @@ class PlaceController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified place.
      */
     public function edit(string $id)
     {
@@ -120,7 +121,7 @@ class PlaceController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified place in storage.
      */
     public function update(Request $request, string $id)
     {
@@ -143,7 +144,7 @@ class PlaceController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified place from storage.
      */
     public function destroy(string $id)
     {
@@ -156,17 +157,16 @@ class PlaceController extends Controller
     }
 
     /**
-     * Show reasource in map view.
+     * Filter and display places with known locations (and their legends) in map view.
      */
     public function map(Request $request) {
-        // $places = Place::all();
-        $php_coordinates = array();
+        $php_coordinates = [];
         $chapters_titles = [];
         $titles_selected = [];
 
         if (isset($request->titles)) {
-            foreach($request->titles as $title){
-                array_push($titles_selected, $title);
+            foreach($request->titles as $title) {           // The selected titles are required within the view, which is why
+                array_push($titles_selected, $title);       // a new variable that can be passed to said view is created.
             }
             $places = Place::whereHas('legends', function(Builder $query) use ($titles_selected) {
                 $query->whereIn('title_lv', $titles_selected);
@@ -184,6 +184,7 @@ class PlaceController extends Controller
             }
         }
 
+        // All subchapters are associated with their chapters in order to create an organized list for selection.
         $titles_query = Legend::select('chapter_lv', 'chapter_de', 'title_lv', 'title_de')->distinct('title_lv')->get();
         foreach($titles_query as $title) {
             if (isset($chapters_titles[$title['chapter_lv'].' / '.$title['chapter_de']])) {

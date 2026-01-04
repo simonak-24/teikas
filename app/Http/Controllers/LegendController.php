@@ -13,7 +13,7 @@ use App\Models\LegendSource;
 class LegendController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Filter and display all legends (and their collectors, narrators & places), download a CSV file of the results (if the format is specified).
      */
     public function index(Request $request)
     {
@@ -87,7 +87,7 @@ class LegendController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new legend.
      */
     public function create()
     {
@@ -112,7 +112,7 @@ class LegendController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created legend in storage.
      */
     public function store(Request $request)
     {
@@ -160,7 +160,7 @@ class LegendController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified legend.
      */
     public function show(string $id)
     {
@@ -169,6 +169,7 @@ class LegendController extends Controller
             return redirect()->route('legends.index')->with('not-found', __('resources.none_single'));
         }
 
+        // Calculates the index page the specified legend is on (needed for a return link to the index).
         $legend_ids = Legend::all()->sortBy('identifier')->pluck('identifier');
         $i = 0;
         foreach($legend_ids as $legend_id) {
@@ -184,7 +185,7 @@ class LegendController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified legend.
      */
     public function edit(string $id)
     {
@@ -212,7 +213,7 @@ class LegendController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified legend in storage.
      */
     public function update(Request $request, string $id)
     {
@@ -270,7 +271,7 @@ class LegendController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified legend from storage.
      */
     public function destroy(string $id)
     {
@@ -283,12 +284,13 @@ class LegendController extends Controller
     }
 
     /**
-     * Display full table of contents.
+     * Display full table of contents - a list of chapters and subchapters, organized by volume.
      */
     public function contents()
     {
-        $chapters = [];
-        $subchapters = [];
+        $chapters = [];                 // Since the Latvian and German chapter titles are required separately but arrays cannot be used as key values,
+        $subchapters = [];              // two seperate lists are created instead of a single one - the first for storing both chapter titles and 
+                                        // the second for using the Latvian chapter titles as key values (which is needed for organising the subchapters).
         $volumes_query = Legend::select('volume')->distinct('volume')->get();
         foreach($volumes_query as $volume) {
             $chapters[$volume['volume']] = [];
@@ -301,15 +303,15 @@ class LegendController extends Controller
                 array_push($chapters[$chapter['volume']], [$chapter['chapter_lv'], $chapter['chapter_de']]);
                 $subchapters[$chapter['volume']][$chapter['chapter_lv']] = [];
             }
-            if ($chapter['chapter_lv'] != str_replace('ŗ', 'r', $chapter['title_lv'])) {
-                array_push($subchapters[$chapter['volume']][$chapter['chapter_lv']], [$chapter['title_lv'], $chapter['title_de']]);
+            if ($chapter['chapter_lv'] != str_replace('ŗ', 'r', $chapter['title_lv'])) {                                                // The 'ŗ' symbol is used in only legend titles, but not chapter
+                array_push($subchapters[$chapter['volume']][$chapter['chapter_lv']], [$chapter['title_lv'], $chapter['title_de']]);     // titles, which is why it is replaced when comparing the two.
             }
         }
         return view('navigation.contents', compact('chapters', 'subchapters'));
     }
 
     /**
-     * Display table of contents for a single chapter.
+     * Display a single chapter's legends(and their collectors, narrators & places).
      */
     public function chapter(string $chapter)
     {
@@ -323,7 +325,7 @@ class LegendController extends Controller
     }
 
     /**
-     * Display table of contents for a single subchapter.
+     * Display a single subchapter's legends (and their collectors, narrators & places).
      */
     public function subchapter(string $chapter, string $subchapter)
     {
