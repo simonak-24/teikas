@@ -96,7 +96,7 @@ class NarratorController extends Controller
     {
         $narrator = Narrator::find($id);
         if (!$narrator) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('narrators.index')->with('not-found', __('resources.none_single'));
         }
 
         $narrator_ids = Narrator::all()->toQuery()->orderBy('fullname')->pluck('id');
@@ -120,7 +120,7 @@ class NarratorController extends Controller
     {
         $narrator = Narrator::find($id);
         if (!$narrator) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('narrators.index')->with('not-found', __('resources.none_single'));
         }
         if ($narrator->gender == null) { $narrator->gender = '?'; }
         return view('narrators.edit', compact('narrator'));
@@ -133,7 +133,7 @@ class NarratorController extends Controller
     {
         $narrator = Narrator::find($id);
         if (!$narrator) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('narrators.index')->with('not-found', __('resources.none_single'));
         }
 
         $request->validate([

@@ -90,7 +90,7 @@ class PlaceController extends Controller
     {
         $place = Place::find($id);
         if (!$place) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('places.index')->with('not-found', __('resources.none_single'));
         }
 
         $place_ids = Place::all()->toQuery()->orderBy('name')->pluck('id');
@@ -114,7 +114,7 @@ class PlaceController extends Controller
     {
         $place = Place::find($id);
         if (!$place) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('places.index')->with('not-found', __('resources.none_single'));
         }
         return view('places.edit', compact('place'));
     }
@@ -126,7 +126,7 @@ class PlaceController extends Controller
     {
         $place = Place::find($id);
         if (!$place) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('places.index')->with('not-found', __('resources.none_single'));
         }
 
         $request->validate([

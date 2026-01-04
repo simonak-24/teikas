@@ -96,7 +96,7 @@ class CollectorController extends Controller
     {
         $collector = Collector::find($id);
         if (!$collector) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('collectors.index')->with('not-found', __('resources.none_single'));
         }
         
         $collector_ids = Collector::all()->toQuery()->orderBy('fullname')->pluck('id');
@@ -120,7 +120,7 @@ class CollectorController extends Controller
     {
         $collector = Collector::find($id);
         if (!$collector) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('collectors.index')->with('not-found', __('resources.none_single'));
         }
         if ($collector->gender == null) { $collector->gender = '?'; }
         return view('collectors.edit', compact('collector'));
@@ -133,7 +133,7 @@ class CollectorController extends Controller
     {
         $collector = Collector::find($id);
         if (!$collector) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('collectors.index')->with('not-found', __('resources.none_single'));
         }
 
         $request->validate([

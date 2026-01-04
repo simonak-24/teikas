@@ -166,7 +166,7 @@ class LegendController extends Controller
     {
         $legend = Legend::where('identifier', $id)->first();
         if (!$legend) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('legends.index')->with('not-found', __('resources.none_single'));
         }
 
         $legend_ids = Legend::all()->sortBy('identifier')->pluck('identifier');
@@ -190,7 +190,7 @@ class LegendController extends Controller
     {
         $legend = Legend::where('identifier', $id)->first();
         if (!$legend) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('legends.index')->with('not-found', __('resources.none_single'));
         }
 
         $collectors = Collector::all()->sortBy('fullname');
@@ -218,7 +218,7 @@ class LegendController extends Controller
     {
         $legend = Legend::where('identifier', $id)->first();
         if (!$legend) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('legends.index')->with('not-found', __('resources.none_single'));
         }
 
         $request->validate( [
@@ -316,7 +316,7 @@ class LegendController extends Controller
         $chapter_clean = urldecode($chapter);
         $legends = Legend::where('chapter_lv', $chapter_clean)->paginate(20);
         if ($legends->total() == 0) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('navigation.contents')->with('not-found', __('resources.none_single'));
         }
         $paginator = $legends;
         return view('navigation.chapter', compact('paginator'));
@@ -330,7 +330,7 @@ class LegendController extends Controller
         $subchapter_clean = urldecode($subchapter);
         $legends = Legend::where('title_lv', $subchapter_clean)->paginate(20);
         if ($legends->total() == 0) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('navigation.contents')->with('not-found', __('resources.none_single'));
         }
         $paginator = $legends;
         return view('navigation.subchapter', compact('paginator'));

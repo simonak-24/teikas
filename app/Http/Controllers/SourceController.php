@@ -84,7 +84,7 @@ class SourceController extends Controller
     {
         $source = Source::find($id);
         if (!$source) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('sources.index')->with('not-found', __('resources.none_single'));
         }
 
         $source_ids = Source::all()->toQuery()->orderBy('identifier')->pluck('id');
@@ -108,7 +108,7 @@ class SourceController extends Controller
     {
         $source = Source::find($id);
         if (!$source) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('sources.index')->with('not-found', __('resources.none_single'));
         }
         return view('sources.edit', compact('source'));
     }
@@ -120,7 +120,7 @@ class SourceController extends Controller
     {
         $source = Source::find($id);
         if (!$source) {
-            return redirect()->back()->with('not-found', __('resources.none_single'));
+            return redirect()->route('sources.index')->with('not-found', __('resources.none_single'));
         }
 
         $request->validate( [
