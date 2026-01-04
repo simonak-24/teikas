@@ -61,14 +61,14 @@
                     <td>{{ __('resources.person_unidentified') }}</td>
                 @endif
                 @if(isset($legend->narrator_id))
-                    <td><a href="{{ route('narrators.show', $legend->collector_id)}}">{{ $legend->narrator->fullname }}</a></td>
+                    <td><a href="{{ route('narrators.show', $legend->narrator_id)}}">{{ $legend->narrator->fullname }}</a></td>
                 @else
                     <td>{{ __('resources.person_unidentified') }}</td>
                 @endif
                 @if(isset($legend->place_id))
                     <td><a href="{{ route('places.show', $legend->place_id)}}">{{ $legend->place->name }}</a></td>
                 @else
-                    <td>{{ __('resources.person_unidentified') }}</td>
+                    <td>{{ __('resources.place_unidentified') }}</td>
                 @endif
             </tr>
             @endforeach
