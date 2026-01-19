@@ -406,10 +406,22 @@ li {
     background-color: var(--main-color-medium);
 }
 
+.pagination-selected {
+    color: white;
+}
+
 .pagination-button > a, .return-link {
     color: var(--text-color-dark);
 }
-.pagination-button > a:hover, .return-link:hover {
+
+.pagination-button > a:hover {
+    color: white;
+}
+.pagination-selected > a:hover {
+    color: var(--text-color-dark);
+}
+
+.return-link:hover {
     color: var(--text-color-light);
 }
 
