@@ -116,46 +116,9 @@ class LegendController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate( [
-            'identifier' => 'required|max:9|regex:/^[0-9]+$/|unique:legends,identifier',
-            'metadata' => 'required|max:255',
-            'title_lv' => 'required|max:100',
-            'title_de' => 'required|max:100',
-            'text_lv' => 'required|max:65535',
-            'text_de' => 'required|max:65535',
-            'chapter_lv' => 'required|max:100',
-            'chapter_de' => 'required|max:100',
-            'volume' => 'required|max:2|regex:/^[0-9]+$/',
-            'comments' => 'nullable|max:65535',
-            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
-        ]);
-
         $legend = new Legend();
-        $legend->identifier = $request->identifier;
-        $legend->metadata = $request->metadata;
-        $legend->title_lv = $request->title_lv;
-        $legend->title_de = $request->title_de;
-        $legend->text_lv = $request->text_lv;
-        $legend->text_de = $request->text_de;
-        $legend->chapter_lv = $request->chapter_lv;
-        $legend->chapter_de = $request->chapter_de;
-        $legend->volume = $request->volume;
-        $legend->comments = $request->comments;
 
-        $legend->collector_id = $request->collector_id;
-        $legend->narrator_id = $request->narrator_id;
-        $legend->place_id = $request->place_id;
-        $legend->external_identifier = $request->external_id;
-        $legend->save();
-
-        if (isset($request->sources)) {
-            foreach($request->sources as $source){
-                $link = new LegendSource();
-                $link->legend_id = $legend->id;
-                $link->source_id = $source;
-                $link->save();
-            }
-        }
+        $this->save($request, $legend, True);
         return redirect()->route('legends.show', $legend->identifier);
     }
 
@@ -170,16 +133,9 @@ class LegendController extends Controller
         }
 
         // Calculates the index page the specified legend is on (needed for a return link to the index).
-        $legend_ids = Legend::all()->sortBy('identifier')->pluck('identifier');
-        $i = 0;
-        foreach($legend_ids as $legend_id) {
-            if ($legend->identifier == $legend_id) {
-                $page = intval($i / 20) + 1;
-                break;
-            } else {
-                $i = $i + 1;
-            }
-        }
+        $legend_ids = Legend::all()->sortBy('identifier')->pluck('identifier')->toArray();
+        $i = array_search($legend->identifier, $legend_ids);
+        $page = intval($i / 20) + 1;
 
         return view('legends.show', compact('legend', 'page'));
     }
@@ -222,51 +178,7 @@ class LegendController extends Controller
             return redirect()->route('legends.index')->with('not-found', __('resources.none_single'));
         }
 
-        $request->validate( [
-            'identifier' => 'required|max:9|regex:/^[0-9]+$/|unique:legends,identifier,'.$legend->id,
-            'metadata' => 'required|max:255',
-            'title_lv' => 'required|max:100',
-            'title_de' => 'required|max:100',
-            'text_lv' => 'required|max:65535',
-            'text_de' => 'required|max:65535',
-            'chapter_lv' => 'required|max:100',
-            'chapter_de' => 'required|max:100',
-            'volume' => 'required|max:2|regex:/^[0-9]+$/',
-            'comments' => 'nullable|max:65535',
-            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
-        ]);
-
-        $legend->identifier = $request->identifier;
-        $legend->metadata = $request->metadata;
-        $legend->title_lv = $request->title_lv;
-        $legend->title_de = $request->title_de;
-        $legend->text_lv = $request->text_lv;
-        $legend->text_de = $request->text_de;
-        $legend->chapter_lv = $request->chapter_lv;
-        $legend->chapter_de = $request->chapter_de;
-        $legend->volume = $request->volume;
-        $legend->comments = $request->comments;
-
-        $legend->collector_id = $request->collector_id;
-        $legend->narrator_id = $request->narrator_id;
-        $legend->place_id = $request->place_id;
-        $legend->external_identifier = $request->external_id;
-        $legend->save();
-
-        $old_sources = LegendSource::where('legend_id', $legend->id)->get();
-        foreach ($old_sources as $old_source) {
-            $source = LegendSource::find($old_source->id)->delete();
-        }
-
-        if (isset($request->sources)) {
-            foreach($request->sources as $source){
-                $link = new LegendSource();
-                $link->legend_id = $legend->id;
-                $link->source_id = $source;
-                $link->save();
-            }
-        }
-
+        $this->save($request, $legend, True);
         return redirect()->route('legends.show', $legend->identifier);
     }
 
@@ -336,5 +248,62 @@ class LegendController extends Controller
         }
         $paginator = $legends;
         return view('navigation.subchapter', compact('paginator'));
+    }
+
+    /**
+     * Save a legend's data in storage.
+     */
+    public function save(Request $request, Legend $legend, bool $edit)
+    {
+        if ($edit) {
+            $extra_rule = ','.$legend->id;
+        } else {
+            $extra_rule = '';
+        }
+
+        $request->validate( [
+            'identifier' => 'required|max:9|regex:/^[0-9]+$/|unique:legends,identifier,'.$legend->id,
+            'metadata' => 'required|max:255',
+            'title_lv' => 'required|max:100',
+            'title_de' => 'required|max:100',
+            'text_lv' => 'required|max:65535',
+            'text_de' => 'required|max:65535',
+            'chapter_lv' => 'required|max:100',
+            'chapter_de' => 'required|max:100',
+            'volume' => 'required|max:2|regex:/^[0-9]+$/',
+            'comments' => 'nullable|max:65535',
+            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
+        ]);
+
+        $legend->identifier = $request->identifier;
+        $legend->metadata = $request->metadata;
+        $legend->title_lv = $request->title_lv;
+        $legend->title_de = $request->title_de;
+        $legend->text_lv = $request->text_lv;
+        $legend->text_de = $request->text_de;
+        $legend->chapter_lv = $request->chapter_lv;
+        $legend->chapter_de = $request->chapter_de;
+        $legend->volume = $request->volume;
+        $legend->comments = $request->comments;
+
+        $legend->collector_id = $request->collector_id;
+        $legend->narrator_id = $request->narrator_id;
+        $legend->place_id = $request->place_id;
+        $legend->external_identifier = $request->external_id;
+        $legend->save();
+
+        $old_sources = LegendSource::where('legend_id', $legend->id)->get();
+        foreach ($old_sources as $old_source) {
+            $source = LegendSource::find($old_source->id)->delete();
+        }
+
+        if (isset($request->sources)) {
+            foreach($request->sources as $source){
+                $link = new LegendSource();
+                $link->legend_id = $legend->id;
+                $link->source_id = $source;
+                $link->save();
+            }
+        }
     }
 }

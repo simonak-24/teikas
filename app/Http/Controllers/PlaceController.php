@@ -69,17 +69,9 @@ class PlaceController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate( [
-            'name' => 'required|max:32',
-            'latitude' => 'numeric|between:-90,90|decimal:0,6|nullable',
-            'longitude' => 'numeric|between:-180,180|decimal:0,6|nullable',
-        ]);
-
         $place = new Place();
-        $place->name = $request->name;
-        $place->latitude = $request->latitude;
-        $place->longitude = $request->longitude;
-        $place->save();
+
+        $this->save($request, $place);
         return redirect()->route('places.show', $place->id);
     }
 
@@ -94,16 +86,9 @@ class PlaceController extends Controller
         }
 
         // Calculates the index page the specified place is on (needed for a return link to the index).
-        $place_ids = Place::all()->toQuery()->orderBy('name')->pluck('id');
-        $i = 0;
-        foreach($place_ids as $place_id) {
-            if ($id == $place_id) {
-                $page = intval($i / 20) + 1;
-                break;
-            } else {
-                $i = $i + 1;
-            }
-        }
+        $place_ids = Place::all()->toQuery()->orderBy('name')->pluck('id')->toArray();
+        $i = array_search($place->id, $place_ids);
+        $page = intval($i / 20) + 1;
 
         return view('places.show', compact('place', 'page'));
     }
@@ -130,16 +115,7 @@ class PlaceController extends Controller
             return redirect()->route('places.index')->with('not-found', __('resources.none_single'));
         }
 
-        $request->validate([
-            'name' => 'required|max:32',
-            'latitude' => 'numeric|between:-90,90|decimal:0,6|nullable',
-            'longitude' => 'numeric|between:-180,180|decimal:0,6|nullable',
-        ]);
-
-        $place->name = $request->name;
-        $place->latitude = $request->latitude;
-        $place->longitude = $request->longitude;
-        $place->save();
+        $this->save($request, $place);
         return redirect()->route('places.show', $place->id);
     }
 
@@ -197,5 +173,22 @@ class PlaceController extends Controller
         
         $coordinates = json_encode($php_coordinates);
         return view('home', compact('places', 'coordinates', 'chapters_titles', 'titles_selected'));
+    }
+
+    /**
+     * Save a place's data in storage.
+     */
+    public function save(Request $request, Place $place)
+    {
+        $request->validate([
+            'name' => 'required|max:32',
+            'latitude' => 'numeric|between:-90,90|decimal:0,6|nullable',
+            'longitude' => 'numeric|between:-180,180|decimal:0,6|nullable',
+        ]);
+
+        $place->name = $request->name;
+        $place->latitude = $request->latitude;
+        $place->longitude = $request->longitude;
+        $place->save();
     }
 }

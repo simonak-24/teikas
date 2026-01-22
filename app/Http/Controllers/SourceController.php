@@ -63,17 +63,9 @@ class SourceController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate( [
-            'identifier' => 'required|max:16|unique:sources,identifier',
-            'title' => 'required|max:255',
-            'author' => 'max:64|nullable',
-        ]);
-
         $source = new Source();
-        $source->identifier = $request->identifier;
-        $source->title = $request->title;
-        $source->author = $request->author;
-        $source->save();
+        
+        $this->save($request, $source, False);
         return redirect()->route('sources.show', $source->id);
     }
 
@@ -88,16 +80,9 @@ class SourceController extends Controller
         }
 
         // Calculates the index page the specified source is on (needed for a return link to the index).
-        $source_ids = Source::all()->toQuery()->orderBy('identifier')->pluck('id');
-        $i = 0;
-        foreach ($source_ids as $source_id) {
-            if ($id == $source_id) {
-                $page = intval($i / 20) + 1;
-                break;
-            } else {
-                $i = $i + 1;
-            }
-        }
+        $source_ids = Source::all()->toQuery()->orderBy('identifier')->pluck('id')->toArray();
+        $i = array_search($source->id, $source_ids);
+        $page = intval($i / 20) + 1;
 
         return view('sources.show', compact('source', 'page'));
     }
@@ -124,16 +109,7 @@ class SourceController extends Controller
             return redirect()->route('sources.index')->with('not-found', __('resources.none_single'));
         }
 
-        $request->validate( [
-            'identifier' => 'required|max:16|unique:sources,identifier,'.$id,
-            'title' => 'required|max:255',
-            'author' => 'max:64|nullable',
-        ]);
-
-        $source->identifier = $request->identifier;
-        $source->title = $request->title;
-        $source->author = $request->author;
-        $source->save();
+        $this->save($request, $source, True);
         return redirect()->route('sources.show', $source->id);
     }
 
@@ -148,5 +124,28 @@ class SourceController extends Controller
         }
         $source->delete();
         return redirect()->route('sources.index');
+    }
+
+    /**
+     * Save a source's data in storage.
+     */
+    public function save(Request $request, Source $source, bool $edit)
+    {
+        if ($edit) {
+            $extra_rule = ','.$source->id;
+        } else {
+            $extra_rule = '';
+        }
+
+        $request->validate( [
+            'identifier' => 'required|max:16|unique:sources,identifier'.$extra_rule,
+            'title' => 'required|max:255',
+            'author' => 'max:64|nullable',
+        ]);
+
+        $source->identifier = $request->identifier;
+        $source->title = $request->title;
+        $source->author = $request->author;
+        $source->save();
     }
 }

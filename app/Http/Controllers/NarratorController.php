@@ -74,18 +74,9 @@ class NarratorController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'fullname' => 'required|max:64',
-            'gender' => 'in:M,F,?',
-            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
-        ]);
-
         $narrator = new Narrator();
-        $narrator->fullname = $request->fullname;
-        $narrator->gender = $request->gender;
-        if ($narrator->gender == '?') { $narrator->gender = null; }
-        $narrator->external_identifier = $request->external_id;
-        $narrator->save();
+        
+        $this->save($request, $narrator);
         return redirect()->route('narrators.show', $narrator->id);
     }
 
@@ -100,16 +91,9 @@ class NarratorController extends Controller
         }
 
         // Calculates the index page the specified narrator is on (needed for a return link to the index).
-        $narrator_ids = Narrator::all()->toQuery()->orderBy('fullname')->pluck('id');
-        $i = 0;
-        foreach($narrator_ids as $narrator_id) {
-            if ($id == $narrator_id) {
-                $page = intval($i / 20) + 1;
-                break;
-            } else {
-                $i = $i + 1;
-            }
-        }
+        $narrator_ids = Narrator::all()->toQuery()->orderBy('fullname')->pluck('id')->toArray();
+        $i = array_search($narrator->id, $narrator_ids);
+        $page = intval($i / 20) + 1;
 
         return view('narrators.show', compact('narrator', 'page'));
     }
@@ -137,17 +121,7 @@ class NarratorController extends Controller
             return redirect()->route('narrators.index')->with('not-found', __('resources.none_single'));
         }
 
-        $request->validate([
-            'fullname' => 'required|max:64',
-            'gender' => 'in:M,F,?',
-            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
-        ]);
-
-        $narrator->fullname = $request->fullname;
-        $narrator->gender = $request->gender;
-        if ($narrator->gender == '?') { $narrator->gender = null; }
-        $narrator->external_identifier = $request->external_id;
-        $narrator->save();
+        $this->save($request, $narrator);
         return redirect()->route('narrators.show', $narrator->id);
     }
 
@@ -162,5 +136,23 @@ class NarratorController extends Controller
         }
         $narrator->delete();
         return redirect()->route('narrators.index');
+    }
+
+    /**
+     * Save a narrator's data in storage.
+     */
+    public function save(Request $request, Narrator $narrator)
+    {
+        $request->validate([
+            'fullname' => 'required|max:64',
+            'gender' => 'in:M,F,?',
+            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
+        ]);
+
+        $narrator->fullname = $request->fullname;
+        $narrator->gender = $request->gender;
+        if ($narrator->gender == '?') { $narrator->gender = null; }
+        $narrator->external_identifier = $request->external_id;
+        $narrator->save();
     }
 }

@@ -74,18 +74,9 @@ class CollectorController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'fullname' => 'required|max:64',
-            'gender' => 'in:M,F,?',
-            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
-        ]);
-
         $collector = new Collector();
-        $collector->fullname = $request->fullname;
-        $collector->gender = $request->gender;
-        if ($collector->gender == '?') { $collector->gender = null; }
-        $collector->external_identifier = $request->external_id;
-        $collector->save();
+
+        $this->save($request, $collector);
         return redirect()->route('collectors.show', $collector->id);
     }
 
@@ -100,16 +91,9 @@ class CollectorController extends Controller
         }
         
         // Calculates the index page the specified collector is on (needed for a return link to the index).
-        $collector_ids = Collector::all()->toQuery()->orderBy('fullname')->pluck('id');
-        $i = 0;
-        foreach($collector_ids as $collector_id) {
-            if ($id == $collector_id) {
-                $page = intval($i / 20) + 1;
-                break;
-            } else {
-                $i = $i + 1;
-            }
-        }
+        $collector_ids = Collector::all()->toQuery()->orderBy('fullname')->pluck('id')->toArray();
+        $i = array_search($collector->id, $collector_ids);
+        $page = intval($i / 20) + 1;
 
         return view('collectors.show', compact('collector', 'page'));
     }
@@ -137,17 +121,7 @@ class CollectorController extends Controller
             return redirect()->route('collectors.index')->with('not-found', __('resources.none_single'));
         }
 
-        $request->validate([
-            'fullname' => 'required|max:64',
-            'gender' => 'in:M,F,?',
-            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
-        ]);
-
-        $collector->fullname = $request->fullname;
-        $collector->gender = $request->gender;
-        if ($collector->gender == '?') { $collector->gender = null; }
-        $collector->external_identifier = $request->external_id;
-        $collector->save();
+        $this->save($request, $collector);
         return redirect()->route('collectors.show', $collector->id);
     }
 
@@ -162,5 +136,23 @@ class CollectorController extends Controller
         }
         $collector->delete();
         return redirect()->route('collectors.index');
+    }
+
+    /**
+     * Save a collector's data in storage.
+     */
+    public function save(Request $request, Collector $collector)
+    {
+        $request->validate([
+            'fullname' => 'required|max:64',
+            'gender' => 'in:M,F,?',
+            'external_id' => 'max:7|regex:/^[0-9]+$/|nullable',
+        ]);
+
+        $collector->fullname = $request->fullname;
+        $collector->gender = $request->gender;
+        if ($collector->gender == '?') { $collector->gender = null; }
+        $collector->external_identifier = $request->external_id;
+        $collector->save();
     }
 }
