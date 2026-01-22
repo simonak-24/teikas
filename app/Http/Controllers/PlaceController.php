@@ -61,7 +61,8 @@ class PlaceController extends Controller
     public function create()
     {
         $place = new Place();
-        return view('places.create', compact('place'));
+        $exists = False;
+        return view('places.create', compact('place', 'exists'));
     }
 
     /**
@@ -102,7 +103,8 @@ class PlaceController extends Controller
         if (!$place) {
             return redirect()->route('places.index')->with('not-found', __('resources.none_single'));
         }
-        return view('places.edit', compact('place'));
+        $exists = True;
+        return view('places.edit', compact('place', 'exists'));
     }
 
     /**

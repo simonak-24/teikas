@@ -108,7 +108,8 @@ class LegendController extends Controller
         }
         $sources_selected = $selected;
 
-        return view('legends.create', compact('legend', 'collectors', 'collectors_search', 'narrators', 'narrators_search', 'places', 'places_search', 'sources', 'sources_search', 'sources_selected'));
+        $exists = False;
+        return view('legends.edit', compact('legend', 'collectors', 'collectors_search', 'narrators', 'narrators_search', 'places', 'places_search', 'sources', 'sources_search', 'sources_selected', 'exists'));
     }
 
     /**
@@ -165,7 +166,8 @@ class LegendController extends Controller
         }
         $sources_selected = $selected;
         
-        return view('legends.edit', compact('legend', 'collectors', 'collectors_search', 'narrators', 'narrators_search', 'places', 'places_search', 'sources', 'sources_search', 'sources_selected'));
+        $exists = True;
+        return view('legends.edit', compact('legend', 'collectors', 'collectors_search', 'narrators', 'narrators_search', 'places', 'places_search', 'sources', 'sources_search', 'sources_selected', 'exists'));
     }
 
     /**

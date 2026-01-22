@@ -1,6 +1,10 @@
 @extends('site')
 
+@if($exists)
 @section('title', __('site.title_edit'))
+@else
+@section('title', __('site.title_create'))
+@endif
 
 @section('stylesheets')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -66,13 +70,26 @@
 
 @section('content')
     <div id="heading">
+        @if($exists)
         <h2><a class="return-link" href="{{ route('legends.show', $legend->identifier) }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.title_edit') }}</a></h2>
         <button class="resource-button" onclick="openDeletePopup()">{{ __('site.button_delete') }}</button>
+        @else
+        <h2><a class="return-link" href="{{ route('legends.index') }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.button_create') }}</h2>
+        @endif
     </div>
     
+    @if($exists)
     <form action="{{ route('legends.update', $legend->identifier) }}" method="POST">
+    @else
+    <form action="{{ route('legends.store') }}" method="POST">
+    @endif
         @csrf
+        @if($exists)
         @method('PUT')
+        @else
+        @method('POST')
+        @endif
+
         <table>
         <colgroup>
                 <col span="1" id="display-item-column" />
@@ -185,6 +202,7 @@
     <br>
 @endsection
 
+@if($exists)
 @section('popup')
     <div id="resource-delete" class="delete-popup">
         <div class="heading">
@@ -203,3 +221,4 @@
         </div>
     </div>
 @endsection
+@endif

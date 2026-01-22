@@ -1,6 +1,10 @@
 @extends('site')
 
+@if($exists)
 @section('title', __('site.title_edit'))
+@else
+@section('title', __('site.title_create'))
+@endif
 
 @section('scripts')
     <script src="{{ asset('js/delete-popup.js') }}"></script>
@@ -8,13 +12,26 @@
 
 @section('content')
     <div id="heading">
+        @if($exists)
         <h2><a class="return-link" href="{{ route('collectors.show', $collector->id) }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.title_edit') }}</h2>
         <button class="resource-button" onclick="openDeletePopup()">{{ __('site.button_delete') }}</button>
+        @else
+        <h2><a class="return-link" href="{{ route('collectors.index') }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.button_create') }}</h2>
+        @endif
     </div>
     
+    @if($exists)
     <form action="{{ route('collectors.update', $collector->id) }}" method="POST">
+    @else
+    <form action="{{ route('collectors.store') }}" method="POST">
+    @endif
         @csrf
+        @if($exists)
         @method('PUT')
+        @else
+        @method('POST')
+        @endif
+
         <table>
         <colgroup>
             <col span="1" id="display-item-column" />
@@ -46,6 +63,7 @@
     <br>
 @endsection
 
+@if($exists)
 @section('popup')
     <div id="resource-delete" class="delete-popup">
         <div class="heading">
@@ -64,3 +82,4 @@
         </div>
     </div>
 @endsection
+@endif

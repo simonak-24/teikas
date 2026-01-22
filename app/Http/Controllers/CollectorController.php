@@ -66,7 +66,8 @@ class CollectorController extends Controller
     {
         $collector = new Collector();
         if ($collector->gender == null) { $collector->gender = '?'; }
-        return view('collectors.create', compact('collector'));
+        $exists = False;
+        return view('collectors.edit', compact('collector', 'exists'));
     }
 
     /**
@@ -108,7 +109,8 @@ class CollectorController extends Controller
             return redirect()->route('collectors.index')->with('not-found', __('resources.none_single'));
         }
         if ($collector->gender == null) { $collector->gender = '?'; }
-        return view('collectors.edit', compact('collector'));
+        $exists = True;
+        return view('collectors.edit', compact('collector', 'exists'));
     }
 
     /**

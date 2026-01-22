@@ -55,7 +55,8 @@ class SourceController extends Controller
     public function create()
     {
         $source = new Source();
-        return view('sources.create', compact('source'));
+        $exists = False;
+        return view('sources.edit', compact('source', 'exists'));
     }
 
     /**
@@ -96,7 +97,8 @@ class SourceController extends Controller
         if (!$source) {
             return redirect()->route('sources.index')->with('not-found', __('resources.none_single'));
         }
-        return view('sources.edit', compact('source'));
+        $exists = True;
+        return view('sources.edit', compact('source', 'exists'));
     }
 
     /**

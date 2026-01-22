@@ -66,7 +66,8 @@ class NarratorController extends Controller
     {
         $narrator = new Narrator();
         if ($narrator->gender == null) { $narrator->gender = '?'; }
-        return view('narrators.create', compact('narrator'));
+        $exists = False;
+        return view('narrators.edit', compact('narrator', 'exists'));
     }
 
     /**
@@ -108,7 +109,8 @@ class NarratorController extends Controller
             return redirect()->route('narrators.index')->with('not-found', __('resources.none_single'));
         }
         if ($narrator->gender == null) { $narrator->gender = '?'; }
-        return view('narrators.edit', compact('narrator'));
+        $exists = True;
+        return view('narrators.edit', compact('narrator', 'exists'));
     }
 
     /**
