@@ -47,7 +47,7 @@
                     <a class="nav-link" href="{{ route('places.index') }}">{{ __('resources.place_all') }}</a><span class="divider">&nbsp;|&nbsp;</span>
                     <a class="nav-link" href="{{ route('sources.index') }}">{{ __('resources.source_all') }}</a><span class="divider">&nbsp;&nbsp;||</span>
                     <div id="lan-dropdown">
-                        &nbsp;&nbsp;<span id="dropdown-link" class="nav-link" href="">{{ Request::segment(1) }}</span>&nbsp;&nbsp;
+                        &nbsp;&nbsp;<span class="dropdown-link nav-link" href="">{{ Request::segment(1) }}</span>&nbsp;&nbsp;
                         <div id="lan-content">
                             @if (Request::segment(1) == 'lv')
                             <a class="lan-link" href="{{ route('language.set', 'en') }}">EN</a>

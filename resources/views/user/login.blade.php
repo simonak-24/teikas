@@ -11,6 +11,7 @@
 <body>
     <div id="login-frame">
         <div id="login-pane">
+            <form id="return-form" action="{{ route('home') }}" method="GET"></form>
             <form id="login-form" action="{{ route('authenticate') }}" method="POST">
                 @csrf
                 @method('POST')
@@ -30,8 +31,11 @@
                 <br>
                 @endif
                 <br>
-                <div id="login-button"><button class="user-button" type="submit">{{ __('site.button_login') }}</button><div>
             </form>
+            <div id="login-buttons">
+                <button id="back-button" class="user-button" type="submit" form="return-form">{{ __('site.button_back') }}</button>
+                <button id="login-button" class="user-button" type="submit" form="login-form">{{ __('site.button_login') }}</button>
+            </div>
         </div>
     </div>
 </body>

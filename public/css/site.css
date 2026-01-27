@@ -122,7 +122,7 @@ input, textarea, select {
     position: fixed;
     z-index: 1001;
 
-    padding: 10px 12px;
+    padding: 10px 13px;
     background-color: var(--main-color-medium);
     box-shadow: 0px 4px 16px 0px var(--shadow-color-main);
 }
@@ -140,7 +140,7 @@ input, textarea, select {
 }
 
 #content {
-    min-height: 90vh;
+    min-height: 86vh; /*90 vh, ja nav footer*/
     margin: 0px;
     padding: 10px 30px 10px 30px;
     font-size: 14px;
@@ -179,6 +179,12 @@ input, textarea, select {
     border-radius: 0.5vw;
 }
 
+footer {
+    height: 4vh;
+    padding-top: 3vh;
+    background-color: var(--main-color-medium);
+}
+
 #error-message {
     position: absolute;
     z-index: 1000;
@@ -208,7 +214,7 @@ input, textarea, select {
 
 /* Home page rules. */
 #home-map {
-    height: 80vh;
+    height: 77vh;
     margin: 15px;
 }
 
@@ -488,6 +494,7 @@ li {
     height: 30vh;
 
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 
@@ -501,13 +508,21 @@ li {
 
 #login-form {
     width: 60%;
-    height: 80%;
+    height: 60%;
 }
+#login-buttons {
+    min-width: 60%;
+    height: 20%;
 
-#login-button {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+}
+#back-button {
+    width: 7em;
+}
+#login-button {
+    height: 2.5em;
 }
 
 #login-form > input {
