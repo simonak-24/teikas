@@ -11,7 +11,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton('items_per_page', function() {
+            return 20;
+        });
+        $this->app->singleton('number_of_pages', function() {
+            return 9;
+        });
     }
 
     /**

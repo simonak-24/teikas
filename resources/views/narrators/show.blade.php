@@ -33,6 +33,14 @@
             <th>{{ __('site.external-link-garamantas') }}</th>
             <td>@if(isset($narrator->external_identifier))<a href="{{ 'https://garamantas.lv/lv/person/'.$narrator->external_identifier }}" target="_blank">{{ __('site.external-link-open')  }}</a>@endif</td>
         </tr>
+        <tr>
+            <th>{{ __('resources.narrator_count') }}</th>
+            @if($narrator->legends()->count() > 0)
+            <td><a href="{{ route('legends.index').'?narrator='.urlencode($narrator->fullname) }}">{{ $narrator->legends()->count() }}</a></td>
+            @else
+            <td>0</td>
+            @endif
+        </tr>
     </table>
     <br>
 @endsection

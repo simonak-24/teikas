@@ -55,7 +55,7 @@ class CollectorController extends Controller
             return response()->download($filename, 'collectors_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
         }
 
-        $paginator = $collectors->paginate(20);
+        $paginator = $collectors->paginate(app('items_per_page'));
         return view('collectors.index', compact('paginator'));
     }
 

@@ -22,7 +22,11 @@ class SourceController extends Controller
         if ($request->author != '') {
             $sources = $sources->where('author', 'LIKE', '%'.$request->author.'%');
         }
-        $sources = $sources->orderBy('identifier');
+        if ($request->sort != '') {
+            $sources = $sources->withCount('legends')->orderBy('legends_count', $request->sort);
+        } else {
+            $sources = $sources->orderBy('identifier');
+        }
 
         if (isset($request->format)) {
             $filename = 'sources_'.strval(rand()).'.csv';           // To prevent errors when two users attempt to download a file at the same time,
@@ -45,7 +49,7 @@ class SourceController extends Controller
             return response()->download($filename, 'sources_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
         }
 
-        $paginator = $sources->paginate(20);
+        $paginator = $sources->paginate(app('items_per_page'));
         return view('sources.index', compact('paginator'));
     }
 

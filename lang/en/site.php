@@ -35,6 +35,8 @@ return [
     'button_filter' => 'Filter',
     'button_csv' => 'Download CSV',
 
+    'pagination_count' => 'Showing :current of :all items.',
+
     'delete_confirmation' => 'Confirmation',
     'delete_question' => 'Are you sure you want to delete this item?',
     'delete_user' => "To confirm, enter the selected user's password:",

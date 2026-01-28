@@ -55,7 +55,7 @@ class NarratorController extends Controller
             return response()->download($filename, 'narrators_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
         }
 
-        $paginator = $narrators->paginate(20);
+        $paginator = $narrators->paginate(app('items_per_page'));
         return view('narrators.index', compact('paginator'));
     }
 

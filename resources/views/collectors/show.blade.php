@@ -33,6 +33,14 @@
             <th>{{ __('site.external-link-garamantas') }}</th>
             <td>@if(isset($collector->external_identifier))<a href="{{ 'https://garamantas.lv/lv/person/'.$collector->external_identifier }}" target="_blank">{{ __('site.external-link-open')  }}</a>@endif</td>
         </tr>
+        <tr>
+            <th>{{ __('resources.collector_count') }}</th>
+            @if($collector->legends()->count() > 0)
+            <td><a href="{{ route('legends.index').'?collector='.urlencode($collector->fullname) }}">{{ $collector->legends()->count() }}</a></td>
+            @else
+            <td>0</td>
+            @endif
+        </tr>
     </table>
     <br>
 @endsection

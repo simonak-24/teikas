@@ -35,6 +35,8 @@ return [
     'button_filter' => 'Atlasīt',
     'button_csv' => 'Lejuplādēt CSV',
 
+    'pagination_count' => 'Tiek rādītas vienības :current no :all.',
+
     'delete_confirmation' => 'Apstiprinājums',
     'delete_question' => 'Vai jūs tiešām vēlaties dzēst šo vienumu?',
     'delete_user' => "Lai apstiprinātu, ievadiet izvēlētā lietotāja paroli:",

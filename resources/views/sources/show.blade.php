@@ -33,6 +33,14 @@
             <th>{{ __('resources.source_author') }}</th>
             <td>{{ $source->author }}</td>
         </tr>
+        <tr>
+            <th>{{ __('resources.source_count') }}</th>
+            @if($source->legends()->count() > 0)
+            <td><a href="{{ route('legends.index').'?sources[]='.urlencode($source->identifier) }}">{{ $source->legends()->count() }}</a></td>
+            @else
+            <td>0</td>
+            @endif
+        </tr>
     </table>
     <br>
 @endsection

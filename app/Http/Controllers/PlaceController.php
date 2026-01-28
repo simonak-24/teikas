@@ -18,7 +18,11 @@ class PlaceController extends Controller
         if ($request->name != '') {
             $places = $places->where('name', 'LIKE', '%'.$request->name.'%');
         }
-        $places = $places->orderBy('name');
+        if ($request->sort != '') {
+            $places = $places->withCount('legends')->orderBy('legends_count', $request->sort);
+        } else {
+            $places = $places->orderBy('name');
+        }
 
         if (isset($request->format)) {
             $filename = 'places_'.strval(rand()).'.csv';        // To prevent errors when two users attempt to download a file at the same time,
@@ -51,7 +55,7 @@ class PlaceController extends Controller
             return response()->download($filename, 'places_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
         }
 
-        $paginator = $places->paginate(20);
+        $paginator = $places->paginate(app('items_per_page'));
         return view('places.index', compact('paginator'));
     }
 

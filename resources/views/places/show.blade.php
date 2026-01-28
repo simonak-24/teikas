@@ -61,6 +61,14 @@
             <td><div id="resource-map"></div></td>
             @endif
         </tr>
+        <tr>
+            <th>{{ __('resources.place_count') }}</th>
+            @if($place->legends()->count() > 0)
+            <td><a href="{{ route('legends.index').'?place='.urlencode($place->name) }}">{{ $place->legends()->count() }}</a></td>
+            @else
+            <td>0</td>
+            @endif
+        </tr>
     </table>
     <br>
 @endsection

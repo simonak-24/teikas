@@ -9,6 +9,7 @@ use App\Models\Narrator;
 use App\Models\Place;
 use App\Models\Source;
 use App\Models\LegendSource;
+use Illuminate\Database\Eloquent\Builder;
 
 class LegendController extends Controller
 {
@@ -44,6 +45,20 @@ class LegendController extends Controller
         if ($request->place != '') {
             $places = Place::orderBy('name')->where('name', 'LIKE', '%'.$request->place.'%')->pluck('id');
             $legends = $legends->whereIn('place_id', $places);
+        }
+        if (isset($request->sources)) {
+            $sources_selected = [];
+            foreach($request->sources as $source) {
+                $source_id = Source::where('identifier', $source)->first()->id;
+                array_push($sources_selected, $source_id);
+            }
+
+            $legends = Legend::whereHas('sources', function(Builder $query) use ($sources_selected) {
+                $query->whereIn('source_id', $sources_selected);
+            })->with(['sources' => function($query) use ($sources_selected) {
+                    $query->whereIn('source_id', $sources_selected);
+                }
+            ]);
         }
 
         if (isset($request->format)) {
@@ -82,7 +97,7 @@ class LegendController extends Controller
             return response()->download($filename, 'legends_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
         }
 
-        $paginator = $legends->paginate(20);
+        $paginator = $legends->paginate(app('items_per_page'));
         return view('legends.index', compact('paginator'));
     }
 

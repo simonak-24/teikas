@@ -69,6 +69,11 @@
             <a class="popup-link" onclick="closeDeletePopup()">X</a>
         </div>
         <p>{{ __('site.delete_question') }}</p>
+        @if($place->legends()->count() > 1)
+        <p>{{ __('resources.place_delete-multiple', ['count' => $place->legends()->count()]) }}</p>
+        @elseif($place->legends()->count() > 0)
+        <p>{{ __('resources.place_delete-single') }}</p>
+        @endif
         <form id="delete-form" method="POST" action="{{ route('places.destroy', $place->id) }}">
             @csrf
             @method('DELETE')
