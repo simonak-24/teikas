@@ -10,6 +10,7 @@ use App\Models\Place;
 use App\Models\Source;
 use App\Models\LegendSource;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Session;
 
 class LegendController extends Controller
 {
@@ -34,18 +35,39 @@ class LegendController extends Controller
         if ($request->text != '') {
             $legends = $legends->where('text_lv', 'LIKE', '%'.$request->text.'%');
         }
+
         if ($request->collector != '') {
             $collectors = Collector::orderBy('fullname')->where('fullname', 'LIKE', '%'.$request->collector.'%')->pluck('id');
-            $legends = $legends->whereIn('collector_id', $collectors);
+            if ($this->unknown($request->collector, False)) {
+                $legends = $legends->where(function(Builder $query) use ($collectors) {
+                    return $query->whereIn('collector_id', $collectors)->orWhereNull('collector_id');
+                });
+                $collector_null = True;
+            } else {
+                $legends = $legends->whereIn('collector_id', $collectors);
+            }
         }
         if ($request->narrator != '') {
             $narrators = Narrator::orderBy('fullname')->where('fullname', 'LIKE', '%'.$request->narrator.'%')->pluck('id');
-            $legends = $legends->whereIn('narrator_id', $narrators);
+            if ($this->unknown($request->narrator, False)) {
+                $legends = $legends->where(function(Builder $query) use ($narrators) {
+                    return $query->whereIn('narrator_id', $narrators)->orWhereNull('narrator_id');
+                });
+            } else {
+                $legends = $legends->whereIn('narrator_id', $narrators);
+            }
         }
         if ($request->place != '') {
             $places = Place::orderBy('name')->where('name', 'LIKE', '%'.$request->place.'%')->pluck('id');
-            $legends = $legends->whereIn('place_id', $places);
+            if ($this->unknown($request->place, True)) {
+                $legends = $legends->where(function(Builder $query) use ($places) {
+                    return $query->whereIn('place_id', $places)->orWhereNull('place_id');
+                });
+            } else {
+                $legends = $legends->whereIn('place_id', $places);
+            }
         }
+
         if (isset($request->sources)) {
             $sources_selected = [];
             foreach($request->sources as $source) {
@@ -55,10 +77,7 @@ class LegendController extends Controller
 
             $legends = Legend::whereHas('sources', function(Builder $query) use ($sources_selected) {
                 $query->whereIn('source_id', $sources_selected);
-            })->with(['sources' => function($query) use ($sources_selected) {
-                    $query->whereIn('source_id', $sources_selected);
-                }
-            ]);
+            });
         }
 
         if (isset($request->format)) {
@@ -321,6 +340,35 @@ class LegendController extends Controller
                 $link->source_id = $source;
                 $link->save();
             }
+        }
+    }
+
+    /**
+     * Check if a given word fragment is part of 'Unknown' (or any of its other forms).
+     */
+    public function unknown(string $fragment, bool $is_feminine) {
+        $fragment = mb_strtolower($fragment, 'UTF-8');
+        $lan = Session::get('locale') ?? 'lv';
+
+        if ($lan == 'lv') {
+            if ($is_feminine) {
+                $suffix = 'a';
+            } else {
+                $suffix = 's';
+            }
+            if (str_contains('nezinām'.$suffix, $fragment) || str_contains('nezinam'.$suffix, $fragment)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if ($lan == 'en') {
+            if (str_contains('Unknown', $fragment) || str_contains('unknown', $fragment)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
     }
 }
