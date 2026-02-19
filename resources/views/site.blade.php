@@ -5,7 +5,7 @@
     <!-- Metadata -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> @yield('title') | {{ __('site.title_webpage') }}</title>
+    <title> @yield('title')</title>
     <!-- Stylesheets -->
     <link href="{{ asset('css/site.css') }}" rel="stylesheet">
     @yield('stylesheets')
@@ -23,9 +23,10 @@
         <header>
             <nav id="nav-bar">
                 <div id="main-links">
-                    <a id="home-link" class="nav-link" href="{{ route('home') }}">{{ __('site.title_webpage') }}</a>
+                    <a id="home-link" class="nav-link" href="{{ route('home') }}">{{ __('site.title_map') }}</a>
                     <span class="divider">&nbsp;|&nbsp;</span>
-                    <a id="contents-link" class="nav-link" href="{{ route('navigation.contents') }}">{{ __('site.title_contents') }}</a>
+                    <a id="contents-link" class="nav-link" href="{{ route('navigation.contents') }}">{{ __('site.title_contents') }}</a><span class="divider">&nbsp;|&nbsp;</span>
+                    <a id="contents-link" class="nav-link" href="{{ route('about') }}">{{ __('site.title_about') }}</a>
                 </div>
                 <div id="resource-links">
                     @if(Auth::check())

@@ -83,8 +83,9 @@
         <button class="resource-button" type="submit">{{ __('site.button_filter') }}</button>
     </form>
     <div id="information">
-        <p>{{ __('site.text_information_1') }}</p>
-        <p>{{ __('site.text_information_2') }}</p>
+        @foreach(__('site.information_home') as $paragraph)
+        <p>{{ $paragraph }}</p>
+        @endforeach
     </div>
 @endsection
 

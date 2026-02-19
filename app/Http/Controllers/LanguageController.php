@@ -23,4 +23,11 @@ class LanguageController extends Controller
         }
         return back();
     }
+
+    /**
+     * Shows page's "About" text.
+     */
+    public function about() {
+        return view('about');
+    }
 }

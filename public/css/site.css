@@ -60,10 +60,10 @@ td {
     padding: 4px;
 }
 
-td > a {
+td > a, .external-link {
     color: var(--text-color-dark);
 }
-td > a:hover {
+td > a:hover, .external-link:hover {
     color: var(--text-color-light);
     text-decoration: underline;
 }
@@ -260,11 +260,6 @@ footer {
 #home-select > * {
     padding: 4px;
     margin: auto;
-}
-
-#information {
-    padding: 8px 16px;
-    font-size: 16px;
 }
 
 /* Table of contents rules. */
@@ -586,4 +581,18 @@ li {
 .button-group {
     display: flex;
     justify-content: space-between;
+}
+
+/* Information page rules */
+#information {
+    padding: 8px 16px 0px 16px;
+}
+#about, #dataset, #contacts {
+    padding-bottom: 4px;
+    font-size: 16px;
+}
+
+.logo {
+    max-height: 100px;
+    padding: 8px;
 }

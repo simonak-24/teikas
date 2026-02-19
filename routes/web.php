@@ -16,6 +16,7 @@ Route::prefix('/{lang}')->group(function () {
     Route::get('/chapters', [LegendController::class, 'contents'])->name('navigation.contents');
     Route::get('/chapters/{chapter}', [LegendController::class, 'chapter'])->name('navigation.chapter');
     Route::get('/chapters/{chapter}/subchapters/{subchapter}', [LegendController::class, 'subchapter'])->name('navigation.subchapter');
+    Route::get('/about', [LanguageController::class, 'about'])->name('about');
 
     // Collector routes.
     Route::get('/collectors', [CollectorController::class, 'index'])->name('collectors.index');
