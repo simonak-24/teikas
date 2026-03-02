@@ -45,9 +45,9 @@
         <tr>
             <td><b><label for="gender">{{ __('resources.person_gender') }}: </label>
             <td><select id="gender" name="gender">
-                <option value="M" {{ old('gender', $collector->gender) == "M" ? 'selected' : '' }}>{{ __('resources.person_man') }}</option>
-                <option value="F" {{ old('gender', $collector->gender)== "F" ? 'selected' : '' }}>{{ __('resources.person_woman') }}</option>
-                <option value="?" {{ old('gender', $collector->gender) == "?" ? 'selected' : '' }}>{{ __('resources.person_unknown') }}</option>
+                <option value="M" {{ old('gender', $collector->gender) == 'M' ? 'selected' : '' }}>{{ __('resources.person_man') }}</option>
+                <option value="F" {{ old('gender', $collector->gender) == 'F' ? 'selected' : '' }}>{{ __('resources.person_woman') }}</option>
+                <option value="?" {{ old('gender', $collector->gender) == '?' ? 'selected' : '' }}>{{ __('resources.person_unknown') }}</option>
             </select>
             @if($errors->has('gender'))<div class="validation-error"> {{ $errors->get('gender')[0] }} </div>@endif</td>
         </tr>

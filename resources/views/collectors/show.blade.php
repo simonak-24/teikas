@@ -27,7 +27,13 @@
         </tr>
         <tr>
             <th>{{ __('resources.person_gender') }}</th>
-            <td>{{ $collector->gender }}</td>
+            <td>@if($collector->gender == 'M')
+                {{ __('resources.person_man') }}
+                @elseif($collector->gender == 'F')
+                {{ __('resources.person_woman') }}
+                @else
+                {{ __('resources.person_unknown') }}
+                @endif</td>
         </tr>
         <tr>
             <th>{{ __('site.external-link-garamantas') }}</th>

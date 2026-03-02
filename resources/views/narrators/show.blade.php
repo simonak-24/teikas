@@ -27,7 +27,13 @@
         </tr>
         <tr>
             <th>{{ __('resources.person_gender') }}</th>
-            <td>{{ $narrator->gender }}</td>
+            <td>@if($narrator->gender == 'M')
+                {{ __('resources.person_man') }}
+                @elseif($narrator->gender == 'F')
+                {{ __('resources.person_woman') }}
+                @else
+                {{ __('resources.person_unknown') }}
+                @endif</td>
         </tr>
         <tr>
             <th>{{ __('site.external-link-garamantas') }}</th>
