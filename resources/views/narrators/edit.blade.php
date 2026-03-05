@@ -14,7 +14,9 @@
     <div id="heading">
         @if($exists)
         <h2><a class="return-link" href="{{ route('narrators.show', $narrator->id) }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.title_edit') }}</h2>
+        @if($narrator->id != 1)
         <button class="resource-button" onclick="openDeletePopup()">{{ __('site.button_delete') }}</button>
+        @endif
         @else
         <h2><a class="return-link" href="{{ route('narrators.index') }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.button_create') }}</h2>
         @endif

@@ -47,6 +47,21 @@ class DatabaseSeeder extends Seeder
         }
         fclose($seed_file);
 
+        // Adds unknown collector / narrator / place.
+        Collector::create([
+            'fullname' => 'Nezināms',
+            'gender' => null,
+        ]);
+        Narrator::create([
+            'fullname' => 'Nezināms',
+            'gender' => null,
+        ]);
+        Place::create([
+            'name' => 'Nezināma',
+            'latitude' => (double)0,
+            'longitude' => (double)0,
+        ]);
+
         // Seeds the database using the original master table.
         $seed_file = fopen(base_path("database/data/master_table.csv"),"r");
         $line = fgetcsv($seed_file);
@@ -89,19 +104,19 @@ class DatabaseSeeder extends Seeder
             if (DB::table('legends')->where('identifier', $line[0])->doesntExist()) {
                 $collector = DB::table('collectors')->where('fullname', $line[6])->first();
                 if (empty($collector)) {
-                    $collector_id = null;
+                    $collector_id = 1;
                 } else {
                     $collector_id = $collector->id;
                 }
                 $narrator = DB::table('narrators')->where('fullname', $line[8])->first();
                 if (empty($narrator)) {
-                    $narrator_id = null;
+                    $narrator_id = 1;
                 } else {
                     $narrator_id = $narrator->id;
                 }
                 $place = DB::table('places')->where('name', $line[14])->first();
                 if (empty($place)) {
-                    $place_id = null;
+                    $place_id = 1;
                 } else {
                     $place_id = $place->id;
                 }

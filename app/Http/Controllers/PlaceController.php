@@ -130,6 +130,7 @@ class PlaceController extends Controller
      */
     public function destroy(string $id)
     {
+        if ($id == 1) { return back(); }
         $place = Place::find($id);
         if (!$place) {
             return redirect()->route('places.index')->with('not-found', __('resources.none_single'));

@@ -45,6 +45,16 @@
             $('.select2-place').select2({
                 data: places_data
             });
+            
+            // Set default values to "Unknown" if creating new resource.
+            if (!<?=($exists)?>) {
+                $(".select2-collector").val(1);
+                $(".select2-collector").trigger('change');
+                $(".select2-narrator").val(1);
+                $(".select2-narrator").trigger('change');
+                $(".select2-place").val(1);
+                $(".select2-place").trigger('change');
+            }
 
             var sources_search = <?=($sources_search)?>;
             var sources_data = [];
@@ -144,7 +154,6 @@
         <tr>
             <td><b><label for="collector_id">{{ __('resources.legend_collector') }}: </label></b></td>
             <td><select id="collector_id" name="collector_id" class="select2-collector">
-                <option value="" selected>{{ __('resources.person_unidentified') }}</option>
                 @foreach ($collectors as $collector)
                     <option value="{{ $collector->id }}" {{ $collector->id == old('collector_id', $legend->collector_id) ? 'selected' : '' }}>
                         {{ $collector->fullname }}
@@ -155,7 +164,6 @@
         <tr>
             <td><b><label for="narrator_id">{{ __('resources.legend_narrator') }}: </label></b></td>
             <td><select id="narrator_id" name="narrator_id" class="select2-narrator">
-                <option value="" selected>{{ __('resources.person_unidentified') }}</option>
                 @foreach ($narrators as $narrator)
                     <option value="{{ $narrator->id }}" {{ $narrator->id == old('narrator_id', $legend->narrator_id) ? 'selected' : '' }}>
                         {{ $narrator->fullname }}
@@ -166,10 +174,9 @@
         <tr>
             <td><b><label for="place_id">{{ __('resources.legend_place') }}: </label></b></td>
             <td><select id="place_id" name="place_id" class="select2-place">
-                <option value="" selected>{{ __('resources.place_unidentified') }}</option>
                 @foreach ($places as $place)
                     <option value="{{ $place->id }}" {{ $place->id == old('place_id', $legend->place_id) ? 'selected' : '' }}>
-                        {{ $place->name }} ({{ $place->latitude }}, {{ $place->longitude }})
+                        {{ $place->name }} @if(isset($place->latitude) and $place->latitude != 0) ({{ $place->latitude }}, {{ $place->longitude }}) @endif
                     </option>
                 @endforeach
             </select></td>

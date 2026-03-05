@@ -38,34 +38,15 @@ class LegendController extends Controller
 
         if ($request->collector != '') {
             $collectors = Collector::orderBy('fullname')->where('fullname', 'LIKE', '%'.$request->collector.'%')->pluck('id');
-            if ($this->unknown($request->collector, False)) {
-                $legends = $legends->where(function(Builder $query) use ($collectors) {
-                    return $query->whereIn('collector_id', $collectors)->orWhereNull('collector_id');
-                });
-                $collector_null = True;
-            } else {
-                $legends = $legends->whereIn('collector_id', $collectors);
-            }
+            $legends = $legends->whereIn('collector_id', $collectors);
         }
         if ($request->narrator != '') {
             $narrators = Narrator::orderBy('fullname')->where('fullname', 'LIKE', '%'.$request->narrator.'%')->pluck('id');
-            if ($this->unknown($request->narrator, False)) {
-                $legends = $legends->where(function(Builder $query) use ($narrators) {
-                    return $query->whereIn('narrator_id', $narrators)->orWhereNull('narrator_id');
-                });
-            } else {
-                $legends = $legends->whereIn('narrator_id', $narrators);
-            }
+            $legends = $legends->whereIn('narrator_id', $narrators);
         }
         if ($request->place != '') {
             $places = Place::orderBy('name')->where('name', 'LIKE', '%'.$request->place.'%')->pluck('id');
-            if ($this->unknown($request->place, True)) {
-                $legends = $legends->where(function(Builder $query) use ($places) {
-                    return $query->whereIn('place_id', $places)->orWhereNull('place_id');
-                });
-            } else {
-                $legends = $legends->whereIn('place_id', $places);
-            }
+            $legends = $legends->whereIn('place_id', $places);
         }
 
         if (isset($request->sources)) {
@@ -126,24 +107,10 @@ class LegendController extends Controller
     public function create()
     {
         $legend = new Legend();
-
-        $collectors = Collector::all()->sortBy('fullname');
-        $collectors_search = json_encode($collectors->toArray());
-        $narrators = Narrator::all()->sortBy('fullname');
-        $narrators_search = json_encode($narrators->toArray());
-        $places = Place::all()->sortBy('name');
-        $places_search = json_encode($places->toArray());
-        $sources = Source::all()->sortBy('identifier');
-        $sources_search = json_encode($sources->toArray());
-
-        $selected = array();
-        foreach ($legend->sources as $source) {
-            array_push($selected, $source->source->id);
-        }
-        $sources_selected = $selected;
-
         $exists = False;
-        return view('legends.edit', compact('legend', 'collectors', 'collectors_search', 'narrators', 'narrators_search', 'places', 'places_search', 'sources', 'sources_search', 'sources_selected', 'exists'));
+        $compacted = $this->selectables($legend, $exists);
+        
+        return view('legends.edit', $compacted);
     }
 
     /**
@@ -184,24 +151,10 @@ class LegendController extends Controller
         if (!$legend) {
             return redirect()->route('legends.index')->with('not-found', __('resources.none_single'));
         }
-
-        $collectors = Collector::all()->sortBy('fullname');
-        $collectors_search = json_encode($collectors->toArray());
-        $narrators = Narrator::all()->sortBy('fullname');
-        $narrators_search = json_encode($narrators->toArray());
-        $places = Place::all()->sortBy('name');
-        $places_search = json_encode($places->toArray());
-        $sources = Source::all()->sortBy('identifier');
-        $sources_search = json_encode($sources->toArray());
-
-        $selected = array();
-        foreach ($legend->sources as $source) {
-            array_push($selected, $source->source->id);
-        }
-        $sources_selected = $selected;
-        
         $exists = True;
-        return view('legends.edit', compact('legend', 'collectors', 'collectors_search', 'narrators', 'narrators_search', 'places', 'places_search', 'sources', 'sources_search', 'sources_selected', 'exists'));
+        $compacted = $this->selectables($legend, $exists);
+
+        return view('legends.edit', $compacted);
     }
 
     /**
@@ -344,31 +297,26 @@ class LegendController extends Controller
     }
 
     /**
-     * Check if a given word fragment is part of 'Unknown' (or any of its other forms).
+     * Prepares data for use in the edit view's select elements.
      */
-    public function unknown(string $fragment, bool $is_feminine) {
-        $fragment = mb_strtolower($fragment, 'UTF-8');
-        $lan = Session::get('locale') ?? 'lv';
+    public function selectables(Legend $legend, bool $exists) {
+        $collectors = Collector::all()->sortBy('fullname');
+        $collectors_search = json_encode($collectors->toArray());
+        $narrators = Narrator::all()->sortBy('fullname');
+        $narrators_search = json_encode($narrators->toArray());
+        $places = Place::all()->sortBy('name');
+        $places_search = json_encode($places->toArray());
+        $sources = Source::all()->sortBy('identifier');
+        $sources_search = json_encode($sources->toArray());
 
-        if ($lan == 'lv') {
-            if ($is_feminine) {
-                $suffix = 'a';
-            } else {
-                $suffix = 's';
-            }
-            if (str_contains('nezinām'.$suffix, $fragment) || str_contains('nezinam'.$suffix, $fragment)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else if ($lan == 'en') {
-            if (str_contains('Unknown', $fragment) || str_contains('unknown', $fragment)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
+        $selected = array();
+        foreach ($legend->sources as $source) {
+            array_push($selected, $source->source->id);
         }
+        $sources_selected = $selected;
+
+        if($exists) { $exists = 1; } else { $exists = 0; };
+        $compacted = compact('legend', 'collectors', 'collectors_search', 'narrators', 'narrators_search', 'places', 'places_search', 'sources', 'sources_search', 'sources_selected', 'exists');
+        return $compacted;
     }
 }

@@ -132,6 +132,7 @@ class CollectorController extends Controller
      */
     public function destroy(string $id)
     {
+        if ($id == 1) { return back(); }
         $collector = Collector::find($id);
         if (!$collector) {
             return redirect()->route('collectors.index')->with('not-found', __('resources.none_single'));

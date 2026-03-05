@@ -132,6 +132,7 @@ class NarratorController extends Controller
      */
     public function destroy(string $id)
     {
+        if ($id == 1) { return back(); }
         $narrator = Narrator::find($id);
         if (!$narrator) {
             return redirect()->route('narrators.index')->with('not-found', __('resources.none_single'));

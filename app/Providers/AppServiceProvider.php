@@ -3,6 +3,12 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\Collector;
+use App\Models\Narrator;
+use App\Models\Place;
+use App\Observers\CollectorObserver;
+use App\Observers\NarratorObserver;
+use App\Observers\PlaceObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +30,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Collector::observe(CollectorObserver::class);
+        Narrator::observe(NarratorObserver::class);
+        Place::observe(PlaceObserver::class);
     }
 }

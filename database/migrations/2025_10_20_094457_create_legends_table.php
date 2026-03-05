@@ -23,9 +23,9 @@ return new class extends Migration
             $table->string('chapter_de', 100);
             $table->tinyInteger('volume');
             $table->text('comments')->nullable();
-            $table->foreignId('collector_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('narrator_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('place_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('collector_id')->nullable()->default(1);
+            $table->foreignId('narrator_id')->nullable()->default(1);
+            $table->foreignId('place_id')->nullable()->default(1);
             $table->string('external_identifier', 7)->nullable();
         });
     }
