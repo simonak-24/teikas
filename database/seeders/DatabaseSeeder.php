@@ -36,10 +36,70 @@ class DatabaseSeeder extends Seeder
         $line = fgetcsv($seed_file);
         $line = fgetcsv($seed_file);
         while ($line != NULL) {
+            $temp_title = $line[0];
+            $temp_author = "";
+
+            // Finds and separates authors from titles (which are mostly in quotes, exceptions are taken into account).
+            $quote_pos = mb_strpos($line[0], '"');
+            if (!($quote_pos === false)) {
+                if ($quote_pos != 0) {
+                    $temp_author = "";
+                    $temp_author = mb_substr($line[0], 0, $quote_pos-1);
+                    $temp_title = "";
+                    $temp_title = mb_substr($line[0], $quote_pos+1, mb_strlen($line[0])-mb_strlen($temp_author)-2);
+                    $temp_title = trim($temp_title, "\"");
+                }
+            }
+            if ($temp_author == "Strenču mēnešraksts" || $temp_author == "Žurnāls" || $temp_author == "Jelgavas Latviešu biedrības Rakstniecības nodaļas rakstu krājums") {
+                $temp_title = $line[0];
+                $temp_author = "";
+            }
+            if ($temp_author == "Lerhis-Puškaitis, A." && mb_strpos($temp_title, '7')) {
+                $temp_title = mb_substr($line[0], $quote_pos);
+            }
+            if ($temp_author == "Aizsils Arvīds") {
+                $temp_title = mb_substr($line[0], $quote_pos+1, 22);
+            }
+
+            // Finds and copies authors from collections (indicated by the usage of "krājums").
+            $collection_pos = mb_strpos($line[0], 'krājums');
+            $biedriba_pos = mb_strpos($line[0], 'biedrības');
+            $kulturas_pos = mb_strpos($line[0], 'ultūra');
+            if (!($collection_pos === false) && $biedriba_pos === false && $kulturas_pos === false) {
+                $temp = trim($line[0]);
+                $temp_names = explode(" ", trim(mb_substr($temp, 0, mb_strlen($temp) - mb_strlen(" krājums"), "utf-8")));
+                if ($temp_names[0] == "Bērzkalnes") {
+                    $temp_author = "Bērzkalne Anna";
+                } else if ($temp_names[0] == "Brīvzemnieks") {
+                    $temp_author = "Brīvzemnieks Fricis";
+                } else if ($temp_names[0] == "Tabines") {
+                    $temp_author = "Tabine Rozālija";
+                } else {
+                    $temp_author = "";
+                    foreach ($temp_names as $name) {
+                        if ($name != "") {
+                            if (!(strpos($name, 'Mārtiņa') === false) || !(strpos($name, 'Celmiņa') === false)|| !(strpos($name, 'Kundziņa') === false)) {
+                                $temp_author = $temp_author.mb_substr($name, 0, mb_strlen($name)-1, "utf-8")."š ";
+                            } else if (!(strpos($name, 'ļa') === false)) {
+                                $temp_author = $temp_author.mb_substr($name, 0, mb_strlen($name)-2, "utf-8")."lis ";
+                            } else if (!(strpos($name, 'ņa') === false)) {
+                                $temp_author = $temp_author.mb_substr($name, 0, mb_strlen($name)-2, "utf-8")."nis ";
+                            } else if (!(strpos($name, '.') === false)) {
+                                $temp_author = $temp_author.$name." ";
+                            } else {
+                                $temp_author = $temp_author.mb_substr($name, 0, mb_strlen($name)-1, "utf-8")."s ";
+                            }
+                        }
+                    }
+                    $temp_author = mb_substr($temp_author, 0, mb_strlen($temp_author)-1, "utf-8");
+                    // add "Pēters" => "Pēteris"
+                }
+            }
+
             Source::create([
                 'identifier' => $line[1],
-                'title' => $line[0],
-                'author'=> null,
+                'title' => $temp_title,
+                'author'=> $temp_author,
             ]);
             $sources[$line[1]] = $id;
             $id = $id + 1;
