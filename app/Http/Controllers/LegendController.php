@@ -11,6 +11,7 @@ use App\Models\Source;
 use App\Models\LegendSource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class LegendController extends Controller
 {
@@ -32,8 +33,13 @@ class LegendController extends Controller
         if ($request->title != '') {
             $legends = $legends->where('title_lv', 'LIKE', '%'.$request->title.'%');
         }
+        
+        $text_frag = mb_strtolower($request->text);                                                                                                         // Stems the searched fragment for more varied results.
+        $replacements = array("ā"=>"a", "č"=>"c", "ē"=>"e", "ģ"=>"g", "ī"=>"i", "ķ"=>"k", "ļ"=>"l", "ņ"=>"n", "ŗ"=>"r", "š"=>"s", "ū"=>"u", "ž"=>"z");
+        foreach ($replacements as $search => $replace) { $text_frag = mb_eregi_replace($search, $replace, $text_frag); }
+        
         if ($request->text != '') {
-            $legends = $legends->where('text_lv', 'LIKE', '%'.$request->text.'%');
+            $legends = $legends->where('text_lv', 'LIKE', '%'.$text_frag.'%');
         }
 
         if ($request->collector != '') {
@@ -98,6 +104,29 @@ class LegendController extends Controller
         }
 
         $paginator = $legends->paginate(app('items_per_page'));
+        if ($request->text != '') {                             // Highlights searched phrase in text if one is given.
+            foreach ($paginator as $legend) {
+                $text_lowercase = mb_strtolower($legend->text_lv);
+                foreach ($replacements as $search => $replace) { $text_lowercase = mb_eregi_replace($search, $replace, $text_lowercase); }
+                $str_pos = mb_strpos($text_lowercase, $text_frag);
+                $border_limit = intval((100 - mb_strlen($text_frag)) / 2);
+                if(mb_strlen($legend->text_lv) > 100) {
+                    if ($str_pos < $border_limit) {
+                        $legend->text = mb_substr($legend->text_lv, 0, $str_pos)."<b>".mb_substr($legend->text_lv, $str_pos, mb_strlen($text_frag))."</b>".mb_substr($legend->text_lv, $str_pos + mb_strlen($text_frag), 100 - ($str_pos + mb_strlen($text_frag)))."...";
+                    } else if ($str_pos > mb_strlen($legend->text_lv) - $border_limit) {
+                        $legend->text = "...".mb_substr($legend->text_lv, mb_strlen($legend->text_lv) - 100, $str_pos - (mb_strlen($legend->text_lv) - 100))."<b>".mb_substr($legend->text_lv, $str_pos, mb_strlen($text_frag))."</b>".mb_substr($legend->text_lv, $str_pos + mb_strlen($text_frag));
+                    } else {
+                        $legend->text = "...".mb_substr($legend->text_lv, $str_pos - $border_limit, $border_limit)."<b>".mb_substr($legend->text_lv, $str_pos, mb_strlen($text_frag))."</b>".mb_substr($legend->text_lv, $str_pos + mb_strlen($text_frag), 100 - ($border_limit + mb_strlen($text_frag)))."...";
+                    }
+                } else {
+                    $legend->text = mb_substr($legend->text_lv, 0, $str_pos)."<b>".mb_substr($legend->text_lv, $str_pos, mb_strlen($text_frag))."</b>".mb_substr($legend->text_lv, $str_pos + mb_strlen($text_frag));
+                }
+            }
+        } else {
+            foreach ($paginator as $legend) {
+                $legend->text = Str::limit($legend->text_lv, 100);
+            }
+        }
         return view('legends.index', compact('paginator'));
     }
 

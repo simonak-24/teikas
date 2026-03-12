@@ -53,7 +53,7 @@
                 <td class="center-cell">{{ $legend->volume }}</td>
                 <td><a href="{{ route('navigation.chapter', urlencode($legend->chapter_lv)) }}">{{ $legend->chapter_lv}}</a></td>
                 <td><a href="{{ route('navigation.subchapter', [urlencode($legend->chapter_lv), urlencode($legend->title_lv)]) }}">{{ $legend->title_lv }}</a></td>
-                <td>{{ Str::limit($legend->text_lv, 100) }}</td>
+                <td>{!! $legend->text !!}</td>
                 @if(isset($legend->collector_id))
                     <td><a href="{{ route('collectors.show', $legend->collector_id) }}">{{ $legend->collector->fullname }}</a></td>
                 @else
