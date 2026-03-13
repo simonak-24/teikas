@@ -20,7 +20,59 @@ class LegendController extends Controller
      */
     public function index(Request $request)
     {
-        $legends = Legend::orderBy('identifier');
+        $sort = array();
+        if (isset($request->sort)) {
+            if ($request->sort == "cl") {
+                if ($request->collector_sort == urlencode("⭥")) { 
+                    $sort["collector"] = urlencode("⭡"); 
+                    $legends = Legend::join('collectors', 'legends.collector_id', '=', 'collectors.id')->orderBy('collectors.fullname', 'asc');
+                } else if ($request->collector_sort == urlencode("⭡")) {
+                    $sort["collector"] = urlencode("⭣");
+                    $legends = Legend::join('collectors', 'legends.collector_id', '=', 'collectors.id')->orderBy('collectors.fullname', 'desc');
+                } else {
+                    $sort["collector"] = urlencode("⭥");
+                    $legends = Legend::orderBy('identifier');
+                }
+                $sort["narrator"] = urlencode("⭥");
+                $sort["place"] = urlencode("⭥");
+                $sort["sort"] = "cl";
+            } else if ($request->sort == "nr") {
+                $sort["collector"] = urlencode("⭥");
+                if ($request->narrator_sort == urlencode("⭥")) { 
+                    $sort["narrator"] = urlencode("⭡"); 
+                    $legends = Legend::join('narrators', 'legends.narrator_id', '=', 'narrators.id')->orderBy('narrators.fullname', 'asc');
+                } else if ($request->narrator_sort == urlencode("⭡")) {
+                    $sort["narrator"] = urlencode("⭣");
+                    $legends = Legend::join('narrators', 'legends.narrator_id', '=', 'narrators.id')->orderBy('narrators.fullname', 'desc');
+                } else {
+                    $sort["narrator"] = urlencode("⭥");
+                    $legends = Legend::orderBy('identifier');
+                }
+                $sort["place"] = urlencode("⭥");
+                $sort["sort"] = "nr";
+            } else {
+                $sort["collector"] = urlencode("⭥");
+                $sort["narrator"] = urlencode("⭥");
+                if ($request->place_sort == urlencode("⭥")) { 
+                    $sort["place"] = urlencode("⭡"); 
+                    $legends = Legend::join('places', 'legends.place_id', '=', 'places.id')->orderBy('places.name', 'asc');
+                } else if ($request->place_sort == urlencode("⭡")) {
+                    $sort["place"] = urlencode("⭣");
+                    $legends = Legend::join('places', 'legends.place_id', '=', 'places.id')->orderBy('places.name', 'desc');
+                } else {
+                    $sort["place"] = urlencode("⭥");
+                    $legends = Legend::orderBy('identifier');
+                }
+                $sort["sort"] = "pl";
+            }
+        } else {
+            $sort["collector"] = urlencode("⭥");
+            $sort["narrator"] = urlencode("⭥");
+            $sort["place"] = urlencode("⭥");
+            $sort["sort"] = "";
+            $legends = Legend::orderBy('identifier');
+        }
+
         if ($request->identifier != '') {
             $legends = $legends->where('identifier', 'LIKE', '%'.$request->identifier.'%');
         }
@@ -127,7 +179,7 @@ class LegendController extends Controller
                 $legend->text = Str::limit($legend->text_lv, 100);
             }
         }
-        return view('legends.index', compact('paginator'));
+        return view('legends.index', compact('paginator', 'sort'));
     }
 
     /**

@@ -4,6 +4,12 @@
 
 @section('scripts')
     <script src="{{ asset('js/hidden-submit.js') }}"></script>
+    <script>
+        function submitSort(id) {
+            document.getElementById("sort").value = id;
+            document.getElementById("search-button").click();
+        }
+    </script>
 @endsection
 
 @section('content')
@@ -31,9 +37,9 @@
                 <th>{{ __('resources.legend_chapter-lv') }}</th>
                 <th>{{ __('resources.legend_title-lv') }}</th>
                 <th>{{ __('resources.legend_preview') }}</th>
-                <th>{{ __('resources.legend_collector') }}</th>
-                <th>{{ __('resources.legend_narrator') }}</th>
-                <th>{{ __('resources.legend_place') }}</th>
+                <th><div class="sort-cell"><div>{{ __('resources.legend_collector') }}</div><div><a id="cl" class="sort-arrow" href="#" onclick="submitSort(this.id)">{{ urldecode($sort['collector']) }}</a></div></div></th>
+                <th><div class="sort-cell"><div>{{ __('resources.legend_narrator') }}</div><div><a id="nr" class="sort-arrow"  href="#" onclick="submitSort(this.id)">{{ urldecode($sort['narrator']) }}</a></div></div></th>
+                <th><div class="sort-cell"><div>{{ __('resources.legend_place') }}</div><div><a id="pl" class="sort-arrow"  href="#" onclick="submitSort(this.id)">{{ urldecode($sort['place']) }}</a></div></div></th>
             </tr>
             <tr>
                 <form id="search-form" action="{{ route('legends.index') }}" method="GET">
@@ -45,6 +51,11 @@
                     <td class="search-cell"><input type="text" id="search-collector" name="collector" onblur="submitForm()" value="{{ old('collector', request()->input('collector')) }}"></td>
                     <td class="search-cell"><input type="text" id="search-narrator" name="narrator" onblur="submitForm()" value="{{ old('narrator', request()->input('narrator')) }}"></td>
                     <td class="search-cell"><input type="text" id="search-place" name="place" onblur="submitForm()" value="{{ old('place', request()->input('place')) }}"></td>
+
+                    <input type="hidden" id="collector_sort" name="collector_sort" value="{{ $sort['collector'] }}">
+                    <input type="hidden" id="narrator_sort" name="narrator_sort" value="{{ $sort['narrator'] }}">
+                    <input type="hidden" id="places_sort" name="place_sort" value="{{ $sort['place'] }}">
+                    <input type="hidden" id="sort" name="sort" value="{{ $sort['sort'] }}">
                 </form>
             </tr>
             @foreach ($paginator as $legend)

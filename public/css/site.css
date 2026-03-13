@@ -60,10 +60,10 @@ td {
     padding: 4px;
 }
 
-td > a, .external-link {
+td > a, .external-link, .sort-arrow {
     color: var(--text-color-dark);
 }
-td > a:hover, .external-link:hover {
+td > a:hover, .external-link:hover, .sort-arrow:hover {
     color: var(--text-color-light);
     text-decoration: underline;
 }
@@ -463,6 +463,13 @@ li {
 
 #search-button {
     display: none;
+}
+
+.sort-cell {
+    padding: 0px 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Resource display page rules. */
