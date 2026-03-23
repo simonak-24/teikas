@@ -74,7 +74,7 @@ class PlaceController extends Controller
     {
         $place = new Place();
         $exists = False;
-        return view('places.create', compact('place', 'exists'));
+        return view('places.edit', compact('place', 'exists'));
     }
 
     /**

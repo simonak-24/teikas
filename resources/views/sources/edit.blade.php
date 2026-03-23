@@ -16,7 +16,7 @@
         <h2><a class="return-link" href="{{ route('sources.show', $source->id) }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.title_edit') }}</h2>
         <button class="resource-button" onclick="openDeletePopup()">{{ __('site.button_delete') }}</button>
         @else
-        <form action="{{ route('sources.store') }}" method="POST">
+        <h2><a class="return-link" href="{{ route('sources.index') }}">&nbsp;<&nbsp;</a>&nbsp;{{ __('site.button_create') }}</h2>
         @endif
     </div>
 
