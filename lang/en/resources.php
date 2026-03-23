@@ -13,10 +13,12 @@ return [
     */
 
     'collector_all' => 'Collectors',
+    'collector_legends' => 'Collected Legends',
     'collector_count' => 'Number of Legends Collected',
     'collector_delete-multiple' => 'This collector is tied to :count folk legends - when deleted, these legends\' collector will be set as \'Unknown\'.',
     'collector_delete-single' => 'This collector is tied to a folk legend - when deleted, this legend\'s collector will be set as \'Unknown\'.',
     'narrator_all' => 'Narrators',
+    'narrator_legends' => 'Narrated Legends',
     'narrator_count' => 'Number of Legends Narrated',
     'narrator_delete-multiple' => 'This narrator is tied to :count folk legends - when deleted, these legends\' narrator will be set as \'Unknown\'.',
     'narrator_delete-single' => 'This collector is tied to a folk legend - when deleted, this legend\'s narrator will be set as \'Unknown\'.',
@@ -29,6 +31,7 @@ return [
     'person_unidentified' => 'Unknown',
 
     'source_all' => 'Sources',
+    'source_legends' => 'Legends Included',
     'source_count' => 'Number of Legends Included',
     'source_delete-multiple' => 'This source is tied to :count folk legends - when deleted, the source will be removed from these legends.',
     'source_delete-single' => 'This source is tied to a folk legend - when deleted, the source will be removed from this legends.',
@@ -37,6 +40,7 @@ return [
     'source_author' => 'Author(s)',
 
     'place_all' => 'Places',
+    'place_legends' => 'Related Legends',
     'place_count' => 'Number of Related Legends',
     'place_delete-multiple' => 'This place is tied to :count folk legends - when deleted, these legends\' place will be set as \'Unknown\'.',
     'place_delete-single' => 'This place is tied to a folk legend - when deleted, this legend\'s place will be set as \'Unknown\'.',

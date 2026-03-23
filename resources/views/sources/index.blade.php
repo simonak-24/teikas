@@ -53,7 +53,7 @@
         </table>
 
         <div id="pagination-section">
-        @include('navigation.pagination')
+        @include('partials.pagination')
         @if(Auth::check())
         <form action="{{ route('sources.create') }}">
             <button class="resource-button" type="submit">{{ __('site.button_create') }}</button>

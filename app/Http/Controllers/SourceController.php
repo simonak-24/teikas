@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Source;
+use App\Services\SortService;
 
 class SourceController extends Controller
 {
+    protected $sortService;
+
+    public function __construct(SortService $sortService)
+    {
+        $this->sortService = $sortService;
+    }
+
     /**
      * Filter and display all sources, download a CSV file of the results (if the format is specified).
      */
@@ -77,19 +85,27 @@ class SourceController extends Controller
     /**
      * Display the specified source.
      */
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
         $source = Source::find($id);
         if (!$source) {
             return redirect()->route('sources.index')->with('not-found', __('resources.none_single'));
         }
+        $item = $source;
+
+        $request->origin = "source";
+        $request->item_id = $id;
+        $sorted = $this->sortService->sort($request);
+        $paginator = $sorted['legends']->paginate(app('items_per_page'));
+        $sort = $sorted['sort'];
 
         // Calculates the index page the specified source is on (needed for a return link to the index).
         $source_ids = Source::all()->toQuery()->orderBy('identifier')->pluck('id')->toArray();
         $i = array_search($source->id, $source_ids);
         $page = intval($i / 20) + 1;
 
-        return view('sources.show', compact('source', 'page'));
+        $paginator = $this->sortService->text($paginator, isset($request->text) ? $request->text : '');
+        return view('sources.show', compact('source', 'page', 'paginator', 'sort', 'item'));
     }
 
     /**

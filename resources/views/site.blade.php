@@ -15,6 +15,7 @@
             document.getElementById("error-message").style.display = "none";
         }
     </script>
+    <script src="{{ asset('js/hidden-submit.js') }}"></script>
     @yield('scripts')
 </head>
 

@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Collector;
+use App\Services\SortService;
 
 class CollectorController extends Controller
 {
+    protected $sortService;
+
+    public function __construct(SortService $sortService)
+    {
+        $this->sortService = $sortService;
+    }
+
     /**
      * Filter and display all collectors, download a CSV file of the results (if the format is specified).
      */
@@ -84,19 +92,27 @@ class CollectorController extends Controller
     /**
      * Display the specified collector.
      */
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
         $collector = Collector::find($id);
         if (!$collector) {
             return redirect()->route('collectors.index')->with('not-found', __('resources.none_single'));
         }
+        $item = $collector;
+
+        $request->origin = "collector";
+        $request->item_id = $id;
+        $sorted = $this->sortService->sort($request);
+        $paginator = $sorted['legends']->paginate(app('items_per_page'));
+        $sort = $sorted['sort'];
         
         // Calculates the index page the specified collector is on (needed for a return link to the index).
         $collector_ids = Collector::all()->toQuery()->orderBy('fullname')->pluck('id')->toArray();
         $i = array_search($collector->id, $collector_ids);
         $page = intval($i / 20) + 1;
 
-        return view('collectors.show', compact('collector', 'page'));
+        $paginator = $this->sortService->text($paginator, isset($request->text) ? $request->text : '');
+        return view('collectors.show', compact('collector', 'page', 'paginator', 'sort', 'item'));
     }
 
     /**

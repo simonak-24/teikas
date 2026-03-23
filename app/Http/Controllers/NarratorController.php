@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Narrator;
+use App\Services\SortService;
 
 class NarratorController extends Controller
 {
+    protected $sortService;
+
+    public function __construct(SortService $sortService)
+    {
+        $this->sortService = $sortService;
+    }
+
     /**
      * Filter and display all narrators, download a CSV file of the results (if the format is specified).
      */
@@ -84,19 +92,27 @@ class NarratorController extends Controller
     /**
      * Display the specified narrator.
      */
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
         $narrator = Narrator::find($id);
         if (!$narrator) {
             return redirect()->route('narrators.index')->with('not-found', __('resources.none_single'));
         }
+        $item = $narrator;
+
+        $request->origin = "narrator";
+        $request->item_id = $id;
+        $sorted = $this->sortService->sort($request);
+        $paginator = $sorted['legends']->paginate(app('items_per_page'));
+        $sort = $sorted['sort'];
 
         // Calculates the index page the specified narrator is on (needed for a return link to the index).
         $narrator_ids = Narrator::all()->toQuery()->orderBy('fullname')->pluck('id')->toArray();
         $i = array_search($narrator->id, $narrator_ids);
         $page = intval($i / 20) + 1;
 
-        return view('narrators.show', compact('narrator', 'page'));
+        $paginator = $this->sortService->text($paginator, isset($request->text) ? $request->text : '');
+        return view('narrators.show', compact('narrator', 'page', 'paginator', 'sort', 'item'));
     }
 
     /**

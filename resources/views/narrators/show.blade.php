@@ -2,6 +2,10 @@
 
 @section('title', $narrator->fullname)
 
+@section('scripts')
+    <script src="{{ asset('js/hidden-submit.js') }}"></script>
+@endsection
+
 @section('content')
     <div id="heading">
         <h2>
@@ -49,4 +53,10 @@
         </tr>
     </table>
     <br>
+
+    <h3>{{ __('resources.narrator_legends') }}</h3>
+    @include('partials.table')
+    <div id="pagination-section">
+        @include('partials.pagination')
+    </div>
 @endsection

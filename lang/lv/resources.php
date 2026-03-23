@@ -13,10 +13,12 @@ return [
     */
 
     'collector_all' => 'Pierakstītāji',
+    'collector_legends' => 'Pierakstītās teikas',
     'collector_count' => 'Pierakstīto teiku skaits',
     'collector_delete-multiple' => 'Šis pierakstītājs ir saistīts ar :count teikām - dzēšanas gadījumā šo teiku pierakstītājs tiks iestatīts kā \'Nezināms\'.',
     'collector_delete-single' => 'Šis pierakstītājs ir saistīts ar teiku - dzēšanas gadījumā šīs teikas pierakstītājs tiks iestatīts kā \'Nezināms\'.',
     'narrator_all' => 'Teicēji',
+    'narrator_legends' => 'Stāstītās teikas',
     'narrator_count' => 'Stāstīto teiku skaits',
     'narrator_delete-multiple' => 'Šis teicējs ir saistīts ar :count teikām - dzēšanas gadījumā šo teiku teicējs tiks iestatīts kā \'Nezināms\'.',
     'narrator_delete-single' => 'Šis teicējs ir saistīts ar teiku - dzēšanas gadījumā šīs teikas teicējs tiks iestatīts kā \'Nezināms\'.',
@@ -29,6 +31,7 @@ return [
     'person_unidentified' => 'Nezināms',
 
     'source_all' => 'Avoti',
+    'source_legends' => 'Iekļautās teikas',
     'source_count' => 'Iekļauto teiku skaits',
     'source_delete-multiple' => 'Šis avots ir saistīts ar :count teikām - dzēšanas gadījumā avots tiks noņemts no šīm teikām.',
     'source_delete-single' => 'Šis avots ir saistīts ar teiku - dzēšanas gadījumā avots tiks noņemts no šīs teikas.',
@@ -37,6 +40,7 @@ return [
     'source_author' => 'Autors/-i',
 
     'place_all' => 'Vietas',
+    'place_legends' => 'Saistītās teikas',
     'place_count' => 'Saistīto teiku skaits',
     'place_delete-multiple' => 'Šī vieta ir saistīta ar :count teikām - dzēšanas gadījumā šo teiku pierakstīšanas vieta tiks iestatīta kā \'Nezināma\'.',
     'place_delete-single' => 'Šī vieta ir saistīta ar teiku - dzēšanas gadījumā šīs teikas pierakstīšanas vieta tiks iestatīta kā \'Nezināma\'.',

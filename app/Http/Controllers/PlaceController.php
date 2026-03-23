@@ -6,9 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\Place;
 use App\Models\Legend;
 use Illuminate\Database\Eloquent\Builder;
+use App\Services\SortService;
 
 class PlaceController extends Controller
 {
+    protected $sortService;
+
+    public function __construct(SortService $sortService)
+    {
+        $this->sortService = $sortService;
+    }
+
     /**
      * Filter and display all places, download a CSV file of the results (if the format is specified).
      */
@@ -83,19 +91,27 @@ class PlaceController extends Controller
     /**
      * Display the specified place.
      */
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
         $place = Place::find($id);
         if (!$place) {
             return redirect()->route('places.index')->with('not-found', __('resources.none_single'));
         }
+        $item = $place;
+
+        $request->origin = "place";
+        $request->item_id = $id;
+        $sorted = $this->sortService->sort($request);
+        $paginator = $sorted['legends']->paginate(app('items_per_page'));
+        $sort = $sorted['sort'];
 
         // Calculates the index page the specified place is on (needed for a return link to the index).
         $place_ids = Place::all()->toQuery()->orderBy('name')->pluck('id')->toArray();
         $i = array_search($place->id, $place_ids);
         $page = intval($i / 20) + 1;
 
-        return view('places.show', compact('place', 'page'));
+        $paginator = $this->sortService->text($paginator, isset($request->text) ? $request->text : '');
+        return view('places.show', compact('place', 'page', 'paginator', 'sort', 'item'));
     }
 
     /**
