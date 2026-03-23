@@ -23,6 +23,9 @@ return [
     'title_all' => 'Tabulas',
     'title_about' => 'Par projektu',
 
+    'map_filter' => 'Izvēlēties tēmas, pēc kurām atlasīt teikas:',
+    'map_information' => 'Kartē ir atzīmētas visas pieejamās teikas. Teikām ar nezināmu atrašanās vietu ir rezervēts pelēkais marķieris Rīgas līcī.',
+
     'information_home' => [
         'Pētera Šmita "Latviešu tautas pasakas un teikas" ir 15 sējumu vēstītājfolkloras krājums, līdz šim lielākais, kas publicēts latviešu valodā. Krājums ir ticis tulkots svešvalodās, no kurām viena ir vācu.',
         'Šajā lapā ir piedāvā iepazīt 3586 krājumā publicēto latviešu teiku tekstus (13.-15. sējums), latviski un vāciski.',

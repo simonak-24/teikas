@@ -66,8 +66,9 @@
 
 @section('content')
     <br>
-    <div id="home-map">
-    </div>
+    <div id="home-map"></div>
+    <br>
+    <h3>{{ __('site.map_filter') }}</h3>
     <form id="home-select" action="{{ route('home') }}" method="GET">
         <select id="titles" name="titles[]" class="select2-titles" multiple>
             @foreach ($chapters_titles as $chapter => $titles)
@@ -82,6 +83,8 @@
         </select>
         <button class="resource-button" type="submit">{{ __('site.button_filter') }}</button>
     </form>
+    <p>{{ __('site.map_information') }}</p>
+    <br>
     <div id="information">
         @foreach(__('site.information_home') as $paragraph)
         <p>{{ $paragraph }}</p>

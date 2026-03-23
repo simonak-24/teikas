@@ -23,6 +23,9 @@ return [
     'title_all' => 'Tables',
     'title_about' => 'About',
 
+    'map_filter' => 'Choose topics (subchapters) by which to filter folk legends:',
+    'map_information' => 'All available folk legends are marked on the map. A grey marker in the Gulf of Riga is reserved for folk legends with an unknown place of recording.',
+
     'information_home' => [
         'Peter Schmidt\'s "Latvian Tales and Legends" is a 15 volume collection of folklore, one of the largest published in Latvian to date. The collection has been translated to other languages, one of which being German.',
         'This page offers the exploration of 3586 folk legends published in this collection (Vol. 13-15) in Latvian and German.',
