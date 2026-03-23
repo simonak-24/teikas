@@ -35,7 +35,7 @@ class LegendController extends Controller
         if (isset($request->format)) {
             $filename = 'legends_'.strval(rand()).'.csv';       // To prevent errors when two users attempt to download a file at the same time,
                                                                 // the files are given randomized names, preventing a colision.
-            $columns = [__('resources.legend_identifier'), __('resources.legend_volume'), __('resources.legend_chapter-lv'), __('resources.legend_title-lv'), __('resources.legend_preview'), __('resources.legend_collector'), __('resources.legend_narrator'), __('resources.legend_place')];
+            $columns = [__('resources.legend_identifier'), __('resources.legend_volume'), __('resources.legend_chapter-lv'), __('resources.legend_title-lv'), __('resources.legend_text-lv'), __('resources.legend_collector'), __('resources.legend_narrator'), __('resources.legend_place')];
             $query = [$request->identifier, $request->volume, $request->chapter, $request->title, $request->text, $request->collector, $request->narrator, $request->place];
             
             $file = fopen($filename, "w");
