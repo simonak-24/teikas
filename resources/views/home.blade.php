@@ -70,6 +70,7 @@
 
             document.getElementById("map-heatmap").style.display = "block";
             document.getElementById("map-markers").style.display = "none";
+            document.getElementById("map-slider").style.display = "none";
         }
 
         function toggleHeatmap() {
@@ -117,6 +118,7 @@
 
             document.getElementById("map-markers").style.display = "block";
             document.getElementById("map-heatmap").style.display = "none";
+            document.getElementById("map-slider").style.display = "flex";
         }
 
         function setHeatRadius() {
