@@ -178,9 +178,7 @@ class PlaceController extends Controller
         }
 
         foreach ($places as $place) {
-            if ($place->latitude != 0 && $place->latitude != 0) {
-                $php_coordinates[$place->id] = [$place->latitude, $place->longitude];
-            }
+            $php_coordinates[$place->id] = [$place->latitude, $place->longitude, $place->legends->count()];
         }
 
         // All subchapters are associated with their chapters in order to create an organized list for selection.
@@ -195,7 +193,9 @@ class PlaceController extends Controller
         }
         
         $coordinates = json_encode($php_coordinates);
-        return view('home', compact('places', 'coordinates', 'chapters_titles', 'titles_selected'));
+        if ($request->exclude_unknown == "on") { $exclude_unknown = 1; }
+        else { $exclude_unknown = 0; }
+        return view('home', compact('places', 'coordinates', 'chapters_titles', 'titles_selected', 'exclude_unknown'));
     }
 
     /**

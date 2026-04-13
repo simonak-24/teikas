@@ -12,10 +12,18 @@
 @section('scripts')
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    <script src="https://unpkg.com/leaflet-heatmap-layer/dist/leaflet-heatmap-layer.umd.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
+        const DEFAULT_LATITUDE = 57.39098;
+        const DEFAULT_LONGITUDE = 23.793624;
+
         var openPopupId = -1;
+        var map;
+        var markers = null;
+        var heatLayer = null;
+        var heatRadius = 30;
 
         function openPopup(e) {
             if (openPopupId > -1) {
@@ -30,23 +38,104 @@
             openPopupId = -1;
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            var coordinates = <?=($coordinates)?>;
-            var markers = new L.MarkerClusterGroup();
-            var map = L.map("home-map").setView([56.880139, 24.606222], 7);
-                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        function setMap() {
+            map = L.map("map-visual").setView([56.880139, 24.606222], 7);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 16,
                 minZoom: 6,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
+        }
+
+        function toggleMarkers () {
+            if (heatLayer != null) {
+                map.removeLayer(heatLayer);
+                heatLayer = null;
+            }
+            var coordinates = <?=($coordinates)?>;
+            markers = new L.MarkerClusterGroup();
+
             for (key in coordinates) {
                 var lat = coordinates[key][0];
                 var lon = coordinates[key][1];
                 if (!(lat == 0 && lon == 0)) {
                     markers.addLayer(L.marker([lat, lon], { id : key }).on('click', openPopup));
+                } else {
+                    if (!(<?=($exclude_unknown)?>)) {
+                        markers.addLayer(L.marker([DEFAULT_LATITUDE, DEFAULT_LONGITUDE], { id : key }).on('click', openPopup))
+                    }
                 }
             }
             map.addLayer(markers);
+
+            document.getElementById("map-heatmap").style.display = "block";
+            document.getElementById("map-markers").style.display = "none";
+        }
+
+        function toggleHeatmap() {
+            if (markers != null) {
+                markers.clearLayers();
+                markers= null;
+            }
+            if (heatLayer != null) {
+                map.removeLayer(heatLayer);
+                heatLayer = null;
+            }
+            var coordinates = <?=($coordinates)?>;
+            var heat = new Map();
+            var heatMarkers = [];
+
+            var maxCount = 0;
+            for (key in coordinates) {
+                var lat = coordinates[key][0];
+                var lon = coordinates[key][1];
+                var count = coordinates[key][2];
+                if (!(<?=($exclude_unknown)?>) && (lat == 0 && lon == 0)) {
+                    lat = DEFAULT_LATITUDE;
+                    lon = DEFAULT_LONGITUDE;
+                }
+                if (!(lat == 0 && lon == 0)) {
+                    var heatNumber = lat * 1000000 + lon;
+                    var heatKey = heatNumber.toString();
+                    if (heat.has(heatKey)) {
+                        var mark = heat.get(heatKey);
+                        mark[2] = mark[2] + count;
+                        heat.set(heatKey, mark);
+                    } else {
+                        heat.set(heatKey, [lat, lon, count]);
+                    }
+                    if (count > maxCount) {
+                        maxCount = count;
+                    }
+                }
+            }
+            for (const [key, value] of heat) {
+                var intensity = value[2] / maxCount;
+                heatMarkers.push([parseFloat(value[0]), parseFloat(value[1]), intensity]);  // SMILTENE LMAO
+            }
+            heatLayer = L.heatLayer(heatMarkers, { radius: heatRadius, blur: 20 }).addTo(map);
+
+            document.getElementById("map-markers").style.display = "block";
+            document.getElementById("map-heatmap").style.display = "none";
+        }
+
+        function setHeatRadius() {
+            heatRadius = document.getElementById("heat-slider").value;
+            toggleHeatmap();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setMap();
+            toggleMarkers();
+            document.getElementById("map-markers").addEventListener("click", () => {
+                toggleMarkers();
+            });
+            document.getElementById("map-heatmap").addEventListener("click", () =>  {
+                toggleHeatmap();
+            });
+            document.getElementById("map-slider").addEventListener("input", () =>  {
+                setHeatRadius();
+            });
         });
     </script>
     <script>
@@ -66,10 +155,20 @@
 
 @section('content')
     <br>
-    <div id="home-map"></div>
+    <div id="map-all">
+        <div id="map-visual"></div>
+        <div id="map-controls">
+            <button id="map-markers" class="map-button"></button>
+            <button id="map-heatmap" class="map-button"></button>
+            <div id="map-slider" class="map-button">
+                <input type="range" min="10" max="70" value="30" id="heat-slider" class="slider"">
+            </div>
+        </div>
+    </div>
     <br>
     <h3>{{ __('site.map_filter') }}</h3>
     <form id="home-select" action="{{ route('home') }}" method="GET">
+        <div id="home-select-titles">
         <select id="titles" name="titles[]" class="select2-titles" multiple>
             @foreach ($chapters_titles as $chapter => $titles)
                 <optgroup label="{{ $chapter }}">
@@ -82,6 +181,11 @@
             @endforeach
         </select>
         <button class="resource-button" type="submit">{{ __('site.button_filter') }}</button>
+        </div>
+        <div id="home-select-checkboxes">
+        <input type="checkbox" id="exclude_unknown" name="exclude_unknown" @if($exclude_unknown == 1) checked @endif/>
+        <label for="include_unknown">Neiekļaut nezināmās vietas</label>
+        </div>
     </form>
     <p>{{ __('site.map_information') }}</p>
     <br>
