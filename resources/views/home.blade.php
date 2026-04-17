@@ -21,6 +21,7 @@
 
         var openPopupId = -1;
         var map;
+        var baseLayer = null;
         var markers = null;
         var heatLayer = null;
         var heatRadius = 30;
@@ -40,11 +41,30 @@
 
         function setMap() {
             map = L.map("map-visual").setView([56.880139, 24.606222], 7);
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 16,
-                minZoom: 6,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(map);
+            document.getElementById("radio-arcgis").checked = true;
+            setBase("arcgis");
+        }
+
+        function setBase(type) {    // jāsaliek https://stackoverflow.com/questions/28543752/multiple-radio-button-groups-in-one-form, lai radio pogas strādātu.
+            if (baseLayer != null) {
+                map.removeLayer(baseLayer);
+                baseLayer = null;
+            }
+            if (type == "arcgis") {
+                baseLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+	                maxZoom: 16,
+                    minZoom: 6,
+                    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
+                }).addTo(map);
+                document.getElementById("radio-openstreetmap").checked = false;
+            } else {
+                baseLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 16,
+                    minZoom: 6,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+                document.getElementById("radio-arcgis").checked = false;
+            }
         }
 
         function toggleMarkers () {
@@ -126,6 +146,19 @@
             toggleHeatmap();
         }
 
+        function toggleBaseList() {
+            // var baseButton = document.getElementById("map-base-button");
+            var baseList = document.getElementById("map-base-list");
+            if (baseList.style.display == "flex") {
+                // baseButton.style.display = "none";
+                baseList.style.display = "none";
+            }
+            else {
+                // baseButton.style.display = "block";
+                baseList.style.display = "flex";
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             setMap();
             toggleMarkers();
@@ -137,6 +170,19 @@
             });
             document.getElementById("map-slider").addEventListener("input", () =>  {
                 setHeatRadius();
+            });
+
+            document.getElementById("map-base-button").addEventListener("click", () =>  {
+                toggleBaseList();
+                document.getElementById("radio-openstreetmap").addEventListener("change", () =>  {
+                    setBase("openstreetmap");
+                });
+                document.getElementById("radio-arcgis").addEventListener("change", () =>  {
+                    setBase("arcgis");
+                });
+            });
+            document.getElementById("map-base-list").addEventListener("mouseleave", () =>  {
+                toggleBaseList();
             });
         });
     </script>
@@ -160,10 +206,17 @@
     <div id="map-all">
         <div id="map-visual"></div>
         <div id="map-controls">
-            <button id="map-markers" class="map-button"></button>
-            <button id="map-heatmap" class="map-button"></button>
-            <div id="map-slider" class="map-button">
+            <button id="map-markers" class="map-item map-button"></button>
+            <button id="map-heatmap" class="map-item map-button"></button>
+            <div id="map-slider" class="map-item map-button">
                 <input type="range" min="10" max="70" value="30" id="heat-slider" class="slider"">
+            </div>
+            <div id="map-base">
+                <div id="map-base-list" class="map-item map-list">
+                    <div class="map-base-item"><input type="radio" id="radio-arcgis" class="radio-button" value="arcgis" /><label for="radio-arcgis" class="radio-label">ArcGIS WorldTopoMap</label></div>
+                    <div class="map-base-item"><input type="radio" id="radio-openstreetmap" class="radio-button" value="openstreetmap" /><label for="radio-openstreemap" class="radio-label">OpenStreetMap</label></div>
+                </div>
+                <button id="map-base-button" class="map-item map-button"></button>
             </div>
         </div>
     </div>

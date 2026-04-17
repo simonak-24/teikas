@@ -227,6 +227,8 @@ footer {
     margin: 15px;
 }
 
+.leaflet-control-attribution { font-size: 7px; }
+
 .place-legends {
     display: none;
 
@@ -281,8 +283,7 @@ footer {
     width: 2%;
 }
 
-.map-button {
-    height: 40px;
+.map-item {
     background-color: white;
 
     border: solid;
@@ -291,17 +292,28 @@ footer {
     border-radius: 5px;
 }
 
+.map-button {
+    height: 40px;
+}
+.map-list {
+    padding: 4px 4px 4px 16px;
+}
+.map-list-element {
+    margin-bottom: 0px;
+}
+
 #map-controls {
     position: absolute;
     z-index: 1001;
 
     bottom: 0%;
     display: flex;
+    align-items: flex-end;
     gap: 10px;
     margin: 1% 1.5%;
 }
 
-#map-markers, #map-heatmap {
+#map-markers, #map-heatmap, #map-base-button {
     display: flex;
     width: 40px;
 }
@@ -312,6 +324,28 @@ footer {
     width: 240px;
     height: 36px;
     padding: 0px 4px;
+}
+
+#map-base {
+    display: flex;
+    flex-direction: column;
+}
+
+#map-base-list {
+    display: none;
+    margin-bottom: 0px;
+    padding: 8px 12px 8px 8px;
+
+    flex-direction: column;
+    gap: 4px;
+}
+
+.radio-button {
+    width: auto;
+    padding-right: 2px;
+}
+.radio-label {
+    color: var(--text-color-dark);
 }
 
 /* Table of contents rules. */
