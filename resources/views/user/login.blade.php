@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> {{ __('site.title_login') }} | {{ __('site.title_webpage') }}</title>
+    <title> {{ __('site.title_login') }}</title>
     <link href="{{ asset('css/site.css') }}" rel="stylesheet">
 </head>
 
