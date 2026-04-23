@@ -37,11 +37,6 @@
                         @method('POST')
                         <button class="user-button" type="submit">{{ __('site.button_logout') }}</button>
                     </form>
-                    @else
-                        <form id="login-link" action="{{ route('login') }}" method="GET">
-                        @csrf
-                        <button class="user-button" type="submit">{{ __('site.button_login') }}</button>
-                    </form>
                     @endif
                     <a class="nav-link" href="{{ route('legends.index') }}">{{ __('resources.legend_all') }}</a><span class="divider">&nbsp;|&nbsp;</span>
                     <a class="nav-link" href="{{ route('collectors.index') }}">{{ __('resources.collector_all') }}</a><span class="divider">&nbsp;|&nbsp;</span>

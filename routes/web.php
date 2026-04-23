@@ -64,7 +64,7 @@ Route::prefix('/{lang}')->group(function () {
     Route::delete('/legend/{identifier}/delete', [LegendController::class, 'destroy'])->name('legends.destroy')->middleware('auth');
 
     // User routes.
-    Route::get('/login', [UserController::class, 'login'])->name('login');
+    Route::get('/user/login', [UserController::class, 'login'])->name('login');
     Route::post('/authenticate', [UserController::class, 'authenticate'])->name('authenticate');
     Route::post('/logout', [UserController::class, 'logout'])->name('logout')->middleware('auth');
     Route::get('/user/list', [UserController::class, 'index'])->name('user.index')->middleware('auth');
