@@ -18,6 +18,16 @@
     <script>
         const DEFAULT_LATITUDE = 57.39098;
         const DEFAULT_LONGITUDE = 23.793624;
+        const greenIcon = L.icon({
+            iconUrl: '<?= asset('images/marker_green.svg') ?>', // neglītās baltās līnijas - jāizgriež
+            // shadowUrl: 'marker_shadow.png',
+            iconSize: [36, 36],
+        });
+        const greyIcon = L.icon({
+            iconUrl: '<?= asset('images/marker_grey.svg') ?>',
+            // shadowUrl: 'marker_shadow.png',
+            iconSize: [36, 36],
+        });
 
         var openPopupId = -1;
         var map;
@@ -79,10 +89,10 @@
                 var lat = coordinates[key][0];
                 var lon = coordinates[key][1];
                 if (!(lat == 0 && lon == 0)) {
-                    markers.addLayer(L.marker([lat, lon], { id : key }).on('click', openPopup));
+                    markers.addLayer(L.marker([lat, lon], { id : key, icon : greenIcon }).on('click', openPopup));
                 } else {
                     if (!(<?=($exclude_unknown)?>)) {
-                        markers.addLayer(L.marker([DEFAULT_LATITUDE, DEFAULT_LONGITUDE], { id : key }).on('click', openPopup))
+                        markers.addLayer(L.marker([DEFAULT_LATITUDE, DEFAULT_LONGITUDE], { id : key, icon: greyIcon }).on('click', openPopup))
                     }
                 }
             }
@@ -206,8 +216,8 @@
     <div id="map-all">
         <div id="map-visual"></div>
         <div id="map-controls">
-            <button id="map-markers" class="map-item map-button"></button>
-            <button id="map-heatmap" class="map-item map-button"></button>
+            <button id="map-markers" class="map-item map-button"><img class="button-image-small" src="{{ asset('images/marker_green.svg') }}"></button>
+            <button id="map-heatmap" class="map-item map-button"><img class="button-image-small" src="{{ asset('images/marker_green.svg') }}"></button>
             <div id="map-slider" class="map-item map-button">
                 <input type="range" min="10" max="70" value="30" id="heat-slider" class="slider"">
             </div>
@@ -216,7 +226,7 @@
                     <div class="map-base-item"><input type="radio" id="radio-arcgis" class="radio-button" value="arcgis" /><label for="radio-arcgis" class="radio-label">ArcGIS WorldTopoMap</label></div>
                     <div class="map-base-item"><input type="radio" id="radio-openstreetmap" class="radio-button" value="openstreetmap" /><label for="radio-openstreemap" class="radio-label">OpenStreetMap</label></div>
                 </div>
-                <button id="map-base-button" class="map-item map-button"></button>
+                <button id="map-base-button" class="map-item map-button"><img class="button-image-large" src="{{ asset('images/layers.svg') }}"></button>
             </div>
         </div>
     </div>

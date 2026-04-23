@@ -348,6 +348,18 @@ footer {
     color: var(--text-color-dark);
 }
 
+.button-image-small {
+    height: 24px;
+    width: 24px;
+    margin: auto;
+}
+
+.button-image-large {
+    height: 20px;
+    width: 20px;
+    margin: auto;
+}
+
 /* Table of contents rules. */
 #table-of-contents {
     display: flex;
