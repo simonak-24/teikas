@@ -51,7 +51,7 @@
             </tr>
             @endforeach
         </table>
-        @include('navigation.pagination')
+        @include('partials.pagination')
     </div>
     <br>
 </div>
