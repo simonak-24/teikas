@@ -9,6 +9,12 @@
 @section('scripts')
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script> 
+        const greenIcon = L.icon({
+            iconUrl: '<?= asset('images/marker_green.svg') ?>',
+            // shadowUrl: 'marker_shadow.png',
+            iconSize: [36, 36],
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             var lat = <?=($place->latitude)?>;
             var lon = <?=($place->longitude)?>;
@@ -18,7 +24,7 @@
                     maxZoom: 19,
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(map);
-                var marker = L.marker([lat, lon]).addTo(map);
+                var marker = L.marker([lat, lon], { icon : greenIcon }).addTo(map);
             }
         });
     </script>
