@@ -163,19 +163,9 @@ class PlaceController extends Controller
         $chapters_titles = [];
         $titles_selected = [];
 
-        if (isset($request->titles)) {
-            foreach($request->titles as $title) {           // The selected titles are required within the view, which is why
-                array_push($titles_selected, $title);       // a new variable that can be passed to said view is created.
-            }
-            $places = Place::whereHas('legends', function(Builder $query) use ($titles_selected) {
-                $query->whereIn('title_lv', $titles_selected);
-            })->with(['legends' => function($query) use ($titles_selected) {
-                    $query->whereIn('title_lv', $titles_selected);
-                }
-            ])->get();
-        } else {
-            $places = Place::all();
-        }
+        $filtered = $this->filter($request);
+        $titles_selected = $filtered['titles'];
+        $places = $filtered['places'];
 
         foreach ($places as $place) {
             $php_coordinates[$place->id] = [$place->latitude, $place->longitude, $place->legends->count()];
@@ -198,6 +188,13 @@ class PlaceController extends Controller
         return view('home', compact('places', 'coordinates', 'chapters_titles', 'titles_selected', 'exclude_unknown'));
     }
 
+    public function lists(Request $request) {
+        $filtered = $this->filter($request);
+        $places = $filtered['places'];
+
+        return view('partials.lists', compact('places'));
+    }
+
     /**
      * Save a place's data in storage.
      */
@@ -213,5 +210,28 @@ class PlaceController extends Controller
         $place->latitude = $request->latitude;
         $place->longitude = $request->longitude;
         $place->save();
+    }
+
+    public function filter(Request $request) {
+        $filtered = [];
+
+        $titles_selected = [];
+        if (isset($request->titles)) {
+            foreach($request->titles as $title) {           // The selected titles are required within the view, which is why
+                array_push($titles_selected, $title);       // a new variable that can be passed to said view is created.
+            }
+            $places = Place::whereHas('legends', function(Builder $query) use ($titles_selected) {
+                $query->whereIn('title_lv', $titles_selected);
+            })->with(['legends' => function($query) use ($titles_selected) {
+                    $query->whereIn('title_lv', $titles_selected);
+                }
+            ])->get();
+        } else {
+            $places = Place::with('legends')->get();
+        }
+
+        $filtered['titles'] = $titles_selected;
+        $filtered['places'] = $places;
+        return $filtered;
     }
 }

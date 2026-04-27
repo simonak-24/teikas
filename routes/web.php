@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\URL;
 Route::prefix('/{lang}')->group(function () {
     // Homepage & main navigational routes.
     Route::get('/', [PlaceController::class, 'map'])->name('home');
+    Route::get('/lists', [PlaceController::class, 'lists'])->name('partials.lists');
     Route::get('/chapters', [LegendController::class, 'contents'])->name('navigation.contents');
     Route::get('/chapters/{chapter}', [LegendController::class, 'chapter'])->name('navigation.chapter');
     Route::get('/chapters/{chapter}/subchapters/{subchapter}', [LegendController::class, 'subchapter'])->name('navigation.subchapter');
