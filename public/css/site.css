@@ -11,7 +11,7 @@
 
 /* Sitewide rules. */
 html {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: /*"Helvetica Neue",*/ Helvetica, Arial, sans-serif;
     background-color: var(--main-color-light);
 }
 
@@ -25,6 +25,7 @@ a {
 }
 
 header {
+    min-height: 48px;
     height: 6vh;
     padding-top: 3vh;
     background-color: var(--main-color-dark);
@@ -32,9 +33,8 @@ header {
 
 h1 {
     margin: 0;
-    padding-top: 5px;
-    padding-bottom: 15px;
-    color: var(--text-color-dark);
+    padding-top: 15px;
+    padding-bottom: 25px;
 }
 
 table {
@@ -84,40 +84,66 @@ input, textarea, select {
     font-size: 14px;
 }
 
+input[type="radio"] {
+    accent-color: var(--main-color-dark); 
+}
+
 #nav-bar {
+    height: inherit;
     font-size: 18px;
-    padding: 10px;
+    padding-right: 8px 0px 8px 0px; 
+}
+#nav-bar > * {
+    margin-bottom: auto;
+}
+.divider {
+    font-size: 20px;
 }
 
-#home-link {
-    font-size: 28px;
-}
-#main-links > span {
-    font-size: 24px;
-}
-
-#nav-bar, #resource-links, #pagination-section {
+#nav-bar, #pagination-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-#home-link, #contents-link, .nav-link, .lan-link,
+#contents-link, .nav-link, .lan-link,
 .divider, .pagination-cell > * {
     color: white;
 }
+#home-link {
+    color: var(--main-color-light);
+}
+
+#main-links, #resource-links {
+    height: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+#main-links, #resource-links {
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+}
+
+.nav-dropdown {     /* kkā jāsalabo padding ap virsrakstiem ;-; */
+    cursor: pointer;
+    width: auto;
+}
 
 #lan-dropdown {
-    position: relative;
     text-transform: uppercase;
-    cursor: pointer;
 }
 
 #dropdown-link {
     padding-bottom: 12px;
 }
 
-#lan-content {
+#nav-dropdowns {
+    display: flex;
+}
+
+.nav-content {
     display: none;
     position: fixed;
     z-index: 1001;
@@ -126,15 +152,23 @@ input, textarea, select {
     background-color: var(--main-color-medium);
     box-shadow: 0px 4px 16px 0px var(--shadow-color-main);
 }
-
-#lan-dropdown:hover #lan-content {
-    display: block;
+.nav-content > a {
+    font-size: 17px;
+    margin-top: 2px;
 }
-#lan-content:hover {
+
+#tables-content:hover, #tables-dropdown:hover #tables-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#lan-content:hover, #lan-dropdown:hover #lan-content {
     display: block;
 }
 
 #site-container {
+    min-width: 600px;
     width: 80vw;
     margin: auto;
 }
@@ -180,6 +214,7 @@ input, textarea, select {
 }
 
 footer {
+    min-height: 36px;
     height: 4vh;
     padding-top: 3vh;
     background-color: var(--main-color-medium);
@@ -281,6 +316,10 @@ footer {
 }
 #home-select-checkboxes > input {
     width: 2%;
+    accent-color: var(--main-color-dark);
+}
+.select2-results__option--highlighted.select2-results__option--selectable {
+    background-color: var(--main-color-dark) !important;
 }
 
 .map-item {
@@ -305,14 +344,18 @@ footer {
 #map-controls {
     position: absolute;
     z-index: 1001;
+    bottom: 0px;
 
-    bottom: 0%;
     display: flex;
-    align-items: flex-end;
-    gap: 10px;
-    margin: 1% 1.5%;
+    flex-direction: column-reverse;
+    gap: 5px;
 }
 
+#map-markers-heatmap {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+}
 #map-markers, #map-heatmap, #map-base-button {
     display: flex;
     width: 40px;
@@ -323,21 +366,27 @@ footer {
 
     width: 240px;
     height: 36px;
-    padding: 0px 4px;
+    padding: 0px 8px;
+}
+#map-slider > input {
+    border-radius: 4px;
 }
 
 #map-base {
     display: flex;
     flex-direction: column;
 }
-
 #map-base-list {
     display: none;
-    margin-bottom: 0px;
     padding: 8px 12px 8px 8px;
+    font-size: 16px;
 
+    width: 200px;
     flex-direction: column;
     gap: 4px;
+}
+#map-base-button {
+    height: 40px;
 }
 
 .radio-button {

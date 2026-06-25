@@ -19,15 +19,29 @@
         const DEFAULT_LATITUDE = 57.39098;
         const DEFAULT_LONGITUDE = 23.793624;
         const greenIcon = L.icon({
-            iconUrl: '<?= asset('images/marker_green.svg') ?>', // neglītās baltās līnijas - jāizgriež
-            // shadowUrl: 'marker_shadow.png',
+            iconUrl: '<?= asset('images/marker_green.svg') ?>',
             iconSize: [36, 36],
         });
         const greyIcon = L.icon({
             iconUrl: '<?= asset('images/marker_grey.svg') ?>',
-            // shadowUrl: 'marker_shadow.png',
             iconSize: [36, 36],
         });
+        const controlHtml = '<div id="map-controls">'+
+                '<div id="map-markers-heatmap">'+
+                    '<button id="map-markers" class="map-item map-button"><img class="button-image-small" src="<?=asset("images/marker_green.svg")?>"></button>'+
+                    '<button id="map-heatmap" class="map-item map-button"><img class="button-image-small" src="<?=asset("images/marker_green.svg")?>"></button>'+
+                    '<div id="map-slider" class="map-item map-button">'+
+                        '<input id="heat-slider" type="range" min="10" max="70" value="30" id="heat-slider" class="slider">'+
+                    '</div>'+
+                '</div>'+
+                '<div id="map-base">'+
+                    '<div id="map-base-list" class="map-item map-list">'+
+                        '<div class="map-base-item"><input type="radio" id="radio-arcgis" class="radio-button" value="arcgis" /><label for="radio-arcgis" class="radio-label"> ArcGIS WorldTopoMap</label></div>'+
+                        '<div class="map-base-item"><input type="radio" id="radio-openstreetmap" class="radio-button" value="openstreetmap" /><label for="radio-openstreemap" class="radio-label"> OpenStreetMap</label></div>'+
+                    '</div>'+
+                    '<button id="map-base-button" class="map-item map-button"><img class="button-image-large" src="<?=asset("images/layers.svg")?>"></button>'+
+                '</div>'+
+            '</div>';
 
         var openPopupId = -1;
         var map;
@@ -35,6 +49,18 @@
         var markers = null;
         var heatLayer = null;
         var heatRadius = 30;
+
+        L.Control.MapControl = L.Control.extend({
+            onAdd: function(map) {
+                this._div = L.DomUtil.create('div', 'controls');
+                this._div.innerHTML = controlHtml;
+                L.DomEvent.disableClickPropagation(this._div);
+                return this._div;
+            }
+        });
+        L.control.mapControl = function(opts) {
+            return new L.Control.MapControl(opts);
+        }
 
         function openPopup(e) {
             if (openPopupId > -1) {
@@ -51,11 +77,14 @@
 
         function setMap() {
             map = L.map("map-visual").setView([56.880139, 24.606222], 7);
+            L.control.mapControl({
+                position: "bottomleft"
+            }).addTo(map);
             document.getElementById("radio-arcgis").checked = true;
             setBase("arcgis");
         }
 
-        function setBase(type) {    // jāsaliek https://stackoverflow.com/questions/28543752/multiple-radio-button-groups-in-one-form, lai radio pogas strādātu.
+        function setBase(type) {
             if (baseLayer != null) {
                 map.removeLayer(baseLayer);
                 baseLayer = null;
@@ -83,7 +112,9 @@
                 heatLayer = null;
             }
             var coordinates = <?=($coordinates)?>;
-            markers = new L.MarkerClusterGroup();
+            markers = new L.MarkerClusterGroup({
+                polygonOptions: { color: '#648277', opacity: 0.5 }
+            });
 
             for (key in coordinates) {
                 var lat = coordinates[key][0];
@@ -157,14 +188,11 @@
         }
 
         function toggleBaseList() {
-            // var baseButton = document.getElementById("map-base-button");
             var baseList = document.getElementById("map-base-list");
             if (baseList.style.display == "flex") {
-                // baseButton.style.display = "none";
                 baseList.style.display = "none";
             }
             else {
-                // baseButton.style.display = "block";
                 baseList.style.display = "flex";
             }
         }
@@ -172,6 +200,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             setMap();
             toggleMarkers();
+
             document.getElementById("map-markers").addEventListener("click", () => {
                 toggleMarkers();
             });
@@ -226,30 +255,16 @@
     <br>
     <div id="map-all">
         <div id="map-visual"></div>
-        <div id="map-controls">
-            <button id="map-markers" class="map-item map-button"><img class="button-image-small" src="{{ asset('images/marker_green.svg') }}"></button>
-            <button id="map-heatmap" class="map-item map-button"><img class="button-image-small" src="{{ asset('images/marker_green.svg') }}"></button>
-            <div id="map-slider" class="map-item map-button">
-                <input type="range" min="10" max="70" value="30" id="heat-slider" class="slider"">
-            </div>
-            <div id="map-base">
-                <div id="map-base-list" class="map-item map-list">
-                    <div class="map-base-item"><input type="radio" id="radio-arcgis" class="radio-button" value="arcgis" /><label for="radio-arcgis" class="radio-label">ArcGIS WorldTopoMap</label></div>
-                    <div class="map-base-item"><input type="radio" id="radio-openstreetmap" class="radio-button" value="openstreetmap" /><label for="radio-openstreemap" class="radio-label">OpenStreetMap</label></div>
-                </div>
-                <button id="map-base-button" class="map-item map-button"><img class="button-image-large" src="{{ asset('images/layers.svg') }}"></button>
-            </div>
-        </div>
     </div>
     <br>
     <h3>{{ __('site.map_filter') }}</h3>
     <form id="home-select" action="{{ route('home') }}" method="GET">
         <div id="home-select-titles">
-        <select id="titles" name="titles[]" class="select2-titles" multiple>
+        <select id="titles" name="titles[]" class="select2-titles" multiple style="accent-color: #a0b6ae;">
             @foreach ($chapters_titles as $chapter => $titles)
                 <optgroup label="{{ $chapter }}">
                     @foreach($titles as $title)
-                        <option value="{{ $title[0] }}">
+                        <option class="selectable" value="{{ $title[0] }}">
                             {{ $title[0] }} / {{ $title[1] }}
                         </option>
                     @endforeach

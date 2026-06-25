@@ -38,20 +38,28 @@
                         <button class="user-button" type="submit">{{ __('site.button_logout') }}</button>
                     </form>
                     @endif
-                    <a class="nav-link" href="{{ route('legends.index') }}">{{ __('resources.legend_all') }}</a><span class="divider">&nbsp;|&nbsp;</span>
-                    <a class="nav-link" href="{{ route('collectors.index') }}">{{ __('resources.collector_all') }}</a><span class="divider">&nbsp;|&nbsp;</span>
-                    <a class="nav-link" href="{{ route('narrators.index') }}">{{ __('resources.narrator_all') }}</a><span class="divider">&nbsp;|&nbsp;</span>
-                    <a class="nav-link" href="{{ route('places.index') }}">{{ __('resources.place_all') }}</a><span class="divider">&nbsp;|&nbsp;</span>
-                    <a class="nav-link" href="{{ route('sources.index') }}">{{ __('resources.source_all') }}</a><span class="divider">&nbsp;&nbsp;||</span>
-                    <div id="lan-dropdown">
+                    <div id="nav-dropdowns">
+                    <div id="tables-dropdown" class="nav-dropdown">
+                        <span class="dropdown-link nav-link" href="">{{ __('resources.tables_all') }}</span>&nbsp;&nbsp;
+                        <div id="tables-content" class="nav-content">
+                            <a class="nav-link" href="{{ route('legends.index') }}">{{ __('resources.legend_all') }}</a>
+                            <a class="nav-link" href="{{ route('collectors.index') }}">{{ __('resources.collector_all') }}</a>
+                            <a class="nav-link" href="{{ route('narrators.index') }}">{{ __('resources.narrator_all') }}</a>
+                            <a class="nav-link" href="{{ route('places.index') }}">{{ __('resources.place_all') }}</a>
+                            <a class="nav-link" href="{{ route('sources.index') }}">{{ __('resources.source_all') }}</a>
+                        </div>
+                    </div>
+                    <span class="divider">&nbsp;|&nbsp;</span>
+                    <div id="lan-dropdown" class="nav-dropdown">
                         &nbsp;&nbsp;<span class="dropdown-link nav-link" href="">{{ Request::segment(1) }}</span>&nbsp;&nbsp;
-                        <div id="lan-content">
+                        <div id="lan-content" class="nav-content">
                             @if (Request::segment(1) == 'lv')
                             <a class="lan-link" href="{{ route('language.set', 'en') }}">EN</a>
                             @else
                             <a class="lan-link" href="{{ route('language.set', 'lv') }}">LV</a>
                             @endif
                         </div>
+                    </div>
                     </div>
                 </div>
             </nav>

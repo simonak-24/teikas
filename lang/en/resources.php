@@ -73,6 +73,7 @@ return [
     'user_password' => 'Password',
     'user_confirmation' => 'Confirm Password',
 
+    'tables_all' => 'View all',
     'none_multiple' => 'No results found.',
     'none_single' => 'Resource not found.',
 ];

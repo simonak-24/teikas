@@ -73,6 +73,7 @@ return [
     'user_password' => 'Parole',
     'user_confirmation' => 'Apstiprināt paroli',
 
+    'tables_all' => 'Apskatīt visus',
     'none_multiple' => 'Nekas netika atrasts.',
     'none_single' => 'Resurss netika atrasts.',
 ];
