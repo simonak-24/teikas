@@ -8,6 +8,7 @@ use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\LegendController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\URL;
 
 Route::prefix('/{lang}')->group(function () {
@@ -18,6 +19,9 @@ Route::prefix('/{lang}')->group(function () {
     Route::get('/chapters/{chapter}', [LegendController::class, 'chapter'])->name('navigation.chapter');
     Route::get('/chapters/{chapter}/subchapters/{subchapter}', [LegendController::class, 'subchapter'])->name('navigation.subchapter');
     Route::get('/about', [LanguageController::class, 'about'])->name('about');
+
+    // Search routes.
+    Route::get('/search/preview', [SearchController::class, 'preview'])->name('search.preview');
 
     // Collector routes.
     Route::get('/collectors', [CollectorController::class, 'index'])->name('collectors.index');

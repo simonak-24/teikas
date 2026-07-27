@@ -21,6 +21,10 @@ class CollectorController extends Controller
     public function index(Request $request)
     {
         $collectors = Collector::all()->toQuery();
+        if ($request->global_search != '') {
+            $collectors = $this->sortService->global($collectors, 'collectors', $request->global_search);
+        }
+
         if ($request->fullname != '') {
             $collectors = $collectors->where('fullname', 'LIKE', '%'.$request->fullname.'%');
         }
@@ -63,8 +67,11 @@ class CollectorController extends Controller
             return response()->download($filename, 'collectors_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
         }
 
-        $paginator = $collectors->paginate(app('items_per_page'));
-        return view('collectors.index', compact('paginator'));
+        $collectors = $collectors->paginate(app('items_per_page'));
+        if ($request->global_search != '') {
+            $collectors = $this->sortService->highlight($collectors, 'collectors', $request->global_search);
+        }
+        return view('collectors.index', compact('collectors'));
     }
 
     /**

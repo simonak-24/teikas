@@ -22,6 +22,12 @@ return [
     'title_login' => 'Log In',
     'title_all' => 'Tables',
     'title_about' => 'About',
+    'title_search' => 'Search',
+
+    'search_global' => 'Search...',
+    'search_fragment-1' => 'The fragment ',
+    'search_fragment-2' => ' is found in the following items:',
+    'search_more' => 'See all...',
 
     'map_filter' => 'Choose topics (subchapters) by which to filter folk legends:',
     'map_information' => 'All available folk legends are marked on the map. A grey marker in the Gulf of Riga is reserved for folk legends with an unknown place of recording.',

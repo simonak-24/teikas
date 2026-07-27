@@ -21,6 +21,10 @@ class NarratorController extends Controller
     public function index(Request $request)
     {
         $narrators = Narrator::all()->toQuery();
+        if ($request->global_search != '') {
+            $narrators = $this->sortService->global($narrators, 'narrators', $request->global_search);
+        }
+
         if ($request->fullname != '') {
             $narrators = $narrators->where('fullname', 'LIKE', '%'.$request->fullname.'%');
         }
@@ -63,8 +67,11 @@ class NarratorController extends Controller
             return response()->download($filename, 'narrators_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
         }
 
-        $paginator = $narrators->paginate(app('items_per_page'));
-        return view('narrators.index', compact('paginator'));
+        $narrators = $narrators->paginate(app('items_per_page'));
+        if ($request->global_search != '') {
+            $narrators = $this->sortService->highlight($narrators, 'narrators', $request->global_search);
+        }
+        return view('narrators.index', compact('narrators'));
     }
 
     /**

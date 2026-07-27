@@ -29,7 +29,11 @@ class LegendController extends Controller
     {
         $request->origin == '';
         $sorted = $this->sortService->sort($request);
-        $legends = $sorted['legends'];
+        if ($request->global_search != '') {
+            $legends = $this->sortService->global($sorted['legends'], 'legends', $request->global_search);
+        } else {
+            $legends = $sorted['legends'];
+        }
         $sort = $sorted['sort'];
 
         if (isset($request->format)) {
@@ -69,7 +73,12 @@ class LegendController extends Controller
         }
 
         $paginator = $legends->paginate(app('items_per_page'));
-        $paginator = $this->sortService->text($paginator, isset($request->text) ? $request->text : '');
+        if ($request->global_search != '') {
+            $paginator = $this->sortService->highlight($paginator, 'legends', $request->global_search);     // jāsaprot, kā pārklājas ar tekstu
+            $paginator = $this->sortService->text($paginator, $request->global_search);
+        } else {
+            $paginator = $this->sortService->text($paginator, isset($request->text) ? $request->text : '');
+        }
         $item = 0;
         return view('legends.index', compact('paginator', 'sort', 'item'));
     }

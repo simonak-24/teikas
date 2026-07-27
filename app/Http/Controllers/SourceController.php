@@ -21,6 +21,10 @@ class SourceController extends Controller
     public function index(Request $request)
     {
         $sources = Source::all()->toQuery();
+        if ($request->global_search != '') {
+            $sources = $this->sortService->global($sources, 'sources', $request->global_search);
+        }
+
         if ($request->identifier != '') {
             $sources = $sources->where('identifier', 'LIKE', '%'.$request->identifier.'%');
         }
@@ -57,8 +61,11 @@ class SourceController extends Controller
             return response()->download($filename, 'sources_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
         }
 
-        $paginator = $sources->paginate(app('items_per_page'));
-        return view('sources.index', compact('paginator'));
+        $sources = $sources->paginate(app('items_per_page'));
+        if ($request->global_search != '') {
+            $sources = $this->sortService->highlight($sources, 'sources', $request->global_search);
+        }
+        return view('sources.index', compact('sources'));
     }
 
     /**

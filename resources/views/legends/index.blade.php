@@ -8,9 +8,10 @@
         <button id="search-button" type="submit" form="search-form"></button>
         <button class="resource-button" name="format" value="CSV" type="submit" form="search-form">{{ __('site.button_csv') }}</button>
     </div>
-
+    
     <div id="display-list">
-        @include('partials.table')
+        @if(request()->input('global_search') != "")<p>{{ __('site.search_fragment-1') }}<b>{{ request()->input('global_search') }}</b>{{ __('site.search_fragment-2') }}</p>@endif
+        @include('legends.table')
         <div id="pagination-section">
         @include('partials.pagination')
         @if(Auth::check())

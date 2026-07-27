@@ -29,6 +29,7 @@
                     <a id="contents-link" class="nav-link" href="{{ route('navigation.contents') }}">{{ __('site.title_contents') }}</a><span class="divider">&nbsp;|&nbsp;</span>
                     <a id="contents-link" class="nav-link" href="{{ route('about') }}">{{ __('site.title_about') }}</a>
                 </div>
+
                 <div id="resource-links">
                     @if(Auth::check())
                     <a class="nav-link" href="{{ route('user.index') }}">{{ __('resources.user_all') }}</a>
@@ -39,6 +40,12 @@
                     </form>
                     @endif
                     <div id="nav-dropdowns">
+                    <form id="global-search-form" action="{{ route('search.preview') }}">
+                        <input id="global-search-button" type="submit" value="🔍︎" onclick="">&nbsp;
+                        <input id="global-search-bar" type="text" name="global_search" placeholder="{{ __('site.search_global') }}">
+                        <input id="global-search-tag" type="hidden" name="search" value="all">
+                    </form>
+                    <span class="divider">&nbsp;|&nbsp;</span>
                     <div id="tables-dropdown" class="nav-dropdown">
                         <span class="dropdown-link nav-link" href="">{{ __('resources.tables_all') }}</span>&nbsp;&nbsp;
                         <div id="tables-content" class="nav-content">

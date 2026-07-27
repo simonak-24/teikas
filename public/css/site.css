@@ -60,10 +60,10 @@ td {
     padding: 4px;
 }
 
-td > a, .external-link, .sort-arrow {
+td > a, .external-link, .sort-arrow, .search-link {
     color: var(--text-color-dark);
 }
-td > a:hover, .external-link:hover, .sort-arrow:hover {
+td > a:hover, .external-link:hover, .sort-arrow:hover, .search-link:hover {
     color: var(--text-color-light);
     text-decoration: underline;
 }
@@ -254,6 +254,37 @@ footer {
     height: 10px;
 
     background: var(--border-color-all);
+}
+
+#global-search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#global-search-bar {
+    width: 80%;
+    accent-color: var(--main-color-dark);
+}
+
+#global-search-button {
+    height: 1.6em;
+    width: 1.6em;
+
+    color: white;
+    background-color: var(--main-color-dark);
+    border: none;
+}
+#global-search-button:hover {
+    cursor: pointer;
+}
+
+.search-link {
+    font-size: 15px;
+}
+
+#global-submit {
+    display: none;
 }
 
 /* Home page rules. */

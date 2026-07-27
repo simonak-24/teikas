@@ -22,6 +22,12 @@ return [
     'title_login' => 'Pieteikties',
     'title_all' => 'Tabulas',
     'title_about' => 'Par projektu',
+    'title_search' => 'Meklēšana',
+
+    'search_global' => 'Meklēt...',
+    'search_fragment-1' => 'Fragmentam ',
+    'search_fragment-2' => ' atbilst sekojošās vienības:',
+    'search_more' => 'Skatīt visus...',
 
     'map_filter' => 'Izvēlēties tēmas, pēc kurām atlasīt teikas:',
     'map_information' => 'Kartē ir atzīmētas visas pieejamās teikas. Teikām ar nezināmu atrašanās vietu ir rezervēts pelēkais marķieris Rīgas līcī.',

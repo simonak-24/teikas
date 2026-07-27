@@ -23,6 +23,10 @@ class PlaceController extends Controller
     public function index(Request $request)
     {
         $places = Place::all()->toQuery();
+        if ($request->global_search != '') {
+            $places = $this->sortService->global($places, 'places', $request->global_search);
+        }
+
         if ($request->name != '') {
             $places = $places->where('name', 'LIKE', '%'.$request->name.'%');
         }
@@ -63,8 +67,11 @@ class PlaceController extends Controller
             return response()->download($filename, 'places_'.now()->format('Y-m-d_H-i-s').'.csv', $headers)->deleteFileAfterSend(true);
         }
 
-        $paginator = $places->paginate(app('items_per_page'));
-        return view('places.index', compact('paginator'));
+        $places = $places->paginate(app('items_per_page'));
+        if ($request->global_search != '') {
+            $places = $this->sortService->highlight($places, 'places', $request->global_search);
+        }
+        return view('places.index', compact('places'));
     }
 
     /**

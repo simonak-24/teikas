@@ -55,7 +55,7 @@
     <br>
 
     <h3>{{ __('resources.narrator_legends') }}</h3>
-    @include('partials.table')
+    @include('legends.table')
     <div id="pagination-section">
         @include('partials.pagination')
     </div>

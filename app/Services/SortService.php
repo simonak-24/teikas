@@ -73,7 +73,7 @@ class SortService
         } else if ($sort["place"] == urlencode("⭣")) {
             $legends = Legend::join('places', 'legends.place_id', '=', 'places.id')->orderBy('places.name', 'desc');
         } else {
-            $legends = $legends = Legend::orderBy('identifier');
+            $legends = Legend::orderBy('identifier');
         }
 
         if ($request->identifier != '') {
@@ -89,9 +89,11 @@ class SortService
             $legends = $legends->where('title_lv', 'LIKE', '%'.$request->title.'%');
         }
         
-        $text_frag = mb_strtolower($request->text);
-        $replacements = array("ā"=>"a", "č"=>"c", "ē"=>"e", "ģ"=>"g", "ī"=>"i", "ķ"=>"k", "ļ"=>"l", "ņ"=>"n", "ŗ"=>"r", "š"=>"s", "ū"=>"u", "ž"=>"z");
-        foreach ($replacements as $search => $replace) { $text_frag = mb_eregi_replace($search, $replace, $text_frag); }
+        if($request->text != '') {
+            $text_frag = $this->clean($request->text);
+        } else {
+            $text_frag = '';
+        }
         
         if ($request->text != '') {
             $legends = $legends->where('text_lv', 'LIKE', '%'.$text_frag.'%');
@@ -139,20 +141,130 @@ class SortService
         return $sorted;
     }
 
+    /**
+     * Sorts and filters items according to the global search parameter.
+     */
+    public function global(mixed $items, string $type, string $global) {
+        if (isset($items)) {
+            if ($type == 'legends') {
+                $collectors_fullnames = Collector::orderBy('fullname')->where('fullname', 'LIKE', '%'.$global.'%')->pluck('id');
+                $narrators_fullnames = Narrator::orderBy('fullname')->where('fullname', 'LIKE', '%'.$global.'%')->pluck('id');
+                $places_names = Place::orderBy('name')->where('name', 'LIKE', '%'.$global.'%')->pluck('id');
+                $sources_identifiers = Source::orderBy('identifier')->where('identifier', 'LIKE', '%'.$global.'%')
+                                    ->orWhere('title', 'LIKE', '%'.$global.'%')
+                                    ->pluck('id');
+
+                $legends = Legend::orderBy('identifier')
+                    ->where('identifier', 'LIKE', '%'.$global.'%')
+                    ->orWhere('volume', 'LIKE', '%'.$global.'%')
+                    ->orWhere('chapter_lv', 'LIKE', '%'.$global.'%')
+                    ->orWhere('title_lv', 'LIKE', '%'.$global.'%')
+                    ->orWhere('text_lv', 'LIKE', '%'.$global.'%')
+                    ->orWhereIn('collector_id', $collectors_fullnames)
+                    ->orWhereIn('narrator_id', $narrators_fullnames)
+                    ->orWhereIn('place_id', $places_names)
+                    ->orWhereHas('sources', function(Builder $query) use ($sources_identifiers) {
+                        $query->whereIn('source_id', $sources_identifiers);
+                    })->pluck('id');
+
+                $items = $items->whereIn('id', $legends);
+            } else if ($type == 'collectors') {
+                $collectors = Collector::orderBy('fullname')
+                                ->where('fullname', 'LIKE', '%'.$global.'%')
+                                ->pluck('id');
+
+                $items = $items->whereIn('id', $collectors);
+            }  else if ($type == 'narrators') {
+                $narrators = Narrator::orderBy('fullname')
+                                ->where('fullname', 'LIKE', '%'.$global.'%')
+                                ->pluck('id');
+
+                $items = $items->whereIn('id', $narrators);
+            } else if ($type == 'places') {
+                $places = Place::orderBy('name')
+                                ->where('name', 'LIKE', '%'.$global.'%')
+                                ->pluck('id');
+
+                $items = $items->whereIn('id', $places);
+            } else if ($type == 'sources') {
+                $sources = Source::orderBy('identifier')
+                                ->where('identifier', 'LIKE', '%'.$global.'%')
+                                ->orWhere('title', 'LIKE', '%'.$global.'%')
+                                ->orWhere('author', 'LIKE', '%'.$global.'%')
+                                ->pluck('id');
+
+                $items = $items->whereIn('id', $sources);
+            }
+        }
+        
+        return $items;
+    }
+
+    /**
+     * Highlights all instances of a fragment in a list of items.
+     */
+    public function highlight(mixed $items, string $type, string $fragment) {
+        if (isset($items)) {
+            if ($type == 'legends') {
+                foreach ($items as $legend) {
+                    $legend->identifier = $this->bold($legend->identifier, $fragment);
+                    $legend->metadata = $this->bold($legend->metadata, $fragment);
+                    $legend->title_lv = $this->bold($legend->title_lv, $fragment);
+                    $legend->chapter_lv = $this->bold($legend->chapter_lv, $fragment);
+                    $legend->volume = $this->bold($legend->volume, $fragment);
+
+                    $legend->collector->fullname = $this->bold($legend->collector->fullname, $fragment);
+                    $legend->narrator->fullname = $this->bold($legend->narrator->fullname, $fragment);
+                    $legend->place->name = $this->bold($legend->place->name, $fragment);
+                }
+            } else if ($type == 'collectors' || $type == 'narrators') {
+                foreach ($items as $person) {
+                    $person->fullname = $this->bold($person->fullname, $fragment);
+                }
+            } else if ($type == 'places') {
+                foreach ($items as $place) {
+                    $place->name = $this->bold($place->name, $fragment);
+                }
+            } else if ($type == 'sources') {
+                foreach ($items as $source) {
+                    $source->identifier = $this->bold($source->identifier, $fragment);
+                    $source->title = $this->bold($source->title, $fragment);
+                    $source->author = $this->bold($source->author, $fragment);
+                }
+            }
+        }
+        
+        return $items;
+    }
+    // kkāds prikols, kam jau padod pagination?
+    // vai arī pagination veic iekš kopīgas search funkcijas - iespējams, tur varētu minēt tipus
+
+    /**
+     * Highlights any given instance of the given fragment in the given text.
+     */
+    public function bold(string $text, string $fragment)
+    {
+        $str_pos = mb_strpos($this->clean($text), $this->clean($fragment));
+        if ($str_pos || mb_substr($this->clean($text), 0, mb_strlen($fragment)) == $this->clean($fragment)) {
+            $text = mb_substr($text, 0, $str_pos)."<b>".mb_substr($text, $str_pos, mb_strlen($fragment))."</b>".mb_substr($text, $str_pos + mb_strlen($fragment));
+        } else {
+            $text = Str::limit($text, 100);
+        }
+        
+        return $text;
+    }
+
      /**
      * Highlights and shortens legend texts according to the given text fragment.
      */
     public function text(mixed $legends, string $text)
     {
-        $text_frag = mb_strtolower($text);
-        $replacements = array("ā"=>"a", "č"=>"c", "ē"=>"e", "ģ"=>"g", "ī"=>"i", "ķ"=>"k", "ļ"=>"l", "ņ"=>"n", "ŗ"=>"r", "š"=>"s", "ū"=>"u", "ž"=>"z");
-        foreach ($replacements as $search => $replace) { $text_frag = mb_eregi_replace($search, $replace, $text_frag); }
-
+        $text_frag = $this->clean($text);
         if ($text != '') {
             foreach ($legends as $legend) {
-                $text_lowercase = mb_strtolower($legend->text_lv);
-                foreach ($replacements as $search => $replace) { $text_lowercase = mb_eregi_replace($search, $replace, $text_lowercase); }
+                $text_lowercase = $this->clean($legend->text_lv);
                 $str_pos = mb_strpos($text_lowercase, $text_frag);
+                if (!$str_pos) { $legend->text = Str::limit($legend->text_lv, 100); continue; }
                 $border_limit = intval((100 - mb_strlen($text_frag)) / 2);
                 if(mb_strlen($legend->text_lv) > 100) {
                     if ($str_pos < $border_limit) {
@@ -173,5 +285,16 @@ class SortService
         }
         
         return $legends;
+    }
+
+    /**
+     * Cleans the given text by turning it lowercase and removing diacritical marks.
+     */
+    public function clean(string $text) {
+        $text = mb_strtolower($text);
+        $replacements = array("ā"=>"a", "č"=>"c", "ē"=>"e", "ģ"=>"g", "ī"=>"i", "ķ"=>"k", "ļ"=>"l", "ņ"=>"n", "ŗ"=>"r", "š"=>"s", "ū"=>"u", "ž"=>"z");
+        foreach ($replacements as $search => $replace) { $text = mb_eregi_replace($search, $replace, $text); }
+
+        return $text;
     }
 }

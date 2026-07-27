@@ -51,7 +51,7 @@
     <br>
 
     <h3>{{ __('resources.collector_legends') }}</h3>
-    @include('partials.table')
+    @include('legends.table')
     <div id="pagination-section">
         @include('partials.pagination')
     </div>
