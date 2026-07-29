@@ -88,15 +88,15 @@ class SortService
         if ($request->title != '') {
             $legends = $legends->where('title_lv', 'LIKE', '%'.$request->title.'%');
         }
-        
+
         if($request->text != '') {
-            $text_frag = $this->clean($request->text);
-        } else {
-            $text_frag = '';
-        }
-        
-        if ($request->text != '') {
-            $legends = $legends->where('text_lv', 'LIKE', '%'.$text_frag.'%');
+            $fragments = $this->fragment($request->text);
+            foreach($fragments['unquoted'] as $unquoted) {
+                $legends = $legends->where('text_lv', 'LIKE', '%'.$unquoted.'%');
+            }
+            foreach($fragments['quoted'] as $quoted) {
+                $legends = $legends->where('text_lv', 'LIKE', '%'.$quoted.'%');
+            }
         }
 
         if ($request->collector != '') {
@@ -144,8 +144,11 @@ class SortService
     /**
      * Sorts and filters items according to the global search parameter.
      */
-    public function global(mixed $items, string $type, string $global) {
+    public function global(mixed $items, string $type, string $global_string) {
         if (isset($items)) {
+            $global_arrays = $this->fragment($global_string);                                   // TODO: papildināt, kad ievieš lemmatizāciju
+            $global_all = array_merge($global_arrays['quoted'], $global_arrays['unquoted']);    // TODO: uzlabot, kad ir skaidrs, ko darīt ar izcelšanu
+            foreach($global_all as $global) {
             if ($type == 'legends') {
                 $collectors_fullnames = Collector::orderBy('fullname')->where('fullname', 'LIKE', '%'.$global.'%')->pluck('id');
                 $narrators_fullnames = Narrator::orderBy('fullname')->where('fullname', 'LIKE', '%'.$global.'%')->pluck('id');
@@ -194,6 +197,7 @@ class SortService
                                 ->pluck('id');
 
                 $items = $items->whereIn('id', $sources);
+            }
             }
         }
         
@@ -296,5 +300,65 @@ class SortService
         foreach ($replacements as $search => $replace) { $text = mb_eregi_replace($search, $replace, $text); }
 
         return $text;
+    }
+
+    /**
+     * Seperates a string into fragments used for filtering.
+     */
+    public function fragment(string $string) {
+        $processed = array();
+
+        if($string != '') {
+            $unprocessed = $string;
+        } else {
+            $unprocessed = '';
+        }
+        $quoted = array();
+        $processed = "";
+
+        while (gettype(mb_strpos($unprocessed, "'")) == "integer" || gettype(mb_strpos($unprocessed, '"')) == "integer") {
+            if (gettype(mb_strpos($unprocessed, "'")) == "integer" && gettype(mb_strpos($unprocessed, '"')) != "integer") {
+                $first_pos = mb_strpos($unprocessed, "'");
+                $second_pos = mb_strpos(mb_substr($unprocessed, $first_pos + 1), "'");
+            } else if (gettype(mb_strpos($unprocessed, '"')) == "integer" && gettype(mb_strpos($unprocessed, "'")) != "integer") {
+                $first_pos = mb_strpos($unprocessed, '"');
+                $second_pos = mb_strpos(mb_substr($unprocessed, $first_pos + 1), '"');
+            } else {
+                if (mb_strpos($unprocessed, "'") < mb_strpos($unprocessed, '"')) {
+                    $first_pos = mb_strpos($unprocessed, "'");
+                    $second_pos = mb_strpos(mb_substr($unprocessed, $first_pos + 1), "'");
+                } else {
+                    $first_pos = mb_strpos($unprocessed, '"');
+                    $second_pos = mb_strpos(mb_substr($unprocessed, $first_pos + 1), '"');
+                }
+            }
+
+            $processed = $processed.mb_substr($unprocessed, 0, $first_pos);
+            if (gettype($second_pos) != "integer") {
+                $unprocessed = mb_substr($unprocessed, $first_pos + 1);
+                continue;
+            } else {
+                $second_pos = $second_pos + $first_pos + 1;
+            }
+            $substr_length = $second_pos - $first_pos - 1;
+            array_push($quoted, mb_substr($unprocessed, $first_pos + 1, $substr_length));
+            $unprocessed = mb_substr($unprocessed, $second_pos + 1);
+        }
+        $processed = $processed.$unprocessed;
+
+        $unquoted = explode(" ", $processed);
+        $final = count($unquoted);
+        for ($i = 0; $i < $final; $i = $i + 1) {
+            if ($unquoted[$i] == "") {
+                unset($unquoted[$i]);
+            } else {
+                $unquoted[$i] = $this->clean($unquoted[$i]);
+            }
+        }
+
+        $fragmented = array();
+        $fragmented['quoted'] = $quoted;
+        $fragmented['unquoted'] = $unquoted;
+        return $fragmented;
     }
 }
