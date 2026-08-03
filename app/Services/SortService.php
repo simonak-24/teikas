@@ -451,6 +451,14 @@ class SortService
         $temp_text = $this->clean($string);
         while (gettype(mb_strpos($temp_text, $frag)) == 'integer') {
             $first_pos = mb_strpos($temp_text, $frag);
+            if ($frag == 'b') {
+                if ($first_pos > 0) {
+                    if ($temp_text[$first_pos - 1] == '<' || $temp_text[$first_pos - 1] == '/') {
+                        $temp_text = mb_substr($temp_text, 0, $first_pos).str_pad("", 1, "#").mb_substr($temp_text, $first_pos + 1);
+                        continue;
+                    }
+                }
+            }
             $length = mb_strlen($frag);
             $second_pos = $first_pos + $length;
             array_push($intervals, ['start' => $first_pos, 'end' => $second_pos]);
