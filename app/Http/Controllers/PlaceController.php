@@ -70,6 +70,8 @@ class PlaceController extends Controller
         $places = $places->paginate(app('items_per_page'));
         if ($request->global_search != '') {
             $places = $this->sortService->highlight($places, 'places', $request->global_search, $request);
+        } else {
+            $places = $this->sortService->highlight($places, 'places', '', $request);
         }
         return view('places.index', compact('places'));
     }

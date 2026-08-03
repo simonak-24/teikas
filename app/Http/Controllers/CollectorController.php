@@ -70,6 +70,8 @@ class CollectorController extends Controller
         $collectors = $collectors->paginate(app('items_per_page'));
         if ($request->global_search != '') {
             $collectors = $this->sortService->highlight($collectors, 'collectors', $request->global_search, $request);
+        } else {
+            $collectors = $this->sortService->highlight($collectors, 'collectors', '', $request);
         }
         return view('collectors.index', compact('collectors'));
     }

@@ -70,6 +70,8 @@ class NarratorController extends Controller
         $narrators = $narrators->paginate(app('items_per_page'));
         if ($request->global_search != '') {
             $narrators = $this->sortService->highlight($narrators, 'narrators', $request->global_search, $request);
+        } else {
+            $narrators = $this->sortService->highlight($narrators, 'narrators', '', $request);
         }
         return view('narrators.index', compact('narrators'));
     }
