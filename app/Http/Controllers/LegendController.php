@@ -9,8 +9,6 @@ use App\Models\Narrator;
 use App\Models\Place;
 use App\Models\Source;
 use App\Models\LegendSource;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Session;
 use App\Services\SortService;
 
 class LegendController extends Controller
@@ -74,9 +72,14 @@ class LegendController extends Controller
 
         $paginator = $legends->paginate(app('items_per_page'));
         if ($request->global_search != '') {
-            $paginator = $this->sortService->highlight($paginator, 'legends', $request->global_search);     // jāsaprot, kā pārklājas ar tekstu
-            $paginator = $this->sortService->text($paginator, $request->global_search);
+            $paginator = $this->sortService->highlight($paginator, 'legends', $request->global_search, $request);
+            if (isset($request->text)) {
+                $paginator = $this->sortService->text($paginator, $request->global_search." ".$request->text);
+            } else {
+                $paginator = $this->sortService->text($paginator, $request->global_search);
+            }
         } else {
+            $paginator = $this->sortService->highlight($paginator, 'legends', '', $request);
             $paginator = $this->sortService->text($paginator, isset($request->text) ? $request->text : '');
         }
         $item = 0;

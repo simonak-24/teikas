@@ -63,7 +63,7 @@ class SourceController extends Controller
 
         $sources = $sources->paginate(app('items_per_page'));
         if ($request->global_search != '') {
-            $sources = $this->sortService->highlight($sources, 'sources', $request->global_search);
+            $sources = $this->sortService->highlight($sources, 'sources', $request->global_search, $request);
         }
         return view('sources.index', compact('sources'));
     }

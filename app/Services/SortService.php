@@ -146,115 +146,172 @@ class SortService
      */
     public function global(mixed $items, string $type, string $global_string) {
         if (isset($items)) {
-            $global_arrays = $this->fragment($global_string);                                   // TODO: papildināt, kad ievieš lemmatizāciju
-            $global_all = array_merge($global_arrays['quoted'], $global_arrays['unquoted']);    // TODO: uzlabot, kad ir skaidrs, ko darīt ar izcelšanu
-            foreach($global_all as $global) {
-            if ($type == 'legends') {
-                $collectors_fullnames = Collector::orderBy('fullname')->where('fullname', 'LIKE', '%'.$global.'%')->pluck('id');
-                $narrators_fullnames = Narrator::orderBy('fullname')->where('fullname', 'LIKE', '%'.$global.'%')->pluck('id');
-                $places_names = Place::orderBy('name')->where('name', 'LIKE', '%'.$global.'%')->pluck('id');
-                $sources_identifiers = Source::orderBy('identifier')->where('identifier', 'LIKE', '%'.$global.'%')
-                                    ->orWhere('title', 'LIKE', '%'.$global.'%')
-                                    ->pluck('id');
+            $global_arrays = $this->fragment($global_string);   // TODO: papildināt / pārveidot, kad ievieš lemmatizāciju
 
-                $legends = Legend::orderBy('identifier')
-                    ->where('identifier', 'LIKE', '%'.$global.'%')
-                    ->orWhere('volume', 'LIKE', '%'.$global.'%')
-                    ->orWhere('chapter_lv', 'LIKE', '%'.$global.'%')
-                    ->orWhere('title_lv', 'LIKE', '%'.$global.'%')
-                    ->orWhere('text_lv', 'LIKE', '%'.$global.'%')
-                    ->orWhereIn('collector_id', $collectors_fullnames)
-                    ->orWhereIn('narrator_id', $narrators_fullnames)
-                    ->orWhereIn('place_id', $places_names)
-                    ->orWhereHas('sources', function(Builder $query) use ($sources_identifiers) {
-                        $query->whereIn('source_id', $sources_identifiers);
-                    })->pluck('id');
+            foreach (["quoted", "unquoted"] as $array_mode) {
+                if ($type == 'legends') {
+                    foreach ($global_arrays[$array_mode] as $global_fragment) {
+                        $collectors_fullnames = Collector::orderBy('fullname')->whereLike('fullname', '%'.$global_fragment.'%')->pluck('id');
+                        $narrators_fullnames = Narrator::orderBy('fullname')->whereLike('fullname', '%'.$global_fragment.'%')->pluck('id');
+                        $places_names = Place::orderBy('name')->whereLike('name', '%'.$global_fragment.'%')->pluck('id');
+                        $sources_identifiers = Source::orderBy('identifier')->whereLike('identifier', '%'.$global_fragment.'%')
+                                                    ->orWhereLike('title', '%'.$global_fragment.'%')
+                                                    ->pluck('id');
 
-                $items = $items->whereIn('id', $legends);
-            } else if ($type == 'collectors') {
-                $collectors = Collector::orderBy('fullname')
-                                ->where('fullname', 'LIKE', '%'.$global.'%')
-                                ->pluck('id');
-
-                $items = $items->whereIn('id', $collectors);
-            }  else if ($type == 'narrators') {
-                $narrators = Narrator::orderBy('fullname')
-                                ->where('fullname', 'LIKE', '%'.$global.'%')
-                                ->pluck('id');
-
-                $items = $items->whereIn('id', $narrators);
-            } else if ($type == 'places') {
-                $places = Place::orderBy('name')
-                                ->where('name', 'LIKE', '%'.$global.'%')
-                                ->pluck('id');
-
-                $items = $items->whereIn('id', $places);
-            } else if ($type == 'sources') {
-                $sources = Source::orderBy('identifier')
-                                ->where('identifier', 'LIKE', '%'.$global.'%')
-                                ->orWhere('title', 'LIKE', '%'.$global.'%')
-                                ->orWhere('author', 'LIKE', '%'.$global.'%')
-                                ->pluck('id');
-
-                $items = $items->whereIn('id', $sources);
-            }
+                        $legends = Legend::orderBy('identifier')
+                                        ->whereLike('identifier', '%'.$global_fragment.'%')
+                                        ->orWhereLike('volume', '%'.$global_fragment.'%')
+                                        ->orWhereLike('chapter_lv', '%'.$global_fragment.'%')
+                                        ->orWhereLike('title_lv', '%'.$global_fragment.'%')
+                                        ->orWhereLike('text_lv', '%'.$global_fragment.'%')
+                                        ->orWhereIn('collector_id', $collectors_fullnames)
+                                        ->orWhereIn('narrator_id', $narrators_fullnames)
+                                        ->orWhereIn('place_id', $places_names)
+                                        ->orWhereHas('sources', function(Builder $query) use ($sources_identifiers) {
+                                            $query->whereIn('source_id', $sources_identifiers);
+                                        })->pluck('id');
+                        $items = $items->whereIn('legends.id', $legends);
+                    }
+                } else if ($type == 'collectors') {
+                    foreach ($global_arrays[$array_mode] as $global_fragment) {
+                        $collectors = Collector::orderBy('fullname')
+                                                ->whereLike('fullname', '%'.$global_fragment.'%')
+                                                ->pluck('id');
+                        $items = $items->whereIn('collectors.id', $collectors);
+                    }
+                }  else if ($type == 'narrators') {
+                    foreach ($global_arrays[$array_mode] as $global_fragment) {
+                        $narrators = Narrator::orderBy('fullname')
+                                            ->whereLike('fullname', '%'.$global_fragment.'%')
+                                            ->pluck('id');
+                        $items = $items->whereIn('narrators.id', $narrators);
+                    }
+                } else if ($type == 'places') {
+                    foreach ($global_arrays[$array_mode] as $global_fragment) {
+                        $places = Place::orderBy('name')
+                                        ->whereLike('name', '%'.$global_fragment.'%')
+                                        ->pluck('id');
+                        $items = $items->whereIn('places.id', $places);
+                    }
+                } else if ($type == 'sources') {
+                    foreach ($global_arrays[$array_mode] as $global_fragment) {
+                        $sources = Source::orderBy('identifier')
+                                        ->whereLike('identifier', '%'.$global_fragment.'%')
+                                        ->orWhereLike('title', '%'.$global_fragment.'%')
+                                        ->orWhereLike('author', '%'.$global_fragment.'%')
+                                        ->pluck('id');
+                        $items = $items->whereIn('sources.id', $sources);
+                    }
+                }
             }
         }
-        
         return $items;
     }
 
     /**
-     * Highlights all instances of a fragment in a list of items.
+     * Highlights all instances of the given fragments in a list of items.
      */
-    public function highlight(mixed $items, string $type, string $fragment) {
+    public function highlight(mixed $items, string $type, string $global, Request $request) {
         if (isset($items)) {
             if ($type == 'legends') {
                 foreach ($items as $legend) {
-                    $legend->identifier = $this->bold($legend->identifier, $fragment);
-                    $legend->metadata = $this->bold($legend->metadata, $fragment);
-                    $legend->title_lv = $this->bold($legend->title_lv, $fragment);
-                    $legend->chapter_lv = $this->bold($legend->chapter_lv, $fragment);
-                    $legend->volume = $this->bold($legend->volume, $fragment);
+                    if ($request->identifier != '') {
+                        $legend->identifier = $this->bold($legend->identifier, $global.' '.$request->identifier);
+                    } else {
+                        $legend->identifier = $this->bold($legend->identifier, $global);
+                    }
+                    if ($request->title_lv != '') {
+                        $legend->title_lv = $this->bold($legend->title_lv, $global.' '.$request->title_lv);
+                    } else {
+                        $legend->title_lv = $this->bold($legend->title_lv, $global);
+                    }
+                    if ($request->chapter_lv != '') {
+                        $legend->chapter_lv = $this->bold($legend->chapter_lv, $global.' '.$request->chapter_lv);
+                    } else {
+                        $legend->chapter_lv = $this->bold($legend->chapter_lv, $global);
+                    }
+                    if ($request->volume != '') {
+                        $legend->volume = $this->bold($legend->volume, $global.' '.$request->volume);
+                    } else {
+                        $legend->volume = $this->bold($legend->volume, $global);
+                    }
 
-                    $legend->collector->fullname = $this->bold($legend->collector->fullname, $fragment);
-                    $legend->narrator->fullname = $this->bold($legend->narrator->fullname, $fragment);
-                    $legend->place->name = $this->bold($legend->place->name, $fragment);
+                    if ($request->collector != '') {
+                        $legend->collector->fullname = $this->bold($legend->collector->fullname, $global.' '.$request->collector);
+                    } else {
+                        $legend->collector->fullname = $this->bold($legend->collector->fullname, $global);
+                    }
+                    if ($request->narrator != '') {
+                        $legend->narrator->fullname = $this->bold($legend->narrator->fullname, $global.' '.$request->narrator);
+                    } else {
+                        $legend->narrator->fullname = $this->bold($legend->narrator->fullname, $global);
+                    }
+                    if ($request->place != '') {
+                        $legend->place->name = $this->bold($legend->place->name, $global.' '.$request->place);
+                    } else {
+                        $legend->place->name = $this->bold($legend->place->name, $global);
+                    }
                 }
             } else if ($type == 'collectors' || $type == 'narrators') {
                 foreach ($items as $person) {
-                    $person->fullname = $this->bold($person->fullname, $fragment);
+                    if ($request->fullname != '') {
+                        $person->fullname = $this->bold($person->fullname, $global.' '.$request->fullname);
+                    } else {
+                        $person->fullname = $this->bold($person->fullname, $global);
+                    }
                 }
             } else if ($type == 'places') {
                 foreach ($items as $place) {
-                    $place->name = $this->bold($place->name, $fragment);
+                    if ($request->name != '') {
+                        $place->name = $this->bold($place->name, $global.' '.$request->name);
+                    } else {
+                        $place->name = $this->bold($place->name, $global);
+                    }
                 }
             } else if ($type == 'sources') {
                 foreach ($items as $source) {
-                    $source->identifier = $this->bold($source->identifier, $fragment);
-                    $source->title = $this->bold($source->title, $fragment);
-                    $source->author = $this->bold($source->author, $fragment);
+                    if ($request->identifier != '') {
+                        $source->identifier = $this->bold($source->identifier, $global.' '.$request->identifier);
+                    } else {
+                        $source->identifier = $this->bold($source->identifier, $global);
+                    }
+                    if ($request->title != '') {
+                        $source->title = $this->bold($source->title, $global.' '.$request->title);
+                    } else {
+                        $source->title = $this->bold($source->title, $global);
+                    }
+                    if ($request->author != '') {
+                        $source->author = $this->bold($source->author, $global.' '.$request->author);
+                    } else {
+                        $source->author = $this->bold($source->author, $global);
+                    }
                 }
             }
         }
         
         return $items;
     }
-    // kkāds prikols, kam jau padod pagination?
-    // vai arī pagination veic iekš kopīgas search funkcijas - iespējams, tur varētu minēt tipus
 
     /**
      * Highlights any given instance of the given fragment in the given text.
      */
-    public function bold(string $text, string $fragment)
+    public function bold(string $text, string $fragment_string)
     {
-        $str_pos = mb_strpos($this->clean($text), $this->clean($fragment));
-        if ($str_pos || mb_substr($this->clean($text), 0, mb_strlen($fragment)) == $this->clean($fragment)) {
-            $text = mb_substr($text, 0, $str_pos)."<b>".mb_substr($text, $str_pos, mb_strlen($fragment))."</b>".mb_substr($text, $str_pos + mb_strlen($fragment));
-        } else {
-            $text = Str::limit($text, 100);
+        $global_arrays = $this->fragment($fragment_string);
+        $global_all = array_merge($global_arrays['quoted'], $global_arrays['unquoted']);
+        foreach ($global_all as $fragment) {
+            $text_bolded = $this->intervals($text, $fragment);
+            $text_bolded = $this->merge($text_bolded);
+            if (count($text_bolded) > 0) {
+                $offset = 0;
+                foreach ($text_bolded as $bold) {
+                    $start_pos = $bold['start'] + $offset;
+                    $length = $bold['end'] - $bold['start'];
+                    $text = mb_substr($text, 0, $start_pos)."<b>".mb_substr($text, $start_pos, $length)."</b>".mb_substr($text, $start_pos + $length);
+                    $offset = $offset + mb_strlen("<b></b>");
+                }
+            }
         }
-        
         return $text;
     }
 
@@ -265,29 +322,53 @@ class SortService
     {
         $text_frag = $this->clean($text);
         if ($text != '') {
+            $global_arrays = $this->fragment($text);
+            $global_all = array_merge($global_arrays['quoted'], $global_arrays['unquoted']);    // TODO: uzlabot, kad ievieš lemmatizāciju
             foreach ($legends as $legend) {
-                $text_lowercase = $this->clean($legend->text_lv);
-                $str_pos = mb_strpos($text_lowercase, $text_frag);
-                if (!$str_pos) { $legend->text = Str::limit($legend->text_lv, 100); continue; }
-                $border_limit = intval((100 - mb_strlen($text_frag)) / 2);
-                if(mb_strlen($legend->text_lv) > 100) {
-                    if ($str_pos < $border_limit) {
-                        $legend->text = mb_substr($legend->text_lv, 0, $str_pos)."<b>".mb_substr($legend->text_lv, $str_pos, mb_strlen($text_frag))."</b>".mb_substr($legend->text_lv, $str_pos + mb_strlen($text_frag), 100 - ($str_pos + mb_strlen($text_frag)))."...";
-                    } else if ($str_pos > mb_strlen($legend->text_lv) - $border_limit) {
-                        $legend->text = "...".mb_substr($legend->text_lv, mb_strlen($legend->text_lv) - 100, $str_pos - (mb_strlen($legend->text_lv) - 100))."<b>".mb_substr($legend->text_lv, $str_pos, mb_strlen($text_frag))."</b>".mb_substr($legend->text_lv, $str_pos + mb_strlen($text_frag));
-                    } else {
-                        $legend->text = "...".mb_substr($legend->text_lv, $str_pos - $border_limit, $border_limit)."<b>".mb_substr($legend->text_lv, $str_pos, mb_strlen($text_frag))."</b>".mb_substr($legend->text_lv, $str_pos + mb_strlen($text_frag), 100 - ($border_limit + mb_strlen($text_frag)))."...";
-                    }
+                $legend_text = $this->clean($legend->text_lv);
+                $legend_bolded = array();
+                foreach ($global_all as $frag) {
+                    $legend_bolded = array_merge($legend_bolded, $this->intervals($legend_text, $frag));
+                }
+                $legend_bolded = $this->merge($legend_bolded);
+
+                $offset = 0;
+                $cutoff = 0;
+                foreach ($legend_bolded as $interval) {
+                    $start_pos = $interval['start'] + $offset;
+                    $length = $interval['end'] - $interval['start'];
+                if (isset($legend->text)) {
+                    $start_pos = $start_pos - $cutoff;
+                    $legend->text = mb_substr($legend->text, 0, $start_pos)."<b>".mb_substr($legend->text, $start_pos, $length)."</b>".mb_substr($legend->text, $start_pos + $length);
                 } else {
-                    $legend->text = mb_substr($legend->text_lv, 0, $str_pos)."<b>".mb_substr($legend->text_lv, $str_pos, mb_strlen($text_frag))."</b>".mb_substr($legend->text_lv, $str_pos + mb_strlen($text_frag));
+                    $border_limit = intval((100 - $length) / 2);
+                    if(mb_strlen($legend->text_lv) > 100) {
+                        if ($start_pos < $border_limit) {
+                            $legend->text = mb_substr($legend->text_lv, 0, $start_pos)."<b>".mb_substr($legend->text_lv, $start_pos, $length)."</b>".mb_substr($legend->text_lv, $start_pos + $length, 100 - ($start_pos + $length))."...";
+                        } else if ($start_pos > mb_strlen($legend->text_lv) - $border_limit) {
+                            $legend->text = "...".mb_substr($legend->text_lv, mb_strlen($legend->text_lv) - 100, $start_pos - (mb_strlen($legend->text_lv) - 100))."<b>".mb_substr($legend->text_lv, $start_pos, $length)."</b>".mb_substr($legend->text_lv, $start_pos + $length);
+                            $offset = $offset + mb_strlen("...");
+                            $cutoff = mb_strlen($legend->text_lv) - 100;
+                        } else {
+                            $legend->text = "...".mb_substr($legend->text_lv, $start_pos - $border_limit, $border_limit)."<b>".mb_substr($legend->text_lv, $start_pos, $length)."</b>".mb_substr($legend->text_lv, $start_pos + $length, 100 - ($border_limit + $length))."...";
+                            $offset = $offset + mb_strlen("...");
+                            $cutoff = $start_pos - $border_limit;
+                        }
+                    } else {
+                        $legend->text = mb_substr($legend->text_lv, 0, $start_pos)."<b>1".mb_substr($legend->text_lv, $start_pos, $length)."</b>".mb_substr($legend->text_lv, $start_pos + $length);
+                    }
+                    
+                }
+                    $offset = $offset + mb_strlen("<b></b>");
                 }
             }
-        } else {
-            foreach ($legends as $legend) {
+        }
+
+        foreach ($legends as $legend) {
+            if (!isset($legend->text)) {
                 $legend->text = Str::limit($legend->text_lv, 100);
             }
         }
-        
         return $legends;
     }
 
@@ -360,5 +441,62 @@ class SortService
         $fragmented['quoted'] = $quoted;
         $fragmented['unquoted'] = $unquoted;
         return $fragmented;
+    }
+
+    /**
+     * Finds all instances of fragments in a string, returning it as an array of intervals of start and end symbol positions.
+     */
+    public function intervals(string $string, string $frag) {
+        $intervals = array();
+        $temp_text = $this->clean($string);
+        while (gettype(mb_strpos($temp_text, $frag)) == 'integer') {
+            $first_pos = mb_strpos($temp_text, $frag);
+            $length = mb_strlen($frag);
+            $second_pos = $first_pos + $length;
+            array_push($intervals, ['start' => $first_pos, 'end' => $second_pos]);
+            $temp_text = mb_substr($temp_text, 0, $first_pos).str_pad("", $length, "#").mb_substr($temp_text, $second_pos);
+        }
+        return $intervals;
+    }
+
+    /**
+     * Merges intervals, preventing overlap between them. Intervals must be arrays of 2 integers, accessed by keys 'start' and 'end'.
+     */
+    public function merge(mixed $intervals) {
+        $start = array_column($intervals, 'start');
+        array_multisort($start, SORT_ASC, $intervals);              // Sorts the intervals by their starting positions.
+        
+        $overlap = true;
+        while ($overlap) {
+            $overlap = false;
+            $intervals_copy = array();
+            $elim = -1;
+            for ($i = 0, $length = count($intervals); $i < $length; $i++) {
+                if (!$overlap) {
+                    for ($j = $i + 1; $j < $length; $j++) {
+                        if ($intervals[$i]['end'] >= $intervals[$j]['start']) {
+                            if ($intervals[$i]['end'] > $intervals[$j]['end']) {                                // The end of the current overlaps with the compared. Other case is impossible, as the sections are sorted.
+                                array_push($intervals_copy, ['start' => $intervals[$i]['start'], 'end' => $intervals[$i]['end']]);     // The current entirely overlaps with the compared.
+                            } else {
+                                array_push($intervals_copy, ['start' => $intervals[$i]['start'], 'end' => $intervals[$j]['end']]);     // The current ends before the compared does.
+                            }
+                            $elim = $j;
+                            $overlap = true;
+                            break;
+                        }
+                    }
+                    if (!$overlap) {
+                        array_push($intervals_copy, ['start' => $intervals[$i]['start'], 'end' => $intervals[$i]['end']]);
+                    }
+                } else {
+                    if ($i != $elim) {
+                        array_push($intervals_copy, ['start' => $intervals[$i]['start'], 'end' => $intervals[$i]['end']]);
+                    }
+                }
+            }
+            $intervals = $intervals_copy;
+        }
+
+        return $intervals;
     }
 }
