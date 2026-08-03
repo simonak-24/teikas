@@ -438,8 +438,8 @@ class SortService
         }
 
         $fragmented = array();
-        $fragmented['quoted'] = $quoted;
-        $fragmented['unquoted'] = $unquoted;
+        $fragmented['quoted'] = array_unique($quoted);
+        $fragmented['unquoted'] = array_unique($unquoted);
         return $fragmented;
     }
 
