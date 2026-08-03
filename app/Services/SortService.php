@@ -220,13 +220,13 @@ class SortService
                     } else {
                         $legend->identifier = $this->bold($legend->identifier, $global);
                     }
-                    if ($request->title_lv != '') {
-                        $legend->title_lv = $this->bold($legend->title_lv, $global.' '.$request->title_lv);
+                    if ($request->title != '') {
+                        $legend->title_lv = $this->bold($legend->title_lv, $global.' '.$request->title);
                     } else {
                         $legend->title_lv = $this->bold($legend->title_lv, $global);
                     }
-                    if ($request->chapter_lv != '') {
-                        $legend->chapter_lv = $this->bold($legend->chapter_lv, $global.' '.$request->chapter_lv);
+                    if ($request->chapter != '') {
+                        $legend->chapter_lv = $this->bold($legend->chapter_lv, $global.' '.$request->chapter);
                     } else {
                         $legend->chapter_lv = $this->bold($legend->chapter_lv, $global);
                     }
