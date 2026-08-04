@@ -77,42 +77,74 @@ class SortService
         }
 
         if ($request->identifier != '') {
-            $legends = $legends->where('identifier', 'LIKE', '%'.$request->identifier.'%');
+            $identifier_arrays = $this->fragment($request->identifier);
+            $identifier_fragments = array_merge($identifier_arrays['quoted'], $identifier_arrays['unquoted']);
+            foreach ($identifier_fragments as $fragment) {
+                $legends = $legends->where('identifier', 'LIKE', '%'.$fragment.'%');
+            }
         }
         if ($request->volume != '') {
-            $legends = $legends->where('volume', 'LIKE', '%'.$request->volume.'%');
+            $volume_arrays = $this->fragment($request->volume);
+            $volume_fragments = array_merge($volume_arrays['quoted'], $volume_arrays['unquoted']);
+            foreach ($volume_fragments as $fragment) {
+                $legends = $legends->where('volume', 'LIKE', '%'.$fragment.'%');
+            }
         }
         if ($request->chapter != '') {
-            $legends = $legends->where('chapter_lv', 'LIKE', '%'.$request->chapter.'%');
+            $chapter_arrays = $this->fragment($request->chapter);
+            $chapter_fragments = array_merge($chapter_arrays['quoted'], $chapter_arrays['unquoted']);
+            foreach ($chapter_fragments as $fragment) {
+                $legends = $legends->where('chapter_lv', 'LIKE', '%'.$fragment.'%');
+            }
         }
         if ($request->title != '') {
-            $legends = $legends->where('title_lv', 'LIKE', '%'.$request->title.'%');
+            $title_arrays = $this->fragment($request->title);
+            $title_fragments = array_merge($title_arrays['quoted'], $title_arrays['unquoted']);
+            foreach ($title_fragments as $fragment) {
+                $legends = $legends->where('title_lv', 'LIKE', '%'.$fragment.'%');
+            }
         }
 
         if($request->text != '') {
-            $fragments = $this->fragment($request->text);
-            foreach($fragments['unquoted'] as $unquoted) {
-                $legends = $legends->where('text_lv', 'LIKE', '%'.$unquoted.'%');
-            }
-            foreach($fragments['quoted'] as $quoted) {
-                $legends = $legends->where('text_lv', 'LIKE', '%'.$quoted.'%');
+            $text_arrays = $this->fragment($request->text);
+            $text_fragments = array_merge($text_arrays['quoted'], $text_arrays['unquoted']);
+            foreach($text_fragments as $fragment) {
+                $legends = $legends->where('text_lv', 'LIKE', '%'.$fragment.'%');
             }
         }
 
         if ($request->collector != '') {
-            $collectors = Collector::orderBy('fullname')->where('fullname', 'LIKE', '%'.$request->collector.'%')->pluck('id');
+            $collector_arrays = $this->fragment($request->collector);
+            $collector_fragments = array_merge($collector_arrays['quoted'], $collector_arrays['unquoted']);
+            $collectors = Collector::orderBy('fullname');
+            foreach($collector_fragments as $fragment) {
+                $collectors = $collectors->where('fullname', 'LIKE', '%'.$fragment.'%');
+            }
+            $collectors = $collectors->pluck('id');
             $legends = $legends->whereIn('collector_id', $collectors);
         } else if ($request->origin == 'collector') {
             $legends = $legends->where('collector_id', $request->item_id);
         }
         if ($request->narrator != '') {
-            $narrators = Narrator::orderBy('fullname')->where('fullname', 'LIKE', '%'.$request->narrator.'%')->pluck('id');
+            $narrator_arrays = $this->fragment($request->narrator);
+            $narrator_fragments = array_merge($narrator_arrays['quoted'], $narrator_arrays['unquoted']);
+            $narrators = Narrator::orderBy('fullname');
+            foreach($narrator_fragments as $fragment) {
+                $narrators = $narrators->where('fullname', 'LIKE', '%'.$fragment.'%');
+            }
+            $narrators = $narrators->pluck('id');
             $legends = $legends->whereIn('narrator_id', $narrators);
         } else if ($request->origin == 'narrator') {
             $legends = $legends->where('narrator_id', $request->item_id);
         }
         if ($request->place != '') {
-            $places = Place::orderBy('name')->where('name', 'LIKE', '%'.$request->place.'%')->pluck('id');
+            $place_arrays = $this->fragment($request->narrator);
+            $place_fragments = array_merge($place_arrays['quoted'], $place_arrays['unquoted']);
+            $places = Narrator::orderBy('fullname');
+            foreach($place_fragments as $fragment) {
+                $places = $places->where('fullname', 'LIKE', '%'.$fragment.'%');
+            }
+            $places = $places->pluck('id');
             $legends = $legends->whereIn('place_id', $places);
         } else if ($request->origin == 'place') {
             $legends = $legends->where('place_id', $request->item_id);
