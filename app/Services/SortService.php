@@ -138,11 +138,11 @@ class SortService
             $legends = $legends->where('narrator_id', $request->item_id);
         }
         if ($request->place != '') {
-            $place_arrays = $this->fragment($request->narrator);
+            $place_arrays = $this->fragment($request->place);
             $place_fragments = array_merge($place_arrays['quoted'], $place_arrays['unquoted']);
-            $places = Narrator::orderBy('fullname');
+            $places = Place::orderBy('name');
             foreach($place_fragments as $fragment) {
-                $places = $places->where('fullname', 'LIKE', '%'.$fragment.'%');
+                $places = $places->where('name', 'LIKE', '%'.$fragment.'%');
             }
             $places = $places->pluck('id');
             $legends = $legends->whereIn('place_id', $places);
